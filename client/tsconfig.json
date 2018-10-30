@@ -5,7 +5,8 @@
 		"noImplicitAny": true,
 		"allowSyntheticDefaultImports": true,
         "baseUrl": "./src", 
-        "outDir": "../dist"
+        "outDir": "./dist",
+        "sourceMap": true
 	},
 	"include": ["./src/**/*"],
 	"exclude": ["node_modules"]
