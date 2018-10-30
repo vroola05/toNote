@@ -1,0 +1,6 @@
+{
+	"name": "tonote-client",
+	"version": "1.0.0",
+	"description": "The user interface for the tonote application",
+    "main": "./src/index.ts"
+}

@@ -1,0 +1,23 @@
+{
+  "name": "tonote",
+  "version": "1.0.0",
+  "description": "Online notes tool",
+  "main": "./client/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vroola05/toNote.git"
+  },
+  "keywords": [
+    "notes",
+    "typescript"
+  ],
+  "author": "Mark Vrooland",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vroola05/toNote/issues"
+  },
+  "homepage": "https://github.com/vroola05/toNote#readme"
+}
