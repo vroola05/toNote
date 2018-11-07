@@ -5,7 +5,7 @@ const options = {
     'path': '../client/dist',
     'port': 4400,
     // The virtual root of the webserver
-    'virtual-root': '/tpnote',
+    'virtual-root': '/',
     // Specifies whether 404s should return index.html
     'catch-all': true,
     // Specifies if the server should output logging information
