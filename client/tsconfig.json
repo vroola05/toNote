@@ -6,7 +6,8 @@
 		"allowSyntheticDefaultImports": true,
         "baseUrl": "./src", 
         "outDir": "./dist",
-        "sourceMap": true
+		"sourceMap": true,
+		"watch": true
 	},
 	"include": ["./src/**/*"],
 	"exclude": ["node_modules"]

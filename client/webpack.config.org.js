@@ -1,19 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const devMode = process.env.NODE_ENV !== 'production'
 
 module.exports = {
   mode: 'development',
+  entry: './src/index.ts',
   devtool: 'inline-source-map',
-  devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    compress: true,
-    port: 9000
-  },
-  watch:true,
   module: {
     rules: [
       {
@@ -24,12 +18,10 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
-          ////devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          //devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           MiniCssExtractPlugin.loader,
           'css-loader',
-          "sass-loader"
         ]
-        
       }
     ]
   },
