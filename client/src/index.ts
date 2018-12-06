@@ -1,11 +1,13 @@
 import Quill from 'quill';
 import LoginModule from './modules/login/login-module';
 import "./styles.scss";
+import ConfigService from './services/config/configService';
 
 require('quill/dist/quill.snow.css');
 
 class Startup {
     public static main(): number {
+        ConfigService.getInstance();
         console.log('Hello World');
 
         var container = <HTMLDivElement>(document.createElement('div'));
