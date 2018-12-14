@@ -34,7 +34,6 @@ export default class LoginModule{
     }
 
     public print(test:String){
-        //console.log(test);
-        //this.loginElement.innerHTML = test.toString();
+    
     }
 }
