@@ -1,6 +1,7 @@
 import Quill from 'quill';
 
 import "./styles.scss";
+import ConfigService from './services/config/configService';
 
 import { StateService } from './services/state/state-service';
 import { State, IStateHandler } from './services/state/types';
@@ -18,8 +19,12 @@ require('quill/dist/quill.snow.css');
 
 class Startup {
     public static main(): number {
-        
-        /*var container = <HTMLDivElement>(document.createElement('div'));
+
+        ConfigService.getInstance();
+        console.log('Hello World');
+
+        /* var container = <HTMLDivElement>(document.createElement('div'));
+
         container.id = "editor";
         document.body.appendChild(container);
 
