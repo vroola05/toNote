@@ -1,4 +1,4 @@
-class LoginService{
+export class LoginService{
     constructor(){
         
     }

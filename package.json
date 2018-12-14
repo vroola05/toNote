@@ -20,5 +20,6 @@
   "bugs": {
     "url": "https://github.com/vroola05/toNote/issues"
   },
-  "homepage": "https://github.com/vroola05/toNote#readme"
+  "homepage": "https://github.com/vroola05/toNote#readme",
+  "dependencies": {}
 }
