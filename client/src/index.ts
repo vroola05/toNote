@@ -44,17 +44,20 @@ class Startup {
         document.body.appendChild(main);
 
         let notebooksModule = new NotebooksModule();
-        main.appendChild(notebooksModule.get());
-        notebooksModule.show();
         let chaptersModule = new ChaptersModule();
-        main.appendChild(chaptersModule.get());
-        chaptersModule.show();
+        notebooksModule.setChild(chaptersModule);
         let notesModule = new NotesModule();
+        chaptersModule.setChild(notesModule);
+
+        main.appendChild(notebooksModule.get());
+        main.appendChild(chaptersModule.get());
         main.appendChild(notesModule.get());
-        notesModule.show();
-        
-        //StateService.set( {"key":"", "id":0,"name":"", "type":""}, "Notitieblok", "notebook");
-    
+
+        notebooksModule.show();
+        notebooksModule.addItem("Item 1",1, "#234567");
+        notebooksModule.addItem("",2, "#234567");
+        notebooksModule.addItem("Item 2",3, "#234567");
+        notebooksModule.addItem("Item 3",4, "#234567");
         return 0;
     }
 }
