@@ -2,21 +2,35 @@ export interface Entity{
 
 }
 
+
+export interface Info extends Entity {
+    id: string;
+    value : string;
+}
+
+
+export interface Message extends Entity {
+    status: number;
+    message : string;
+    info: Array<Info> | undefined;
+    faults: { [key:string]:string } | undefined;
+}
+
 export interface Note extends Entity {
     id: number;
     sectionId :number;
     name:string;
-    note:string;
+    note:any;
     creationDate: Date;
     modifyDate: Date | undefined;
     hash:string | undefined;
 }
 
 export interface User extends Entity{
-    userId: number;
-    username: String;
-    password: String;
-    active: boolean;
+    userId: number | undefined;
+    username: string;
+    password: string;
+    active: boolean | undefined;
 }
 
 export interface Notebook extends Entity {
@@ -24,10 +38,10 @@ export interface Notebook extends Entity {
     name: string;
     creationDate: string;
     modifyDate: string | null;
-    sections: Array<Section> | null;
+    chapter: Array<Chapter> | null;
 }
 
-export interface Section extends Entity {
+export interface Chapter extends Entity {
     id: number;
     notebookId: number;
     name: string;
@@ -35,5 +49,6 @@ export interface Section extends Entity {
     creationDate: string;
     modifyDate: string | undefined;
 }
+
 
 export type Method = "POST" | "PUT" | "DELETE" | "GET";

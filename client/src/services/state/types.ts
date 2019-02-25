@@ -1,8 +1,6 @@
 export class State {
-    public key: string;
-    public type :string;
-    public name:string;
-    public id:number;
+    public key : string;
+    public value : any | null;
 }
 
 export interface IStateHandler {

@@ -1,5 +1,7 @@
 import Lang from '../../components/language/lang';
 
+import { StateService } from '../../services/state/state-service';
+
 import {TabMenu} from '../../components/tabMenu/tab-menu';
 import { stringify } from 'querystring';
 
@@ -13,6 +15,6 @@ export default class NotebooksModule extends TabMenu {
     }
 
     public click(e:Event, identifier:number){
-        console.log("Load the chapters");
+        StateService.set({ "key" : "chapters", "value" : identifier }, Lang.get("state_title_chapter"), "chapter" );
     }
 }
