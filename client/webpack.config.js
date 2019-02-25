@@ -59,7 +59,7 @@ module.exports = {
       chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
     }),
     new CopyWebpackPlugin([
-			{ from: './config/appconfig', to: 'config' },
+      { from: './config/appconfig.json', to: 'config' },
 		])
   ]
 };

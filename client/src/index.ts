@@ -1,60 +1,76 @@
-import Quill from 'quill';
-
 import "./styles.scss";
 import ConfigService from './services/config/configService';
+import Lang from './components/language/lang';
 
 import { StateService } from './services/state/state-service';
 import { State, IStateHandler } from './services/state/types';
 
 import LoginModule from './modules/login/login-module';
+
 import NotebooksModule from './modules/notebooks/notebooks-module';
 import ChaptersModule from './modules/chapters/chapters-module';
 import NotesModule from './modules/notes/notes-module';
+import NoteModule from './modules/note/note-module';
 
+import { LoginStateHandler } from './modules/login/login-state-handler';
 import { NotebooksStateHandler } from './modules/notebooks/notebooks-state-handler';
 import { ChaptersStateHandler } from './modules/chapters/chapters-state-handler';
 import { NotesStateHandler } from './modules/notes/notes-state-handler';
-
-require('quill/dist/quill.snow.css');
+import { NoteStateHandler } from './modules/note/note-state-handler';
 
 class Startup {
     public static main(): number {
+        var main = <HTMLDivElement>(document.createElement('div'));
+        main.className = "main";
+        document.body.appendChild(main);
+        
+        let loginModule = new LoginModule();
 
-        ConfigService.getInstance();
-        console.log('Hello World');
+        let notebooksModule = new NotebooksModule();
 
-        /* var container = <HTMLDivElement>(document.createElement('div'));
+        let chaptersModule = new ChaptersModule();
+        notebooksModule.setChild(chaptersModule);
 
-        container.id = "editor";
-        document.body.appendChild(container);
+        let notesModule = new NotesModule();
+        chaptersModule.setChild(notesModule);
 
-        var quill =  new Quill(container, {
-            theme: 'snow'
-        });*/
+        let noteModule = new NoteModule();
+        notesModule.setChild(noteModule);
+
+        var back = <HTMLDivElement>(document.createElement('div'));
+        back.innerHTML = "Back";
+        back.onclick = function(){
+            notebooksModule.back();
+        };
+        document.body.appendChild(back);
+
 
         ////////////////////////////////////////
         // 
         ////////////////////////////////////////
-        StateService.register("notebooks", new NotebooksStateHandler());
-        StateService.register("chapters", new ChaptersStateHandler());
-        StateService.register("notes", new NotesStateHandler());
+        StateService.register("login", new LoginStateHandler(loginModule));
+        StateService.register("notebooks", new NotebooksStateHandler(notebooksModule));
+        StateService.register("chapters", new ChaptersStateHandler(chaptersModule));
+        StateService.register("notes", new NotesStateHandler(notesModule));
+        StateService.register("note", new NoteStateHandler(noteModule));
 
-        var main = <HTMLDivElement>(document.createElement('div'));
-        main.className = "main";
-        document.body.appendChild(main);
-
-        let notebooksModule = new NotebooksModule();
+        ////////////////////////////////////////
+        // 
+        ////////////////////////////////////////
         main.appendChild(notebooksModule.get());
-        notebooksModule.show();
-        let chaptersModule = new ChaptersModule();
         main.appendChild(chaptersModule.get());
-        chaptersModule.show();
-        let notesModule = new NotesModule();
         main.appendChild(notesModule.get());
-        notesModule.show();
+        main.appendChild(noteModule.get());
+
+        ////////////////////////////////////////
+        // 
+        ////////////////////////////////////////
+        new ConfigService( function() {
+            StateService.set({ "key" : "notebooks", value : null}, Lang.get("state_title_notebooks"),"notebooks");
+            //StateService.set({ "key" : "login", "id" : null}, Lang.get("login_title"),"login");
+        } );
         
-        //StateService.set( {"key":"", "id":0,"name":"", "type":""}, "Notitieblok", "notebook");
-    
+        
         return 0;
     }
 }
