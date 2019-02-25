@@ -41,6 +41,7 @@ export class StateService{
         console.log(state, title, url);
         document.title = title;
         window.history.pushState(state, title, "#" + url);
+        StateService.load(state);
     }
 
     /**

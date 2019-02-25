@@ -1,0 +1,12 @@
+RewriteEngine on
+# Rewrite all to index.php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php?path=$1 [L,QSA]
+# Disables directory listing
+Options -Indexes
+
+# TODO:  Only for test and development!!!
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
