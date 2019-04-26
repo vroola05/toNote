@@ -15,3 +15,7 @@ input, button {width:calc(100% - #{$default-margin}*2); margin: $default-margin;
 .loginContainer .loginElement .username{}
 .loginContainer .loginElement .password{}
 .loginContainer .loginElement .submit{}*/
+.main {
+    display: flex; flex-direction: column; height: 100%;
+    .tabs { display: flex; flex-direction: row; height: calc(100% - #{$header-height});}
+}

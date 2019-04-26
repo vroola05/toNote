@@ -1,0 +1,4 @@
+.tabNote {
+    position: relative; flex: auto; display: flex; flex-direction: column; 
+    .noteContainer { overflow-y: auto; }
+}

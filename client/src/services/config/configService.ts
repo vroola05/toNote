@@ -1,5 +1,5 @@
 import { ApplicationConfig } from './types';
-import combineUrl from '../../api/combineUrl'
+import combineUrl from '../../components/http/combineUrl'
 
 export default class ConfigService {
     private static config: ApplicationConfig = null;

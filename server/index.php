@@ -35,6 +35,9 @@ try{
 	}else
 	{
 		Router::create(array( 
+			"/login" => array( 
+				"GET" => array("Resource\LoginResource", "check", Http::CONTENT_TYPE_JSON)
+			),
 			"/logout" => array( 
 				"GET" => array("Resource\LoginResource", "logout", Http::CONTENT_TYPE_JSON)
 			),
@@ -73,6 +76,7 @@ try{
 		Router::route();
 	}
 } catch(Exception $e){
+	print("dsfsd ds");
 	Http::remand(new Message(500, $e->getMessage()),Http::CONTENT_TYPE_JSON);
 }
 ?>

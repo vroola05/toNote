@@ -1,18 +1,26 @@
 import './login-module.scss';
 import Lang from '../../components/language/lang';
 
-import { User, Info, Message } from '../../api/types';
-import { StateService } from '../../services/state/state-service';
+import {State, IRouter} from "../../services/router/types";
+import { User, Info, Message } from '../../types';
+import { Router } from '../../services/router/router-service';
 import { LoginService } from '../../services/http/login-service';
 import { AuthenticationService } from '../../services/authentication/authentication-service';
+import { IWindow } from '../../components/iwindow/iwindow';
 
-export default class LoginModule{
+export default class LoginModule extends IWindow{
+    private loginContainer:HTMLElement = document.createElement("div");
     private loginElement:HTMLElement = document.createElement("div");
     private usernameElement:HTMLInputElement = document.createElement("input");
     private passwordElement:HTMLInputElement = document.createElement("input");
     private submitElement:HTMLButtonElement = document.createElement("button");
 
     constructor(){
+        super("login",Lang.get("state_title_login"));
+        this.append(this.loginContainer);
+        this.loginContainer.className = "loginContainer";
+        this.loginContainer.appendChild(this.loginElement);
+
         this.loginElement.className = "loginElement";
 
         var label:HTMLLabelElement = document.createElement("label");
@@ -31,7 +39,7 @@ export default class LoginModule{
         this.passwordElement.name = "password";
         this.loginElement.appendChild(this.passwordElement);
 
-        this.submitElement.className = "submit";
+        this.submitElement.className = "btn submit";
         this.submitElement.innerHTML = Lang.get("login_send");
         let self = this;
         this.submitElement.onclick = function(){
@@ -40,14 +48,15 @@ export default class LoginModule{
         this.loginElement.appendChild(this.submitElement);
     }
 
+    /*
     public show(){
-        document.body.appendChild(this.loginElement);
+        document.body.appendChild(this.loginContainer);
     }
 
     public hide(){
-        document.body.removeChild(this.loginElement);
+        document.body.removeChild(this.loginContainer);
     }
-
+*/
     private submit(){
         let user : User = {
             userId:undefined,
@@ -56,20 +65,31 @@ export default class LoginModule{
             active:undefined
 
         };
-        const self = this;
+
+        let  auth : AuthenticationService = new AuthenticationService();
+        auth.clear();
+        
         const loginService : LoginService = new LoginService();
-        loginService.login(user).then(function(message:Message){
-            message.info.forEach(function(info:Info){
+        loginService.login(user).then((message:Message) => {
+            message.info.forEach( (info:Info) => {
                 if(info.id==="apikey" && info.value!==undefined && info.value != ""){
                     const auth : AuthenticationService = new AuthenticationService();
                     auth.setApikey(info.value);
+                    
+                    
+                    Router.set({ "key" : "main", value : null}, Lang.get("state_title_notebooks"),"main");
                 }
             });
             
-            self.hide();
-
-            
-            StateService.set({ "key" : "notebooks", "value" : null}, Lang.get("state_title_notebooks"),"notebooks");
+            this.hide();
         });
+    }
+
+    public load( state : State ) : boolean {
+        
+        this.show();
+        
+        
+        return true;
     }
 }

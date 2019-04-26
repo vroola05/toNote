@@ -75,7 +75,7 @@ abstract class Http {
                 $data .= $o;
             }
             fclose($put);
-
+            
             if(!array_key_exists ("CONTENT_TYPE",$_SERVER) || $contentType != $_SERVER["CONTENT_TYPE"]) return null;
             
             if( $contentType==Http::CONTENT_TYPE_JSON ){

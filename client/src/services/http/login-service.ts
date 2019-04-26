@@ -1,5 +1,5 @@
-import { User, Message } from '../../api/types';
-import HttpClient from '../../api/httpClient';
+import { User, Message } from '../../types';
+import HttpClient from '../../components/http/httpClient';
 
 export class LoginService extends HttpClient{
     constructor(){
@@ -10,4 +10,7 @@ export class LoginService extends HttpClient{
         return this.post("login", user);
     }
 
+    public check() : Promise<Message>{
+        return this.get("login");
+    }
 }
