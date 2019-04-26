@@ -1,15 +1,19 @@
 $color-primary : #6ac6e6;
+$color-secondary : #6ac6e6;
 
 $color-shade-dark : #e0e0e0;
 $color-shade : #f1f1f1;
 $color-shade-light : #f5f5f5;
 
+$default-margin:8px;
+$default-padding:8px;
+
 body { margin : 0px; padding : 0px; }
 
-.main {
+/*.main {
     position: fixed;
     top : 90px;
     display : -webkit-flex; display : flex; -webkit-flex-direction : row; flex-direction : row;
     width : 100%;
     height : calc(100% - 90px);
-}
+}*/

@@ -52,8 +52,12 @@ class NotebookResource {
             $notebook = new Notebook();
             $notebook->setId($parameters[0]);
             
-            return $notebook->get(null, $connection);
-            //$connection->dbClose();
+            $output = $notebook->get(null, $connection);
+            if($output !== false){
+                return $output;
+            }
+            Http::setStatus(404);
+            throw new \Exception('Not found!');
         }
     }
 

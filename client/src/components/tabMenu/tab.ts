@@ -2,21 +2,22 @@
  * 
  */
 export class Tab {
-	public child:Tab;
+    public child:Tab;
+    public parent:Tab = null;
 	public domTab:HTMLElement;
 
     constructor(){
         this.domTab = document.createElement("div");
-		this.domTab.className = "tab";
+		  this.domTab.className = "tab";
     }
         
     /**
      * 
      */
     public show() : void {
-		if( this.child != null ){
-			this.child.hide();
-		}
+		//if( this.child != null ){
+		//	this.child.hide();
+		//}
 
 		this.domTab.classList.add("active");
 		if ( ! this.domTab.classList.contains("stack")) {
@@ -36,14 +37,19 @@ export class Tab {
      * @param child 
      */
 	public setChild(child:Tab){
-		this.child = child;
+        this.child = child;
+        this.child.setParent(this);
+    }
+    
+    public setParent(parent:Tab){
+		this.parent = parent;
 	}
-
     /**
      * 
      */
 	public back() : boolean {
-		if ( this.domTab.classList.contains("active") ) {
+		if ( this.domTab.classList.contains("active") && this.parent!=null) {
+            
             this.hide();
             return true;
 		}else if ( this.child != null ) {
@@ -57,7 +63,7 @@ export class Tab {
     /**
      * 
      */
-    private hide() : void {
+    public hide() : void {
 		if( this.child != null ){
 			this.child.hide();
 		}

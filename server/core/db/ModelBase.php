@@ -381,6 +381,7 @@ class ModelBase {
         $query = "select " . $select . " from " . $this->mapping->tablename . ($where == "" ? "" : (" where " . $where));
         //If the query succeeds
         if ($connection->dbPreparedStatement($query, $params, "select") !== false) {
+            
             $records = $connection->getFetchData();
             if (count($records) == 0) {
                 $this->error = array(
