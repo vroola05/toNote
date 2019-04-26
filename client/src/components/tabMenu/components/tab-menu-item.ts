@@ -56,7 +56,7 @@ export class TabMenuItem {
 	 * @param identifier 
 	 */
     public click(item:TabMenuItem, identifier:number, name:string, object:any){
-        alert("Method not yet implemented!");
+        console.error("Method not yet implemented!");
     }
 
     public setActive(active:boolean=true){

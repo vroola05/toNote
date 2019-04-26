@@ -2,13 +2,13 @@
  * 
  */
 export class Tab {
-    public child:Tab;
+    public child:Tab = null;
     public parent:Tab = null;
 	public domTab:HTMLElement;
 
     constructor(){
         this.domTab = document.createElement("div");
-		  this.domTab.className = "tab";
+        this.domTab.className = "tab";
     }
         
     /**
@@ -18,7 +18,7 @@ export class Tab {
 		//if( this.child != null ){
 		//	this.child.hide();
 		//}
-
+        this.deactivateOther();
 		this.domTab.classList.add("active");
 		if ( ! this.domTab.classList.contains("stack")) {
 			this.domTab.classList.add("stack");
@@ -30,6 +30,23 @@ export class Tab {
      */
     public get() : HTMLElement{
         return this.domTab;
+    }
+
+    private deactivateOther(direction:number=0){
+        if(direction<0){
+            if(this.parent != null){
+                this.parent.domTab.classList.remove("active");
+                this.parent.deactivateOther(direction);
+            }
+        } else if(direction>0){
+            if(this.child != null){
+                this.child.domTab.classList.remove("active");
+                this.child.deactivateOther(direction);
+            }
+        } else{
+            this.deactivateOther(-1);
+            this.deactivateOther(1);
+        }
     }
 
     /**
@@ -49,10 +66,10 @@ export class Tab {
      */
 	public back() : boolean {
 		if ( this.domTab.classList.contains("active") && this.parent!=null) {
-            
             this.hide();
             return true;
-		}else if ( this.child != null ) {
+		} else if ( this.child != null ) {
+            
 			if( this.child.back() ){
                 this.domTab.classList.add("active");
             }
@@ -68,7 +85,6 @@ export class Tab {
 			this.child.hide();
 		}
 		this.domTab.classList.remove("active");
-		this.domTab.classList.remove("stack");
+        this.domTab.classList.remove("stack");
     }
-
 }

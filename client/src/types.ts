@@ -50,7 +50,7 @@ export class Chapter {
     modifyDate: string | undefined;
 }
 
-export class NotebookState {
+export class MainState {
     notebook: Notebook | null;
     chapter: Chapter | null;
     note: Note | null;

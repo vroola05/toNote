@@ -161,6 +161,19 @@ export class TabMenu extends Tab {
 		return this.selectedTabMenuItem;
 	}
 
+	public getTabMenuItems(): Array<TabMenuItem> {
+		return this.tabMenuItems;
+	}
+	public getObjects(){
+		let objects = new Array<any>();
+		
+		this.tabMenuItems.forEach((tabMenuItem) => {
+			objects.push(tabMenuItem.getObject());
+		});
+
+		return objects;
+	}
+
 	/**
 	 * 
 	 * @param identifier 
