@@ -1,0 +1,16 @@
+@import "../../../../styles.scss";
+
+.header { display: flex; height : $header-height; background: $color-primary; }
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    width: $header-height;
+    height: calc(#{$header-height} - 1px);
+
+    border-right: $color-shade-dark solid 1px;
+    background : $color-secondary;
+    
+}

@@ -1,14 +1,15 @@
 import Lang from '../../../../components/language/lang';
 
-import { Notebook, NotebookState } from '../../../../types';
+import { Notebook, MainState } from '../../../../types';
 
 import { Router } from '../../../../services/router/router-service';
 import { NotebookService } from '../../../../services/http/notebook-service';
 
 import {TabMenu} from '../../../../components/tabMenu/tab-menu';
 import { stringify } from 'querystring';
+import { rejects } from 'assert';
 
-export default class NotebooksModule extends TabMenu {
+export default class NotebooksComponent extends TabMenu {
     constructor(){
         let labels = new Map<string,string>([
             ["name", Lang.get("notebooks_name")], 
@@ -19,25 +20,35 @@ export default class NotebooksModule extends TabMenu {
 
     public click(item:any, identifier:number, name:string, notebook:Notebook){
         let state = Router.getCurrentState();
-        let notebookState = new NotebookState();
-        notebookState.notebook = notebook;
-        state.value = notebookState;
+        let mainState = new MainState();
+        mainState.notebook = notebook;
+        state.value = mainState;
         Router.set(state, name+" - "+Lang.get("state_title_chapters"), "notebook" );
     }
 
-    public getItems(notebookState: NotebookState=null){
+    public getItems(mainState: MainState=null) : Promise<any>{
         const notebookService : NotebookService = new NotebookService();
-        notebookService.getNotebooks().then((notebooks:Array<Notebook>) => {
+        
+        if(this.hasItems()){
+            return new Promise((resolve, reject) => {
+                if(mainState!=null && mainState.notebook!==undefined){
+                    this.setMenuItemActive(mainState.notebook.id);
+                }
+                resolve(this.getObjects());
+                
+            });
+        }
+        return notebookService.getNotebooks().then((notebooks:Array<Notebook>) => {
             this.clear();
             if(notebooks !== null ){
                 for(let i in notebooks){
                     this.addItem(notebooks[i].id, notebooks[i].name, notebooks[i], undefined);
                 }
-                if(notebookState!=null && notebookState.notebook!==undefined){
-                    this.setMenuItemActive(notebookState.notebook.id);
+                if(mainState!=null && mainState.notebook!==undefined){
+                    this.setMenuItemActive(mainState.notebook.id);
                 }
             }
-            //this.show();
+            return notebooks;
         }).catch((error: Error) => {
             console.error(error.stack);   
             throw error 

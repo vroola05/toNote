@@ -1,5 +1,5 @@
 var map = new Map<string, Map<string, string>>([[
-    "NL", new Map([
+    "nl", new Map([
         /////////////////
         ["login_username", "Gebruikersnaam"],
         ["login_password", "Wachtwoord"],
@@ -26,7 +26,31 @@ var map = new Map<string, Map<string, string>>([[
         
 
     ])],[
-    "EN", new Map([
+    "en", new Map([
+        ["login_username", "Username"],
+        ["login_password", "Password"],
+        ["login_send", "Login"],
+        ["login_reset", "Forgot password?"],
+        ["login_invalid", "Login failed! Please try again!"],
+        /////////////////
+        ["state_title_login", "Login"],
+        ["state_title_notebooks", "Overview notebooks"],
+        ["state_title_chapters", "Overview chapters"],
+        ["state_title_notes", "Overview notes"],
+        ["state_title_note", "Note"],
+        /////////////////
+        ["tabmenu_empty", "Empty"],
+        /////////////////
+        ["notebooks_name", "Notebook"],
+        ["notebooks_add", "Notebook"],
+        /////////////////
+        ["chapters_name", "Chapter"],
+        ["chapters_add", "Chapter"],
+        /////////////////
+        ["notes_name", "Notes"],
+        ["notes_add", "Note"]
+    ])],[
+    "en-US", new Map([
         ["login_username", "Username"],
         ["login_password", "Password"],
         ["login_send", "Login"],
@@ -53,8 +77,10 @@ var map = new Map<string, Map<string, string>>([[
 ])
 
 export default class Lang{
-    private static language:string = "EN";    
+    private static language:string = map.get(navigator.language)!==undefined?navigator.language:"en-US";
+
     public static get(tag:string){
+        
         return map.get(this.language).get(tag);
     }
 }

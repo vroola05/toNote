@@ -1,9 +1,9 @@
 require('quill/dist/quill.snow.css');
 import Quill from 'quill';
 
-import './note-module.scss';
+import './note-component.scss';
 
-import {Note, NotebookState} from '../../../../types';
+import {Note, MainState} from '../../../../types';
 import { NoteService } from '../../../../services/http/note-service';
 
 import Lang from '../../../../components/language/lang';
@@ -12,7 +12,13 @@ import { Router } from '../../../../services/router/router-service';
 
 import {Tab} from '../../../../components/tabMenu/tab';
 
-export default class NoteModule extends Tab {
+export default class NoteComponent extends Tab {
+    private notebookId : number = null;
+    private chapterId : number = null;
+    private noteId : number = null;
+
+    private object: any;
+
     private editor : Quill;
     constructor(){
         super();
@@ -32,15 +38,27 @@ export default class NoteModule extends Tab {
         this.editor.setContents("");
     }
 
-    public setNote( content : any ){
+    public setContent( content : any ){
         this.editor.setContents(content);
     }
+    public hasContent() : boolean{
+        return this.object != null;
+    }
 
-    public getItem( notebookState: NotebookState ){
+    public getItem( mainState: MainState ) : Promise<any>{
         const noteService : NoteService = new NoteService();
-        noteService.getNote(notebookState.notebook.id, notebookState.chapter.id, notebookState.note.id).then((note:Note) => {
-            noteService.getNoteContent(notebookState.notebook.id, notebookState.chapter.id, notebookState.note.id).then((content:any) => {
-                this.setNote(JSON.parse(content));
+
+        if(this.hasContent() && this.notebookId == mainState.notebook.id && this.chapterId == mainState.chapter.id && this.noteId == mainState.note.id){
+            return new Promise((resolve, reject) => {
+                resolve(this.object);
+            });
+        }
+
+        return noteService.getNote(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((note:Note) => {
+            noteService.getNoteContent(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((content:any) => {
+                this.object = JSON.parse(content);
+                this.setContent(this.object);
+                return note;
             }).catch((error: Error) => {
                 console.error(error.stack);   
                 throw error 
