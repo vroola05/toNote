@@ -1,9 +1,9 @@
-import { Entity, Method } from './types';
+import { Entity, Method } from '../../types';
 import combineUrl from './combineUrl'
-import ConfigService from '../services/config/configService';
-import { AuthenticationService } from '../services/authentication/authentication-service';
-import { StateService } from '../services/state/state-service';
-import Lang from '../components/language/lang';
+import ConfigService from '../../services/config/configService';
+import { AuthenticationService } from '../../services/authentication/authentication-service';
+import { Router } from '../../services/router/router-service';
+import Lang from '../language/lang';
 
 export default class HttpClient{
     private  auth : AuthenticationService = new AuthenticationService();
@@ -12,8 +12,8 @@ export default class HttpClient{
         this.apiUrl = ConfigService.get().api.url;
     }
 
-    public get<T, D>(endpoint: string, body: D) : Promise<T> {
-        return this.doRequest('GET', endpoint, body)
+    public get<T, D>(endpoint: string, body: D = null) : Promise<T> {
+        return this.doRequest('GET', endpoint, null)
     }
 
     public post<T, D>(endpoint: string, body: D) : Promise<T> {
@@ -36,11 +36,8 @@ export default class HttpClient{
 
         // can add default headers etc
         if(method!=="GET"){
-            const headers = new Headers();
             headers.append("Content-Type", "application/json");   
         }
-        
-        
 
         return fetch(combineUrl([this.apiUrl, endpoint], false), requestOptions).then(function(response) {
             if (response.ok) {
@@ -48,12 +45,11 @@ export default class HttpClient{
                     throw error;
                 }) as Promise<T>
             } else if(response.status===401){
-                StateService.set({ "key" : "login", "value" : null}, Lang.get("state_title_login"),"login");
+                Router.set({ "key" : "login", "value" : null}, Lang.get("state_title_login"),"login");
             }
             throw response;
         })
         .catch(function(error) {
-            console.log(error);
             throw error;
         });
     }

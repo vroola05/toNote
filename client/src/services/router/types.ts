@@ -3,6 +3,6 @@ export class State {
     public value : any | null;
 }
 
-export interface IStateHandler {
+export interface IRouter {
     load(state:State) : boolean;
 }

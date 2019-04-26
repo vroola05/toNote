@@ -4,6 +4,7 @@ namespace Resource;
 require 'model/Note.php';
 
 use \core\Message;
+use \core\Http;
 use \core\db\Database;
 
 use \model\Note;
@@ -47,8 +48,13 @@ class NotesResource {
             $note = new Note();
             $note->setSectionId($parameters[1]);
             $note->setId($parameters[2]);
-            
-            return $note->get(array("id", "sectionId", "userId", "name", "creationDate", "modifyDate", "hash"), $connection);
+            $output = $note->get(array("id", "sectionId", "userId", "name", "creationDate", "modifyDate", "hash"), $connection);
+            if($output !== false){
+                return $output;
+            }
+
+            Http::setStatus(404);
+            throw new \Exception('Not found!');
         }
     }
 
@@ -63,7 +69,8 @@ class NotesResource {
                 }
             }
         }
-        
+        Http::setStatus(404);
+        throw new \Exception('Not found!');
     }
 
     public function putNote($parameters, $note) : Message{

@@ -1,5 +1,5 @@
-import { Notebook } from '../../api/types';
-import HttpClient from '../../api/httpClient';
+import { Notebook } from '../../types';
+import HttpClient from '../../components/http/httpClient';
 
 export class NotebookService extends HttpClient{
     constructor(){
@@ -7,6 +7,6 @@ export class NotebookService extends HttpClient{
     }
 
     public getNotebooks() : Promise<Array<Notebook>>{
-        return this.get("notebooks", null);
+        return this.get("notebooks");
     }
 }

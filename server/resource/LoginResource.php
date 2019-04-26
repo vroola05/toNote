@@ -57,6 +57,10 @@ class LoginResource {
         return false;
     }
 
+    public function check( array $parameters ) : Message {
+        return new \Core\Message(200, "Apikey still valid!");
+    }
+
     public function logout( array $parameters ) : Message {
         if(Security::removeSession()){
             return new \Core\Message(200, "Session removed!");

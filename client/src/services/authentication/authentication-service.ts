@@ -4,6 +4,10 @@ export class AuthenticationService{
         
     }
 
+    
+    public clear() : void{
+        localStorage.clear();
+    }
 
     public getApikey() : string{
         return localStorage.getItem("apikey");

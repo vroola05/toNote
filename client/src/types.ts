@@ -16,7 +16,7 @@ export interface Message extends Entity {
     faults: { [key:string]:string } | undefined;
 }
 
-export interface Note extends Entity {
+export class Note {
     id: number;
     sectionId :number;
     name:string;
@@ -26,14 +26,14 @@ export interface Note extends Entity {
     hash:string | undefined;
 }
 
-export interface User extends Entity{
+export class User {
     userId: number | undefined;
     username: string;
     password: string;
     active: boolean | undefined;
 }
 
-export interface Notebook extends Entity {
+export class Notebook {
     id: number;
     name: string;
     creationDate: string;
@@ -41,13 +41,19 @@ export interface Notebook extends Entity {
     chapter: Array<Chapter> | null;
 }
 
-export interface Chapter extends Entity {
+export class Chapter {
     id: number;
     notebookId: number;
     name: string;
     color: string | null;
     creationDate: string;
     modifyDate: string | undefined;
+}
+
+export class NotebookState {
+    notebook: Notebook | null;
+    chapter: Chapter | null;
+    note: Note | null;
 }
 
 

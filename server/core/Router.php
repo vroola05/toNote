@@ -187,10 +187,10 @@ class Router {
      * @param array $values - possible path values given wrapped in an array
      */
     private static function _call( string $method, array $obj, array $values ){
+        $result = null;
+        $reqContentType = null;
+        $respContentType = null;
         try{
-            $result = null;
-            $reqContentType = null;
-            $respContentType = null;
             $class = null;
             $function = null;
             //The first two values will contain the name of the class and the name of the function
@@ -210,7 +210,7 @@ class Router {
                     return false;
                 }
                 $result = call_user_func(array(new $class(), $function), $values);
-            } if( $method== Http::HTTP_METHOD_POST || $method==Http::HTTP_METHOD_PUT ){
+            } else if( $method== Http::HTTP_METHOD_POST || $method==Http::HTTP_METHOD_PUT ){
                 if(count ($obj) > 3 ) {
                     $reqContentType = $obj[2];
                     $respContentType = $obj[3];
@@ -223,8 +223,11 @@ class Router {
             }
             Http::remand($result, $respContentType);
             return true;
-        }catch(\Exception $e){
-            Router::throwException(500, $e->getMessage());
+        } catch(\Exception $e){
+            $status = http_response_code();
+            if($status>=200&&$status<300)
+                $status=500;
+            Router::throwException($status, $e->getMessage());
             return false;
         }
 
@@ -240,7 +243,7 @@ class Router {
         Http::setStatus($status);
         Http::remand(new Message($status, $message), Http::CONTENT_TYPE_JSON);
     }
-
+    
     /**
      * true if the value is a number
      */

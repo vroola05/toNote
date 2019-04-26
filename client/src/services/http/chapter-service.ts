@@ -1,5 +1,5 @@
-import { Chapter } from '../../api/types';
-import HttpClient from '../../api/httpClient';
+import { Chapter } from '../../types';
+import HttpClient from '../../components/http/httpClient';
 
 export class ChapterService extends HttpClient{
     constructor(){
@@ -7,6 +7,6 @@ export class ChapterService extends HttpClient{
     }
 
     public getChapters(id:number) : Promise<Array<Chapter>>{
-        return this.get("notebooks/"+id+"/chapters", null);
+        return this.get("notebooks/"+id+"/chapters");
     }
 }
