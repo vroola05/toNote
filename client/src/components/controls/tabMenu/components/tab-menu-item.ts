@@ -1,4 +1,4 @@
-import Lang from '../../language/lang';
+import Lang from 'components/language/lang';
 
 export class TabMenuItem {
 	private domItem:HTMLElement = document.createElement("div");

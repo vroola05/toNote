@@ -6,7 +6,7 @@ import { User, Info, Message } from '../../types';
 import { Router } from '../../services/router/router-service';
 import { LoginService } from '../../services/http/login-service';
 import { AuthenticationService } from '../../services/authentication/authentication-service';
-import { IWindow } from '../../components/iwindow/iwindow';
+import { IWindow } from '../../components/controls/iwindow/iwindow';
 
 export default class LoginModule extends IWindow{
     private loginContainer:HTMLElement = document.createElement("div");

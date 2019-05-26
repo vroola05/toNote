@@ -21,5 +21,8 @@
     "url": "https://github.com/vroola05/toNote/issues"
   },
   "homepage": "https://github.com/vroola05/toNote#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "url-loader": "^1.1.2"
+  }
 }

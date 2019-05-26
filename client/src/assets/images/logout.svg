@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 50 50"
+   version="1.1"
+   id="svg3691"
+   sodipodi:docname="logout.svg"
+   inkscape:version="0.92.1 r15371">
+  <metadata
+     id="metadata3695">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Editable</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="2560"
+     inkscape:window-height="1361"
+     id="namedview3693"
+     showgrid="false"
+     inkscape:zoom="8"
+     inkscape:cx="21.551628"
+     inkscape:cy="0.19464899"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3691"
+     showguides="false"
+     inkscape:snap-global="false" />
+  <defs
+     id="defs3682">
+    <style
+       id="style3680">.cls-1{fill:#ebecec;}.cls-2{fill:none;stroke:#ebecec;stroke-miterlimit:10;stroke-width:2px;}</style>
+  </defs>
+  <title
+     id="title3684">Editable</title>
+  <path
+     style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.05409241;stroke-opacity:1"
+     d="M 10 10 L 10 40 L 30 40 L 30 32 L 26 32 L 26 36 L 14 36 L 14 14 L 26 14 L 26 18 L 30 18 L 30 10 L 10 10 z "
+     id="rect4581" />
+  <path
+     style="fill:#000000;fill-opacity:1;stroke:none;stroke-opacity:1"
+     d="m 31,19 v 4 H 19 v 4 h 12 v 4 l 7.5,-6 z"
+     id="rect4615"
+     inkscape:connector-curvature="0" />
+</svg>

@@ -13,6 +13,12 @@ var map = new Map<string, Map<string, string>>([[
         ["state_title_notes", "Overzicht Notities"],
         ["state_title_note", "Notitie"],
         /////////////////
+        ["header_icon_back", "Terug"],
+        ["header_icon_unlocked", "Open"],
+        ["header_icon_locked", "Gesloten"],
+        ["header_icon_search", "Zoeken"],
+        ["header_icon_menu", "Menu"],
+        /////////////////
         ["tabmenu_empty", "Naamloos"],
         /////////////////
         ["notebooks_name", "Notitieblok"],
@@ -39,6 +45,12 @@ var map = new Map<string, Map<string, string>>([[
         ["state_title_notes", "Overview notes"],
         ["state_title_note", "Note"],
         /////////////////
+        ["header_icon_back", "Back"],
+        ["header_icon_unlocked", "Unlocked"],
+        ["header_icon_locked", "Locked"],
+        ["header_icon_search", "Search"],
+        ["header_icon_menu", "Menu"],
+        /////////////////
         ["tabmenu_empty", "Empty"],
         /////////////////
         ["notebooks_name", "Notebook"],
@@ -62,6 +74,12 @@ var map = new Map<string, Map<string, string>>([[
         ["state_title_chapters", "Overview chapters"],
         ["state_title_notes", "Overview notes"],
         ["state_title_note", "Note"],
+        /////////////////
+        ["header_icon_back", "Back"],
+        ["header_icon_unlocked", "Unlocked"],
+        ["header_icon_locked", "Locked"],
+        ["header_icon_search", "Search"],
+        ["header_icon_menu", "Menu"],
         /////////////////
         ["tabmenu_empty", "Empty"],
         /////////////////
