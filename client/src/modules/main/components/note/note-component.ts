@@ -7,10 +7,7 @@ import {Note, MainState} from '../../../../types';
 import { NoteService } from '../../../../services/http/note-service';
 
 import Lang from '../../../../components/language/lang';
-
-import { Router } from '../../../../services/router/router-service';
-
-import {Tab} from '../../../../components/tabMenu/tab';
+import { Tab } from '../../../../components/controls/tabMenu/tab';
 
 export default class NoteComponent extends Tab {
     private notebookId : number = null;
@@ -28,7 +25,7 @@ export default class NoteComponent extends Tab {
         noteContainer.className = "noteContainer";
         this.domTab.appendChild(noteContainer);
 
-        this.editor =  new Quill(noteContainer, {
+        this.editor =  new Quill(noteContainer, { 
             theme: 'snow'
         });
         

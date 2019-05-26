@@ -7,7 +7,7 @@ import { Chapter, MainState } from '../../../../types';
 import { Router } from '../../../../services/router/router-service';
 import { ChapterService } from '../../../../services/http/chapter-service';
 
-import {TabMenu} from '../../../../components/tabMenu/tab-menu';
+import { TabMenu } from '../../../../components/controls/tabMenu/tab-menu';
 
 
 export default class ChaptersComponent extends TabMenu {
@@ -30,7 +30,7 @@ export default class ChaptersComponent extends TabMenu {
         mainState.note = null;
         state.value = mainState;
         
-        Router.set(state, name+" - "+Lang.get("state_title_notes"), "notes" );
+        Router.set(state, Lang.get("state_title_notes") +" - "+ name, "notes" );
     }
 
     public getItems(mainState: MainState) : Promise<Array<Chapter>> {

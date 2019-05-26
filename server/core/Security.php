@@ -1,9 +1,6 @@
 <?php
 namespace core;
 
-require_once 'core/GUID.php';
-
-
 use \core\db\Database;
 
 abstract class Security {

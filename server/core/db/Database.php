@@ -15,12 +15,12 @@ class Database {
     private $error;
     private static $instantce;
 
-    private function __construct() {
+    private function __construct($conf=null) {
         try{
             $this->dbHost = Conf::get("dbHost");
-            $this->dbUser = Conf::get("dbUser");
+            $this->dbUser = Conf::get("dbUsername");
             $this->dbPass = Conf::get("dbPassword");
-            $this->dbName = Conf::get("dbName");
+            $this->dbName = Conf::get("dbDatabase");
         } catch(Exception $e){
             throw new \Exception("Unable to read config file!");
         }

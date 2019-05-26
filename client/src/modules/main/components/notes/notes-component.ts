@@ -1,14 +1,10 @@
 import './notes-component.scss';
 
 import Lang from '../../../../components/language/lang';
-
 import { Note, MainState } from '../../../../types';
-
 import { Router } from '../../../../services/router/router-service';
 import { NoteService } from '../../../../services/http/note-service';
-
-import {TabMenu} from '../../../../components/tabMenu/tab-menu';
-
+import { TabMenu } from '../../../../components/controls/tabMenu/tab-menu';
 
 export default class NotesComponent extends TabMenu {
     private notebookId : number;
@@ -28,7 +24,7 @@ export default class NotesComponent extends TabMenu {
         mainState.note = note;
         state.value = mainState;
 
-        Router.set(state, name +" - "+ Lang.get("state_title_note") , "note" );
+        Router.set(state, Lang.get("state_title_note") + " - "+ name  , "note" );
     }
 
     public getItems(mainState: MainState) : Promise<Array<Note>>{

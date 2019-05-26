@@ -31,7 +31,11 @@ module.exports = {
           'css-loader',
           "sass-loader"
         ]
-        
+      },
+      //Url loader is used for importing svg files
+      {
+        test: /\.svg$/,
+        loader: 'url-loader'
       }
     ]
   },

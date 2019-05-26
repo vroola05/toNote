@@ -5,7 +5,7 @@ import { Notebook, MainState } from '../../../../types';
 import { Router } from '../../../../services/router/router-service';
 import { NotebookService } from '../../../../services/http/notebook-service';
 
-import {TabMenu} from '../../../../components/tabMenu/tab-menu';
+import { TabMenu } from '../../../../components/controls/tabMenu/tab-menu';
 import { stringify } from 'querystring';
 import { rejects } from 'assert';
 
@@ -23,7 +23,7 @@ export default class NotebooksComponent extends TabMenu {
         let mainState = new MainState();
         mainState.notebook = notebook;
         state.value = mainState;
-        Router.set(state, name+" - "+Lang.get("state_title_chapters"), "notebook" );
+        Router.set(state, Lang.get("state_title_chapters") +" - "+ name, "notebook" );
     }
 
     public getItems(mainState: MainState=null) : Promise<any>{

@@ -1,4 +1,4 @@
-import {State, IRouter} from "../../services/router/types";
+import {State, IRouter} from "../../../services/router/types";
 
 export class IWindow implements IRouter {
     private main : HTMLDivElement = document.createElement("div");;

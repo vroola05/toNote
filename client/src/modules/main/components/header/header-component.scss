@@ -1,16 +1,22 @@
 @import "../../../../styles.scss";
 
-.header { display: flex; height : $header-height; background: $color-primary; }
+.header {
+    display: flex; 
+    flex-direction: row;
+    height : $header-height; 
+    background: $color-primary; 
 
-.btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    width: $header-height;
-    height: calc(#{$header-height} - 1px);
+    .btnLeftContainer {
+        display: flex; 
+        flex-direction: row;
+    }
 
-    border-right: $color-shade-dark solid 1px;
-    background : $color-secondary;
-    
+    .titleContainer {
+        flex: auto;
+    }
+
+    .btnRightContainer {
+        display: flex; 
+        flex-direction: row;
+    }
 }

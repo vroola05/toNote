@@ -1,0 +1,21 @@
+@import "../../../styles.scss";
+
+.menuItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    
+    .iconContainer {
+        width:40px;
+        .icon {
+            width: calc(100% - #{$default-padding*2});
+            height: calc(100% - #{$default-padding*2});
+            padding: $default-padding;
+            fill: red;
+        }
+    }
+    .nameContainer {
+        flex: auto;
+    }
+}
