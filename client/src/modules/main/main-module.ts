@@ -25,6 +25,7 @@ import NoteComponent from './components/note/note-component';
 import ButtonToggleComponent from './components/header/components/button-toggle/button-toggle-component';
 import ButtonDropdownComponent from './components/header/components/button-dropdown/button-dropdown-component';
 import MenuItemComponent from '../../components/controls/menu-item/menu-item-component';
+import { Router } from '../../services/router/router-service';
 
 export default class MainModule extends IWindow{
     protected notebooksComponent:NotebooksComponent = new NotebooksComponent();
@@ -33,6 +34,8 @@ export default class MainModule extends IWindow{
     protected noteComponent:NoteComponent = new NoteComponent();
 
     protected headerComponent:HeaderComponent = new HeaderComponent();
+
+    protected currentState: State;
 
     constructor(){
         super("main", "Notities");
@@ -67,9 +70,13 @@ export default class MainModule extends IWindow{
         btnMenu.click = (item:any) => {
         };
         this.headerComponent.addAltMenuItem(btnMenu);
-
-        btnMenu.addItem(new MenuItemComponent(svgSettings,"Instellingen"));
-        btnMenu.addItem(new MenuItemComponent(svgLogout,"Uitloggen"));
+        
+        const settings = new MenuItemComponent(svgSettings, Lang.get("header_menu_settings"));
+        settings.click = () => {
+           Router.set({ "key" : "login", value : null}, "sett","login");
+        };
+        btnMenu.addItem(settings);
+        btnMenu.addItem(new MenuItemComponent(svgLogout, Lang.get("header_menu_logout")));
 
         //let testBtn = new ButtonComponent("test");
         //headerComponent.addMenuItem(testBtn);
@@ -98,9 +105,12 @@ export default class MainModule extends IWindow{
     }
 
     public load( state : State ) : boolean {
+        
         if(state.value== null){
             state.value = new MainState();
         }
+
+        //this.currentState = state;
 
         this.headerComponent.setMainTitle("");
         this.headerComponent.setSubTitle("");

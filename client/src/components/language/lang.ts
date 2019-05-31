@@ -19,6 +19,9 @@ var map = new Map<string, Map<string, string>>([[
         ["header_icon_search", "Zoeken"],
         ["header_icon_menu", "Menu"],
         /////////////////
+        ["header_menu_settings", "Instellingen"],
+        ["header_menu_logout", "Uitloggen"],
+        /////////////////
         ["tabmenu_empty", "Naamloos"],
         /////////////////
         ["notebooks_name", "Notitieblok"],
@@ -51,6 +54,9 @@ var map = new Map<string, Map<string, string>>([[
         ["header_icon_search", "Search"],
         ["header_icon_menu", "Menu"],
         /////////////////
+        ["header_menu_settings", "Settings"],
+        ["header_menu_logout", "Logout"],
+        /////////////////
         ["tabmenu_empty", "Empty"],
         /////////////////
         ["notebooks_name", "Notebook"],
@@ -80,6 +86,9 @@ var map = new Map<string, Map<string, string>>([[
         ["header_icon_locked", "Locked"],
         ["header_icon_search", "Search"],
         ["header_icon_menu", "Menu"],
+        /////////////////
+        ["header_menu_settings", "Settings"],
+        ["header_menu_logout", "Logout"],
         /////////////////
         ["tabmenu_empty", "Empty"],
         /////////////////
