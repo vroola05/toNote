@@ -1,6 +1,6 @@
-import ButtonComponent from '../../../../../../components/controls/button/button-component';
-import DropdownMenuComponent from '../../../../../../components/controls/dropdown/dropdown-menu-component';
-import MenuItemComponent from '../../../../../../components/controls/menu-item/menu-item-component';
+import ButtonComponent from '../button-icon/button-icon-component';
+import DropdownMenuComponent from '../dropdown/dropdown-menu-component';
+import MenuItemComponent from '../menu-item/menu-item-component';
 
 
 
@@ -8,11 +8,10 @@ export default class ButtonDropdownComponent extends ButtonComponent {
     public isOpened: boolean = false;
     public dropdownMenu: DropdownMenuComponent = new DropdownMenuComponent();
 
-    constructor( icon : any, description: string|undefined = undefined ){
-        super(icon, description);
+    constructor( icon : any, description: string|undefined = undefined, click: any = undefined ){
+        super(icon, description, click);
     
-        this.dropdownMenu.event.on('canceled', () => 
-            {
+        this.dropdownMenu.event.on('close', () => {
                 this.isOpened = false;
                 this.dropdownMenu.hide();
             }

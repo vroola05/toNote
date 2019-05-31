@@ -1,8 +1,26 @@
 import './header-component.scss';
-import ButtonComponent from '../../../../components/controls/button/button-component';
 
+import svgHome from '../../../../assets/images/back.svg';
+import svgLocked from '../../../../assets/images/locked.svg';
+import svgUnlocked from '../../../../assets/images/unlocked.svg';
+import svgSearch from '../../../../assets/images/search.svg';
+import svgMenu from '../../../../assets/images/menu.svg';
+import svgSettings from '../../../../assets/images/settings.svg';
+import svgLogout from '../../../../assets/images/logout.svg';
+
+import Lang from '../../../../components/language/lang';
+
+import { Router } from '../../../../services/router/router-service';
+import { LoginService } from '../../../../services/http/login-service';
+
+import ButtonIconComponent from '../../../../components/controls/button-icon/button-icon-component';
+import ButtonToggleComponent from '../../../../components/controls/button-toggle/button-toggle-component';
+import ButtonDropdownComponent from '../../../../components/controls/button-dropdown/button-dropdown-component';
+import MenuItemComponent from '../../../../components/controls/menu-item/menu-item-component';
 
 import TitleComponent from './components/title/title-component';
+import MainModule from '../../main-module';
+
 
 export default class HeaderComponent  {
     private domItem: HTMLElement = document.createElement("div");
@@ -10,11 +28,13 @@ export default class HeaderComponent  {
     private btnRightContainer: HTMLElement = document.createElement("div");
     private titleContainer: HTMLElement = document.createElement("div");
 
+    private mainModule: MainModule;
     private titleComponent: TitleComponent = new TitleComponent();
     
-    private buttonComponents: Array<ButtonComponent> = new Array();
+    private buttonComponents: Array<ButtonIconComponent> = new Array();
 
-    constructor(){
+    constructor(mainModule: MainModule){
+        this.mainModule = mainModule;
         this.domItem.className = "header";
 
         this.btnLeftContainer.className = "btnLeftContainer";
@@ -25,14 +45,56 @@ export default class HeaderComponent  {
         this.domItem.appendChild(this.btnLeftContainer);
         this.domItem.appendChild(this.titleContainer);
         this.domItem.appendChild(this.btnRightContainer);
+
+        //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+
+        //
+        this.addMenuItem(new ButtonIconComponent(svgHome, Lang.get("header_icon_back"), (item:any) => {
+            this.mainModule.back();
+        }));
+
+        //
+        this.addMenuItem(new ButtonToggleComponent({
+            open:{icon:svgUnlocked, description: Lang.get("header_icon_unlocked")},
+            closed:{icon:svgLocked, description: Lang.get("header_icon_locked")}
+        }, (item:ButtonToggleComponent) => {
+            console.log(item.isOpened);
+        }));
+        
+        //
+        this.addAltMenuItem(new ButtonDropdownComponent(svgSearch, Lang.get("header_icon_search"), (item:any) => {
+            console.log(item.isOpened);
+        }));
+
+        //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        //
+
+        const btnMenu= new ButtonDropdownComponent(svgMenu, Lang.get("header_icon_menu"), (item:any) => {
+            console.log(item.isOpened);
+        })
+        this.addAltMenuItem(btnMenu);
+
+        btnMenu.addItem(new MenuItemComponent(svgSettings, Lang.get("header_menu_settings"), (e:any) => {
+            
+            Router.set({ "key" : "settings", value : mainModule.state}, Lang.get("state_title_settings"),"settings");
+
+        }));
+        btnMenu.addItem(new MenuItemComponent(svgLogout, Lang.get("header_menu_logout"), (e:any) => {
+            new LoginService().logout().then(()=>{
+                Router.set({ "key" : "login", "value" : null}, Lang.get("state_title_login"),"login");
+            });
+        }));
+
     }
 
-    public addMenuItem(buttonComponent: ButtonComponent){
+    public addMenuItem(buttonComponent: ButtonIconComponent){
         this.buttonComponents.push(buttonComponent);
         this.btnLeftContainer.appendChild(buttonComponent.get());
     }
 
-    public addAltMenuItem(buttonComponent: ButtonComponent){
+    public addAltMenuItem(buttonComponent: ButtonIconComponent){
         this.buttonComponents.push(buttonComponent);
         this.btnRightContainer.appendChild(buttonComponent.get());
     }

@@ -1,13 +1,12 @@
 
-import ButtonComponent from '../../../../../../components/controls/button/button-component';
+import ButtonComponent from '../button-icon/button-icon-component';
 
 export default class ButtonToggleComponent extends ButtonComponent {
     public isOpened: boolean = true;
     private icons: any;
-    constructor( icons:{open:{icon : any, description: string|undefined}, closed:{icon : any, description: string|undefined}} ){
-        super(icons.open.icon, icons.open.description);
+    constructor( icons:{open:{icon : any, description: string|undefined}, closed:{icon : any, description: string|undefined}}, click: any = undefined ){
+        super(icons.open.icon, icons.open.description, click);
         this.icons = icons;
-        
     }
 
     public onClick(buttonComponent:ButtonComponent){

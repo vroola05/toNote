@@ -1,31 +1,16 @@
 import './main-module.scss';
 
-import svgHome from '../../assets/images/back.svg';
-import svgLocked from '../../assets/images/locked.svg';
-import svgUnlocked from '../../assets/images/unlocked.svg';
-import svgSearch from '../../assets/images/search.svg';
-import svgMenu from '../../assets/images/menu.svg';
-import svgSettings from '../../assets/images/settings.svg';
-import svgLogout from '../../assets/images/logout.svg';
-
-
-import Lang from '../../components/language/lang';
-
 import { State, IRouter } from "../../services/router/types";
 import { IWindow } from '../../components/controls/iwindow/iwindow';
 import { MainState } from '../../types';
 
 import HeaderComponent from './components/header/header-component';
-import ButtonComponent from '../../components/controls/button/button-component';
+import ButtonComponent from '../../components/controls/button-icon/button-icon-component';
 
 import NotebooksComponent from './components/notebooks/notebooks-component';
 import ChaptersComponent from './components/chapters/chapters-component';
 import NotesComponent from './components/notes/notes-component';
 import NoteComponent from './components/note/note-component';
-import ButtonToggleComponent from './components/header/components/button-toggle/button-toggle-component';
-import ButtonDropdownComponent from './components/header/components/button-dropdown/button-dropdown-component';
-import MenuItemComponent from '../../components/controls/menu-item/menu-item-component';
-import { Router } from '../../services/router/router-service';
 
 export default class MainModule extends IWindow{
     protected notebooksComponent:NotebooksComponent = new NotebooksComponent();
@@ -33,51 +18,15 @@ export default class MainModule extends IWindow{
     protected notesComponent:NotesComponent = new NotesComponent();
     protected noteComponent:NoteComponent = new NoteComponent();
 
-    protected headerComponent:HeaderComponent = new HeaderComponent();
+    protected headerComponent:HeaderComponent = new HeaderComponent(this);
 
-    protected currentState: State;
+    public state: State;
+
 
     constructor(){
         super("main", "Notities");
         this.append(this.headerComponent.get());
         
-        //
-        let btnBack = new ButtonComponent(svgHome, Lang.get("header_icon_back"));
-        btnBack.click = (item:any) => {
-            this.notebooksComponent.back();
-        };
-        this.headerComponent.addMenuItem(btnBack);
-
-        
-        //
-        let btnLock = new ButtonToggleComponent({
-            open:{icon:svgUnlocked, description: Lang.get("header_icon_unlocked")},
-            closed:{icon:svgLocked, description: Lang.get("header_icon_locked")}
-        });
-        btnLock.click = (item:ButtonToggleComponent) => {
-            console.log(item.isOpened);
-        };
-        this.headerComponent.addMenuItem(btnLock);
-        //
-        let btnSearch = new ButtonDropdownComponent(svgSearch, Lang.get("header_icon_search"));
-        btnSearch.click = (item:any) => {
-            alert("");
-        };
-        this.headerComponent.addAltMenuItem(btnSearch);
-        
-        //
-        let btnMenu = new ButtonDropdownComponent(svgMenu, Lang.get("header_icon_menu"));
-        btnMenu.click = (item:any) => {
-        };
-        this.headerComponent.addAltMenuItem(btnMenu);
-        
-        const settings = new MenuItemComponent(svgSettings, Lang.get("header_menu_settings"));
-        settings.click = () => {
-           Router.set({ "key" : "login", value : null}, "sett","login");
-        };
-        btnMenu.addItem(settings);
-        btnMenu.addItem(new MenuItemComponent(svgLogout, Lang.get("header_menu_logout")));
-
         //let testBtn = new ButtonComponent("test");
         //headerComponent.addMenuItem(testBtn);
 
@@ -110,7 +59,7 @@ export default class MainModule extends IWindow{
             state.value = new MainState();
         }
 
-        //this.currentState = state;
+        this.state = state;
 
         this.headerComponent.setMainTitle("");
         this.headerComponent.setSubTitle("");
@@ -154,6 +103,9 @@ export default class MainModule extends IWindow{
         
     }
 
+    public back(){
+        this.notebooksComponent.back();
+    }
 
     private getCurrentState(mainState : MainState){
         if(mainState.notebook != null && mainState.notebook.id != null){

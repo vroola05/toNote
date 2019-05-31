@@ -1,19 +1,12 @@
 @import "../../../styles.scss";
 
 .btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: $default-padding;
     
-    width: $header-height;
-    height: calc(#{$header-height} - 1px);
-
-    border-right: $color-shade-dark solid 1px;
-    background : $color-secondary;
+    border: $color-border solid 1px;
+    background : $color-shade-light;
     
-    .icon {
-        width: calc(100% - #{$default-padding*2});
-        height: calc(100% - #{$default-padding*2});
-        padding: $default-padding;
-    }
+    font-weight: bold;
+    cursor: pointer;
+    
 }

@@ -7,6 +7,7 @@ import { State, IRouter } from './services/router/types';
 
 import LoginModule from './modules/login/login-module';
 import MainModule from './modules/main/main-module';
+import SettingsModule from './modules/settings/settings-module';
 
 import { LoginService } from './services/http/login-service';
 
@@ -15,6 +16,7 @@ class Startup {
 
         Router.register("login", new LoginModule());
         Router.register("main", new MainModule());
+        Router.register("settings", new SettingsModule());
 
         ////////////////////////////////////////
         // 

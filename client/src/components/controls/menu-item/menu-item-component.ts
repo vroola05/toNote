@@ -1,8 +1,13 @@
 import './menu-item-component.scss';
 
+import { EventEmitter } from 'events';
+
+
 export default class MenuItemComponent  {
+    public event = new EventEmitter();
+
     private domItem:HTMLElement = document.createElement("div");
-        constructor( icon : any, name: string ){
+        constructor( icon : any, name: string, click: any = undefined ){
         this.domItem.className = "menuItem";
     
         const iconContainer = document.createElement("span");
@@ -19,9 +24,14 @@ export default class MenuItemComponent  {
         nameContainer.innerHTML = name;
         this.domItem.appendChild(nameContainer);
         
+        if(click !== undefined){
+            this.click = click;
+        }
+
         this.domItem.onclick = (e) => {
             this.onClick(this);
             this.click(this);
+            this.event.emit("click");
         }
     }
 

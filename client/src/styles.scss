@@ -1,12 +1,14 @@
 $color-primary : #6ac6e6;
-$color-secondary : #6ac6e6;
+$color-secondary : #e7b512;
 
 $color-shade-dark : #e0e0e0;
 $color-shade : #f1f1f1;
-$color-shade-light : #f5f5f5;
+$color-shade-light : #fdfdfd;
 
 $color-dark: #030303;
 $color-dark-grey: #4d4d4d;
+
+$color-border: #97c2ff;
 
 $default-margin:8px;
 $default-padding:8px;
@@ -14,6 +16,7 @@ $default-padding:8px;
 $header-height:60px;
 
 $default-shadow: #2e2e2e 0px 0px 6px 0px;
+$default-shadow-vague: $color-shade-dark 0px 0px 16px 0px;
 
 
 /****************************

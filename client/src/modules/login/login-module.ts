@@ -1,51 +1,44 @@
 import './login-module.scss';
 import Lang from '../../components/language/lang';
 
+import svgLogo from '../../assets/images/logo.svg';
+
 import {State, IRouter} from "../../services/router/types";
 import { User, Info, Message } from '../../types';
 import { Router } from '../../services/router/router-service';
 import { LoginService } from '../../services/http/login-service';
 import { AuthenticationService } from '../../services/authentication/authentication-service';
 import { IWindow } from '../../components/controls/iwindow/iwindow';
+import ButtonComponent from '../../components/controls/button/button-component';
+import InputComponent from '../../components/controls/input/input-component';
 
 export default class LoginModule extends IWindow{
-    private loginContainer:HTMLElement = document.createElement("div");
-    private loginElement:HTMLElement = document.createElement("div");
-    private usernameElement:HTMLInputElement = document.createElement("input");
-    private passwordElement:HTMLInputElement = document.createElement("input");
-    private submitElement:HTMLButtonElement = document.createElement("button");
-
+    private loginContainer: HTMLElement = document.createElement("div");
+    
+    
+    private inputUsername: InputComponent;
+    private inputPassword: InputComponent;
+    
     constructor(){
         super("login",Lang.get("state_title_login"));
         this.append(this.loginContainer);
         this.loginContainer.className = "loginContainer";
-        this.loginContainer.appendChild(this.loginElement);
+        
+        const imgLogo: HTMLImageElement = document.createElement("img");
+        imgLogo.className = "logo";
+        imgLogo.src = svgLogo;
+        this.loginContainer.appendChild(imgLogo);
 
-        this.loginElement.className = "loginElement";
+        this.inputUsername = new InputComponent("text", "username", Lang.get("login_username"));
+        this.loginContainer.appendChild(this.inputUsername.get());
+        
+        this.inputPassword = new InputComponent("password", "password", Lang.get("login_password"));
+        this.loginContainer.appendChild(this.inputPassword.get());
 
-        var label:HTMLLabelElement = document.createElement("label");
-        label.innerHTML = Lang.get("login_username");
-        this.loginElement.appendChild(label);
-        this.usernameElement.type = "text";
-        this.usernameElement.className = "username";
-        this.usernameElement.name = "username";
-        this.loginElement.appendChild(this.usernameElement);
-
-        var label:HTMLLabelElement = document.createElement("label");
-        label.innerHTML = Lang.get("login_password");
-        this.loginElement.appendChild(label);
-        this.passwordElement.type = "password";
-        this.passwordElement.className = "password";
-        this.passwordElement.name = "password";
-        this.loginElement.appendChild(this.passwordElement);
-
-        this.submitElement.className = "btn submit";
-        this.submitElement.innerHTML = Lang.get("login_send");
-        let self = this;
-        this.submitElement.onclick = function(){
-            self.submit();
-        }
-        this.loginElement.appendChild(this.submitElement);
+        const btnLogin = new ButtonComponent(Lang.get("login_send"), () => {
+            this.submit();
+        });
+        this.loginContainer.appendChild(btnLogin.get());
     }
 
     /*
@@ -60,8 +53,8 @@ export default class LoginModule extends IWindow{
     private submit(){
         let user : User = {
             userId:undefined,
-            username: this.usernameElement.value,
-            password: this.passwordElement.value,
+            username: this.inputUsername.value(),
+            password: this.inputPassword.value(),
             active:undefined
 
         };
@@ -77,7 +70,7 @@ export default class LoginModule extends IWindow{
                     auth.setApikey(info.value);
                     
                     
-                    Router.set({ "key" : "main", value : null}, Lang.get("state_title_notebooks"),"main");
+                    Router.set({ key : "main", value : null}, Lang.get("state_title_notebooks"),"main");
                 }
             });
             
