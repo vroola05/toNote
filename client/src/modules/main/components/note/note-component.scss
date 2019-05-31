@@ -1,4 +1,28 @@
 .tabNote {
-    position: relative; flex: auto; display: flex; flex-direction: column; 
-    .noteContainer { overflow-y: auto; }
+    position: relative; 
+    display: flex;
+    flex: auto; 
+    flex-direction: column; 
+    height: 100%;
+
+    .noteContainer{
+        display: flex;
+        flex: auto; 
+        flex-direction: column;
+        align-items: stretch;
+        height: 100%;
+        
+
+        .noteHeaderContainer {
+            
+        }
+
+        .noteInnerContainer{
+            overflow-y: auto;
+            .note { 
+                
+            }
+        }
+    }
+    
 }

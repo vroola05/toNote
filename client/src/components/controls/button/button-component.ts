@@ -1,35 +1,27 @@
 import './button-component.scss';
 
 export default class ButtonComponent  {
-    private domItem:HTMLElement = document.createElement("div");
-    private iconContainer:HTMLImageElement = document.createElement("img");
-    constructor( icon : any, description: string|undefined = undefined ){
+    private domItem:HTMLInputElement = document.createElement("input");
+    
+    constructor( name: string, click: any = undefined ){
+        this.domItem.type = "button";
         this.domItem.className = "btn";
-        
-        this.iconContainer.className = "icon";
 
-        this.set(icon, description);
-        
-        this.domItem.appendChild(this.iconContainer);
-        
-        this.domItem.onclick = (e) => {
-            this.onClick(this);
-            this.click(this);
+        if(name!==undefined){
+            this.domItem.value = name;
         }
-    }
-
-    public set(icon : any, description: string|undefined = undefined) : void{
-        this.iconContainer.src = icon;
-        if(description!==undefined){
-            this.iconContainer.alt = description;
+        
+        if(click !== undefined ){
+            this.click = click;
+        }
+        this.domItem.onclick = (e) => {
+            this.click(this);
         }
     }
     
     public get() : HTMLElement{
         return this.domItem;
     }
-
-    public onClick(buttonComponent:ButtonComponent){}
 
     public click(buttonComponent:ButtonComponent){
         console.error("Method not yet implemented!");

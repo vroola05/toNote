@@ -12,6 +12,7 @@ var map = new Map<string, Map<string, string>>([[
         ["state_title_chapters", "Overzicht Hoofdstukken"],
         ["state_title_notes", "Overzicht Notities"],
         ["state_title_note", "Notitie"],
+        ["state_title_settings", "Instellingen"],
         /////////////////
         ["header_icon_back", "Terug"],
         ["header_icon_unlocked", "Open"],
@@ -31,9 +32,29 @@ var map = new Map<string, Map<string, string>>([[
         ["chapters_add", "Hoofdstuk"],
         /////////////////
         ["notes_name", "Notities"],
-        ["notes_add", "Notitie"]
-        
-
+        ["notes_add", "Notitie"],
+        /////////////////
+        ["main_note_header_created", "Gemaakt"],
+        ["main_note_header_modified", "Gewijzigd"],
+        /////////////////
+        ["settings_title", "Instellingen"],
+        ["settings_cancel", "Annuleren"],
+        ["settings_save", "Opslaan"],
+        /////////////////
+        ["date_today", "Vandaag"],
+        ["date_yesterday", "Gisteren"],
+        ["date_month_jan", "jan"],
+        ["date_month_feb", "feb"],
+        ["date_month_mar", "ma"],
+        ["date_month_apr", "apr"],
+        ["date_month_may", "mei"],
+        ["date_month_jun", "jun"],
+        ["date_month_jul", "jul"],
+        ["date_month_aug", "aug"],
+        ["date_month_sep", "sep"],
+        ["date_month_oct", "okt"],
+        ["date_month_nov", "nov"],
+        ["date_month_dec", "dec"]
     ])],[
     "en", new Map([
         ["login_username", "Username"],
@@ -47,6 +68,7 @@ var map = new Map<string, Map<string, string>>([[
         ["state_title_chapters", "Overview chapters"],
         ["state_title_notes", "Overview notes"],
         ["state_title_note", "Note"],
+        ["state_title_settings", "Settings"],
         /////////////////
         ["header_icon_back", "Back"],
         ["header_icon_unlocked", "Unlocked"],
@@ -66,7 +88,26 @@ var map = new Map<string, Map<string, string>>([[
         ["chapters_add", "Chapter"],
         /////////////////
         ["notes_name", "Notes"],
-        ["notes_add", "Note"]
+        ["notes_add", "Note"],
+        /////////////////
+        ["settings_title", "Settings"],
+        ["settings_cancel", "Cancel"],
+        ["settings_save", "Save"],
+        /////////////////
+        ["date_today", "Today"],
+        ["date_yesterday", "Yesterday"],
+        ["date_month_jan", "jan"],
+        ["date_month_feb", "feb"],
+        ["date_month_mar", "mar"],
+        ["date_month_apr", "apr"],
+        ["date_month_may", "may"],
+        ["date_month_jun", "jun"],
+        ["date_month_jul", "jul"],
+        ["date_month_aug", "aug"],
+        ["date_month_sep", "sep"],
+        ["date_month_oct", "oct"],
+        ["date_month_nov", "nov"],
+        ["date_month_dec", "dec"]
     ])],[
     "en-US", new Map([
         ["login_username", "Username"],
@@ -80,6 +121,7 @@ var map = new Map<string, Map<string, string>>([[
         ["state_title_chapters", "Overview chapters"],
         ["state_title_notes", "Overview notes"],
         ["state_title_note", "Note"],
+        ["state_title_settings", "Settings"],
         /////////////////
         ["header_icon_back", "Back"],
         ["header_icon_unlocked", "Unlocked"],
@@ -99,7 +141,26 @@ var map = new Map<string, Map<string, string>>([[
         ["chapters_add", "Chapter"],
         /////////////////
         ["notes_name", "Notes"],
-        ["notes_add", "Note"]
+        ["notes_add", "Note"],
+        /////////////////
+        ["settings_title", "Settings"],
+        ["settings_cancel", "Cancel"],
+        ["settings_save", "Save"],
+        /////////////////
+        ["date_today", "Today"],
+        ["date_yesterday", "Yesterday"],
+        ["date_month_jan", "jan"],
+        ["date_month_feb", "feb"],
+        ["date_month_mar", "mar"],
+        ["date_month_apr", "apr"],
+        ["date_month_may", "may"],
+        ["date_month_jun", "jun"],
+        ["date_month_jul", "jul"],
+        ["date_month_aug", "aug"],
+        ["date_month_sep", "sep"],
+        ["date_month_oct", "oct"],
+        ["date_month_nov", "nov"],
+        ["date_month_dec", "dec"]
     ])]
 ])
 

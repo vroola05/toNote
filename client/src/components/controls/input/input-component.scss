@@ -1,0 +1,19 @@
+@import "../../../styles.scss";
+
+.inputContainer {
+    width: calc(100% - #{$default-margin*2} - 2px);
+    margin: $default-margin;
+
+    label {
+        display: block;
+        font-size: 14px;
+        font-style: italic;
+    }
+    input {
+        width: calc(100% - 18px);
+        padding: 4px 8px;
+        
+        border: $color-border solid 1px;
+        background : $color-shade-light;
+    }
+}

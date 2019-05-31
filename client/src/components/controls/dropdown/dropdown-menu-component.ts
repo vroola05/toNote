@@ -11,12 +11,16 @@ export default class DropdownMenuComponent {
     constructor(){
         this.domBackdrop.className = "backdrop";
         this.domBackdrop.onclick = () => { 
-            this.event.emit("canceled"); };
+            this.event.emit("close");
+        };
         this.domItem.className = "dropdown";
     }
 
     addItem( menuItemComponent: MenuItemComponent) {
         this.domItem.appendChild(menuItemComponent.get());
+        menuItemComponent.event.on('click', () => {
+            this.event.emit("close");
+        });
     }
 
     public show() : void{
