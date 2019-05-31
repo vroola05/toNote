@@ -1,0 +1,22 @@
+@import "../../../../styles.scss";
+
+.header {
+    display: flex; 
+    flex-direction: row;
+    height : $header-height; 
+    background: $color-primary; 
+
+    .btnLeftContainer {
+        display: flex; 
+        flex-direction: row;
+    }
+
+    .titleContainer {
+        flex: auto;
+    }
+
+    .btnRightContainer {
+        display: flex; 
+        flex-direction: row;
+    }
+}
