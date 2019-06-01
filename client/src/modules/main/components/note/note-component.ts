@@ -16,6 +16,9 @@ export default class NoteComponent extends Tab {
     private chapterId : number = null;
     private noteId : number = null;
 
+    private noteOverlay: HTMLDivElement;
+    private noteContainer: HTMLDivElement;
+
     private title: InputComponent;
     private dateCreated: InputComponent;
     private dateModified: InputComponent;
@@ -27,13 +30,22 @@ export default class NoteComponent extends Tab {
         super();
         this.domTab.className = this.domTab.className +" tabNote";
 
-        const noteContainer: HTMLDivElement = document.createElement('div');
-        noteContainer.className = "noteContainer";
-        this.domTab.appendChild(noteContainer);
+        this.noteOverlay = document.createElement('div');
+        this.noteOverlay.className = "noteOverlay";
+        this.domTab.appendChild(this.noteOverlay);
+
+        const noteOverlayMessage: HTMLDivElement = document.createElement('div');
+        noteOverlayMessage.className = "noteOverlayMessage";
+        noteOverlayMessage.innerText = Lang.get("main_note_content_no_note");
+        this.noteOverlay.appendChild(noteOverlayMessage);
+
+        this.noteContainer = document.createElement('div');
+        this.noteContainer.className = "noteContainer";
+        
 
         const noteHeaderContainer: HTMLDivElement = document.createElement('div');
         noteHeaderContainer.className = "noteHeaderContainer";
-        noteContainer.appendChild(noteHeaderContainer);
+        this.noteContainer.appendChild(noteHeaderContainer);
         
         this.dateCreated = new InputComponent("text", "dateCreated");
         noteHeaderContainer.appendChild(this.dateCreated.get());
@@ -46,7 +58,7 @@ export default class NoteComponent extends Tab {
 
         const noteInnerContainer: HTMLDivElement = document.createElement('div');
         noteInnerContainer.className = "noteInnerContainer";
-        noteContainer.appendChild(noteInnerContainer);
+        this.noteContainer.appendChild(noteInnerContainer);
 
         const note: HTMLDivElement = document.createElement('div');
         note.className = "note";
@@ -62,7 +74,16 @@ export default class NoteComponent extends Tab {
     }
 
     public hide(){
+        this.clear();
+        this.domTab.removeChild(this.noteContainer);
+        this.domTab.appendChild(this.noteOverlay);
+    }
+
+    public clear(){
         this.editor.setContents("");
+        this.title.value("");
+        this.dateCreated.value("");
+        this.dateModified.value("");
     }
 
     public setContent( content : any ){
@@ -91,6 +112,10 @@ export default class NoteComponent extends Tab {
             noteService.getNoteContent(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((content:any) => {
                 this.object = JSON.parse(content);
                 this.setContent(this.object);
+
+                this.domTab.removeChild(this.noteOverlay);
+                this.domTab.appendChild(this.noteContainer);
+
                 return note;
             }).catch((error: Error) => {
                 console.error(error.stack);   

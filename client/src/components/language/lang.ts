@@ -36,6 +36,7 @@ var map = new Map<string, Map<string, string>>([[
         /////////////////
         ["main_note_header_created", "Gemaakt"],
         ["main_note_header_modified", "Gewijzigd"],
+        ["main_note_content_no_note", "Selecteer een notitie!"],
         /////////////////
         ["settings_title", "Instellingen"],
         ["settings_cancel", "Annuleren"],
@@ -90,6 +91,10 @@ var map = new Map<string, Map<string, string>>([[
         ["notes_name", "Notes"],
         ["notes_add", "Note"],
         /////////////////
+        ["main_note_header_created", "Created"],
+        ["main_note_header_modified", "Modified"],
+        ["main_note_content_no_note", "Select a note!"],
+        /////////////////
         ["settings_title", "Settings"],
         ["settings_cancel", "Cancel"],
         ["settings_save", "Save"],
@@ -136,6 +141,10 @@ var map = new Map<string, Map<string, string>>([[
         /////////////////
         ["notebooks_name", "Notebook"],
         ["notebooks_add", "Notebook"],
+        /////////////////
+        ["main_note_header_created", "Created"],
+        ["main_note_header_modified", "Modified"],
+        ["main_note_content_no_note", "Select a note!"],
         /////////////////
         ["chapters_name", "Chapter"],
         ["chapters_add", "Chapter"],

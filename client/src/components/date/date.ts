@@ -13,21 +13,17 @@ export default class DateFormat{
 
         const date = new Date(input);
 
-        
-        if(date.getFullYear() == today.getFullYear()){
-            if(date.getMonth() == today.getMonth()){
-                if(date.getDay() == today.getDay()){
-                    output = Lang.get("date_today");
-                }else if(date.getDay() - today.getDay() == 1){
-                    output = Lang.get("date_yesterday");
-                }else{
-                    output = this.getTwoDigit(date.getDay()) + " " + this.getMonthAsString(date.getMonth());
-                }
-            }else {
-                output = this.getTwoDigit(date.getDay()) + " " + this.getMonthAsString(date.getMonth()) ;
-            }
-        }else {
-            output = this.getTwoDigit(date.getDay()) + " " + this.getMonthAsString(date.getMonth()) + " " + date.getFullYear();
+        let time = date.getTime() - today.getTime();
+        let days = Math.ceil(time / (1000 * 60 * 60 * 24));
+
+        if(days == 0) {
+            output = Lang.get("date_today");
+        } else if(days == -1) {
+            output = Lang.get("date_yesterday");
+        } else if(date.getFullYear() != today.getFullYear()) {
+            output = this.getTwoDigit(date.getDate()) + " " + this.getMonthAsString(date.getMonth()) + " " + date.getFullYear();
+        } else {
+            output = this.getTwoDigit(date.getDate()) + " " + this.getMonthAsString(date.getMonth());
         }
 
         output += " " + this.getTwoDigit(date.getHours()) + ":"+ this.getTwoDigit(date.getMinutes());
