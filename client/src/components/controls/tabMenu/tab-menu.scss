@@ -5,8 +5,8 @@
     width : 0px; min-width : 0px; 
     height : 100%; 
     background : $color-primary; 
-    box-shadow : 2px 4px 4px #dcdcdc; 
-    font-family : Arial; color : #525252; overflow : hidden; 
+    box-shadow : 2px 4px 4px $color-shade-dark; 
+    font-family : $default-font; color : $color-dark-grey; overflow : hidden; 
 
    -webkit-touch-callout : none; -webkit-user-select : none; -khtml-user-select : none; -moz-user-select : none; -ms-user-select : none; user-select : none;
    -webkit-transition : min-width $default-animation-length, width $default-animation-length; transition : min-width $default-animation-length, width $default-animation-length;
@@ -20,9 +20,9 @@
 .tab.tabMenu .name { font-size : 16px; margin : 10px 0px; }
 .tab.tabMenu .itemList { max-height : calc(100% - 108px); overflow-y : auto; }
 .tab.tabMenu .itemList .item { float : left; width : calc(100% - 20px); position : relative; font-size : 12px; padding : 5px 10px 5px 0px; line-height : 18px; color : #585858;  }
-.tab.tabMenu .itemList .item.active { font-weight : bold; font-style : italic; }
+.tab.tabMenu .itemList .item.active { color : $color-secondary; }
 .tab.tabMenu .itemList .item .name{ font-size : 12px; cursor : pointer; }
-.tab.tabMenu .itemList .item .name:hover { color : #fbfbfb; }
+.tab.tabMenu .itemList .item .name:hover { color : darken($color-secondary, 25%); }
 .tab.tabMenu .itemList .item .btnDelete{ position : absolute; right : 0px; width : 18px; height : 18px; cursor : pointer; opacity : 0.5; }
 .tab.tabMenu .itemList .item .btnDelete svg{ width : 18px; height : 18px; }
 .tab.tabMenu .itemList .item .btnDelete:hover { opacity : 1; }

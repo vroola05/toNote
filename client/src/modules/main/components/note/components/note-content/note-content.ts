@@ -10,14 +10,17 @@ import Lang from '../../../../../../components/language/lang';
 
 import InputComponent from '../../../../../../components/controls/input/input-component';
 import DateFormat from '../../../../../../components/date/date';
+import TitlebarComponent from './components/titlebar/titlebar-component';
+import DatebarComponent from './components/datebar/datebar-component';
 
 
 export default class NoteContentComponent {
     public dom: HTMLDivElement;
     
-    private title: InputComponent;
-    private dateCreated: InputComponent;
-    private dateModified: InputComponent;
+    
+    private titlebarComponent = new TitlebarComponent
+    private dateCreated: DatebarComponent;
+    private dateModified: DatebarComponent;
 
     private editor : Quill;
     private hidden: boolean = true;
@@ -41,14 +44,18 @@ export default class NoteContentComponent {
         noteHeaderContainer.className = "noteHeaderContainer";
         this.dom.appendChild(noteHeaderContainer);
         
-        this.dateCreated = new InputComponent("text", "dateCreated");
-        noteHeaderContainer.appendChild(this.dateCreated.get());
-        this.dateModified = new InputComponent("text", "dateModified");
-        noteHeaderContainer.appendChild(this.dateModified.get());
+        this.titlebarComponent = new TitlebarComponent();
+        noteHeaderContainer.appendChild(this.titlebarComponent.dom);
 
-        this.title = new InputComponent("text", "title");
-        noteHeaderContainer.appendChild(this.title.get());
 
+        const noteDateContainer: HTMLDivElement = document.createElement('div');
+        noteDateContainer.className = "noteHeaderContainer";
+        noteHeaderContainer.appendChild(noteDateContainer);
+
+        this.dateCreated = new DatebarComponent();
+        noteDateContainer.appendChild(this.dateCreated.dom);
+        this.dateModified = new DatebarComponent();
+        noteDateContainer.appendChild(this.dateModified.dom);
 
         const noteInnerContainer: HTMLDivElement = document.createElement('div');
         noteInnerContainer.className = "noteInnerContainer";
@@ -68,7 +75,7 @@ export default class NoteContentComponent {
     }
 
     public setTitle( title: string ){
-        this.title.value(title);
+        this.titlebarComponent.value(title);
     }
 
     public setDateCreated( date: string ){

@@ -1,0 +1,12 @@
+@import "../../../../../../../../styles.scss";
+
+.datebar {
+    margin: $default-margin/2 0 0 $default-margin;
+    padding: 0 0 0 $default-padding;
+
+    font-size: $default-font-size;
+    font-style: italic;
+    color: $color-dark-grey;
+    
+    cursor: default;
+}
