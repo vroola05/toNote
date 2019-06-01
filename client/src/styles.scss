@@ -1,5 +1,5 @@
 $color-primary : #6ac6e6;
-$color-secondary : #e7b512;
+$color-secondary : #ffe05f;
 
 $color-shade-dark : #e0e0e0;
 $color-shade : #f1f1f1;
@@ -39,6 +39,34 @@ h1 {}
 h2 {}
 h3 {}
 
+/****************************
+    Menu styling
+****************************/
+$menu-width: 200px;
+
+/****************************
+    Animations
+****************************/
+$default-animation-length: .3s;
+@keyframes show {
+    from { 
+        display: flex;
+        opacity: 0; 
+    }
+      to { 
+        opacity: 1; 
+    }
+}
+
+@keyframes hide {
+    from { 
+        opacity: 1; 
+    }
+    to { 
+        opacity: 0; 
+        display: none;
+    }
+}
 
 /*.main {
     position: fixed;

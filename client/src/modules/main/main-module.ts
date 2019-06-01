@@ -84,19 +84,19 @@ export default class MainModule extends IWindow{
                             if(currentState=="note"){
                                 this.noteComponent.getItem(mainState).then(() =>{
                                     this.noteComponent.show();
-                                });
+                                }).catch(() => {});;
                             } else{
                                 this.noteComponent.hide();
                             }
-                        });
+                        }).catch(() => {});;
                     } else {
                         this.notesComponent.hide();
                     }
-                });
+                }).catch(() => {});;
             } else {
                 this.chaptersComponent.hide();
             }
-        });
+        }).catch(() => {});
 
         this.show();
         return true;

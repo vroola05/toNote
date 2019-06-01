@@ -84,7 +84,7 @@ export default class HeaderComponent  {
         btnMenu.addItem(new MenuItemComponent(svgLogout, Lang.get("header_menu_logout"), (e:any) => {
             new LoginService().logout().then(()=>{
                 Router.set({ "key" : "login", "value" : null}, Lang.get("state_title_login"),"login");
-            });
+            }).catch(() => {});;
         }));
 
     }

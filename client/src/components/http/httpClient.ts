@@ -43,7 +43,7 @@ export default class HttpClient{
             if (response.ok) {
                 return response.json().catch((error) => {
                     throw error;
-                }) as Promise<T>
+                }) as Promise<T>;
             } else if(response.status===401){
                 Router.set({ "key" : "login", "value" : null}, Lang.get("state_title_login"),"login");
             }

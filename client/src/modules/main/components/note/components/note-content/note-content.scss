@@ -1,0 +1,41 @@
+@import "../../../../../../styles.scss";
+
+.noteContent {
+    display: flex;
+    flex: auto; 
+    flex-direction: column;
+    align-items: stretch;
+    height: 100%;
+    
+
+    .noteHeaderContainer {
+        
+    }
+
+    .noteInnerContainer {
+        overflow-y: auto;
+        .note { 
+            border: none;
+            min-height: 300px;
+        }
+    }
+}
+.noteContent.loading.active {
+    animation-name: show;
+    animation-duration: $default-animation-length/2;
+}
+.noteContent.active {
+    opacity: 1;
+    
+}
+.noteContent.loading.inactive {
+    animation-name: hide;
+    animation-duration: $default-animation-length/2;
+}
+.noteContent.inactive {
+    opacity: 0;
+}
+.noteContent.loaded.inactive {
+    display: none;
+}
+    

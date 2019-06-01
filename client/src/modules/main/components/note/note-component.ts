@@ -1,6 +1,3 @@
-require('quill/dist/quill.snow.css');
-import Quill from 'quill';
-
 import './note-component.scss';
 
 import {Note, MainState} from '../../../../types';
@@ -10,85 +7,45 @@ import Lang from '../../../../components/language/lang';
 import { Tab } from '../../../../components/controls/tabMenu/tab';
 import InputComponent from '../../../../components/controls/input/input-component';
 import DateFormat from '../../../../components/date/date';
+import OverlayComponent from './components/overlay/overlay-component';
+import NoteContentComponent from './components/note-content/note-content';
 
 export default class NoteComponent extends Tab {
     private notebookId : number = null;
     private chapterId : number = null;
     private noteId : number = null;
 
-    private noteOverlay: HTMLDivElement;
-    private noteContainer: HTMLDivElement;
-
-    private title: InputComponent;
-    private dateCreated: InputComponent;
-    private dateModified: InputComponent;
+    private overlayComponent: OverlayComponent;
+    private noteContentComponent: NoteContentComponent;
 
     private object: any;
 
-    private editor : Quill;
     constructor(){
         super();
         this.domTab.className = this.domTab.className +" tabNote";
 
-        this.noteOverlay = document.createElement('div');
-        this.noteOverlay.className = "noteOverlay";
-        this.domTab.appendChild(this.noteOverlay);
+        this.overlayComponent = new OverlayComponent();
+        this.domTab.appendChild(this.overlayComponent.dom);
 
-        const noteOverlayMessage: HTMLDivElement = document.createElement('div');
-        noteOverlayMessage.className = "noteOverlayMessage";
-        noteOverlayMessage.innerText = Lang.get("main_note_content_no_note");
-        this.noteOverlay.appendChild(noteOverlayMessage);
-
-        this.noteContainer = document.createElement('div');
-        this.noteContainer.className = "noteContainer";
-        
-
-        const noteHeaderContainer: HTMLDivElement = document.createElement('div');
-        noteHeaderContainer.className = "noteHeaderContainer";
-        this.noteContainer.appendChild(noteHeaderContainer);
-        
-        this.dateCreated = new InputComponent("text", "dateCreated");
-        noteHeaderContainer.appendChild(this.dateCreated.get());
-        this.dateModified = new InputComponent("text", "dateModified");
-        noteHeaderContainer.appendChild(this.dateModified.get());
-
-        this.title = new InputComponent("text", "title");
-        noteHeaderContainer.appendChild(this.title.get());
-
-
-        const noteInnerContainer: HTMLDivElement = document.createElement('div');
-        noteInnerContainer.className = "noteInnerContainer";
-        this.noteContainer.appendChild(noteInnerContainer);
-
-        const note: HTMLDivElement = document.createElement('div');
-        note.className = "note";
-        noteInnerContainer.appendChild(note);
-
-        this.editor =  new Quill(note, { 
-            theme: 'snow',
-            modules: {
-                toolbar: false
-            }
-        });
-        
+        this.noteContentComponent = new NoteContentComponent();
+        this.domTab.appendChild(this.noteContentComponent.dom);
     }
 
     public hide(){
-        this.clear();
-        this.domTab.removeChild(this.noteContainer);
-        this.domTab.appendChild(this.noteOverlay);
+        this.noteContentComponent.hide(() => {
+            this.overlayComponent.show(() => {
+                this.clear();
+            });
+        });
     }
 
     public clear(){
-        this.editor.setContents("");
-        this.title.value("");
-        this.dateCreated.value("");
-        this.dateModified.value("");
+        this.noteContentComponent.setContent("");
+        this.noteContentComponent.setTitle("");
+        this.noteContentComponent.setDateCreated("");
+        this.noteContentComponent.setDateModified("");
     }
 
-    public setContent( content : any ){
-        this.editor.setContents(content);
-    }
     public hasContent() : boolean{
         return this.object != null;
     }
@@ -103,18 +60,17 @@ export default class NoteComponent extends Tab {
         }
 
         return noteService.getNote(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((note:Note) => {
-        
-            this.title.value(note.name);
-
-            this.dateCreated.value(Lang.get("main_note_header_created") +": "+ DateFormat.get(note.creationDate));
-            this.dateModified.value(Lang.get("main_note_header_modified") +": "+ DateFormat.get(note.modifyDate));
-
             noteService.getNoteContent(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((content:any) => {
-                this.object = JSON.parse(content);
-                this.setContent(this.object);
+                this.noteContentComponent.setTitle(note.name);
+                this.noteContentComponent.setDateCreated(Lang.get("main_note_header_created") +": "+ DateFormat.get(note.creationDate));
+                this.noteContentComponent.setDateModified(Lang.get("main_note_header_modified") +": "+ DateFormat.get(note.modifyDate));
 
-                this.domTab.removeChild(this.noteOverlay);
-                this.domTab.appendChild(this.noteContainer);
+                this.object = JSON.parse(content);
+                this.noteContentComponent.setContent(this.object);
+
+                this.overlayComponent.hide(() => {
+                    this.noteContentComponent.show();
+                });
 
                 return note;
             }).catch((error: Error) => {
