@@ -10,3 +10,11 @@
     
     cursor: default;
 }
+
+@media (min-width: 0px) and (max-width: $default-width-tablet) {
+    .datebar {
+        &.created {
+            display: none;
+        }
+    }
+}

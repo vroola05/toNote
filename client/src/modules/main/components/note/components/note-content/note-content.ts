@@ -5,7 +5,7 @@ import './note-content.scss';
 
 import TitlebarComponent from './components/titlebar/titlebar-component';
 import DatebarComponent from './components/datebar/datebar-component';
-
+import ToolbarComponent from './components/toolbar/toolbar-component';
 
 export default class NoteContentComponent {
     public dom: HTMLDivElement;
@@ -20,8 +20,6 @@ export default class NoteContentComponent {
     private onanimationend: any;
 
     constructor(){
-
-
         this.dom = document.createElement('div');
         this.dom.className = "noteContent loaded inactive";
         this.dom.addEventListener("animationend", (a) => {
@@ -32,6 +30,9 @@ export default class NoteContentComponent {
                 this.onanimationend();
             }
         });
+
+        const toolbar = new ToolbarComponent();
+        this.dom.appendChild(toolbar.dom);
         const noteHeaderContainer: HTMLDivElement = document.createElement('div');
         noteHeaderContainer.className = "noteHeaderContainer";
         this.dom.appendChild(noteHeaderContainer);
@@ -43,9 +44,9 @@ export default class NoteContentComponent {
         noteDateContainer.className = "noteHeaderContainer";
         noteHeaderContainer.appendChild(noteDateContainer);
 
-        this.dateCreated = new DatebarComponent();
+        this.dateCreated = new DatebarComponent("created");
         noteDateContainer.appendChild(this.dateCreated.dom);
-        this.dateModified = new DatebarComponent();
+        this.dateModified = new DatebarComponent("modified");
         noteDateContainer.appendChild(this.dateModified.dom);
 
         const noteInnerContainer: HTMLDivElement = document.createElement('div');
@@ -59,7 +60,7 @@ export default class NoteContentComponent {
         this.editor =  new Quill(note, { 
             theme: 'snow',
             modules: {
-                toolbar: false
+                toolbar: toolbar.dom
             }
         });
         

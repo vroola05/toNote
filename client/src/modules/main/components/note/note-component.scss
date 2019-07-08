@@ -13,11 +13,6 @@
         flex-direction: column;
         align-items: stretch;
         height: 100%;
-        
-
-        .noteHeaderContainer {
-            
-        }
 
         .noteInnerContainer {
             overflow-y: auto;
@@ -30,7 +25,7 @@
     
 }
 
-@media (min-width: 0px) and (max-width: 479px) {
+@media (min-width: 0px) and (max-width: $default-width-mobile) {
     .tabNote { display: none; height: calc(100% - 10px); min-width: 100vw; /* 100vw is a trick for the animation so te text won't grow with the with */ padding:0px; }
     .tabNote.stack.active { display: block; }
 }
