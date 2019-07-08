@@ -1,7 +1,9 @@
+import './tab-menu-item.scss';
+
 import Lang from 'components/language/lang';
 
 export class TabMenuItem {
-	private domItem:HTMLElement = document.createElement("div");
+	public dom:HTMLElement = document.createElement("div");
     protected identifier:number;
     protected name:string;
     protected color:string|undefined;
@@ -13,7 +15,7 @@ export class TabMenuItem {
         this.object = object;
         this.color = color;
 
-        this.domItem.classList.add("item");
+        this.dom.classList.add("item");
         
         var itemColor = document.createElement("span");
         itemColor.classList.add("color");
@@ -22,7 +24,7 @@ export class TabMenuItem {
         }else{
             //itemColor.style.backgroundColor = this.getColor(identifier*6%142);
         }
-        this.domItem.appendChild(itemColor);
+        this.dom.appendChild(itemColor);
 
         var itemName = document.createElement("span");
         itemName.classList.add("name");
@@ -32,14 +34,10 @@ export class TabMenuItem {
         } else {
             itemName.innerHTML = name;
         }
-        this.domItem.onclick = (e) => {
+        this.dom.onclick = (e) => {
             this.click(this, this.identifier, this.name, this.object);
         };
-        this.domItem.appendChild(itemName);
-    }
-
-    public get(){
-        return this.domItem;
+        this.dom.appendChild(itemName);
     }
 
     public getId(){
@@ -61,9 +59,9 @@ export class TabMenuItem {
 
     public setActive(active:boolean=true){
         if(active){
-            this.domItem.classList.add("active");
+            this.dom.classList.add("active");
         }else {
-            this.domItem.classList.remove("active");
+            this.dom.classList.remove("active");
         }
     }
 }

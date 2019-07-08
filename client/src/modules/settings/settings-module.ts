@@ -30,12 +30,12 @@ export default class LoginModule extends IWindow{
         const btnCancel = new ButtonComponent(Lang.get("settings_cancel"), () => {
             Router.set({key : "main", value: this.state.value}, Lang.get("state_title_notebooks"),"main");
         });
-        this.settingsElement.appendChild(btnCancel.get());
+        this.settingsElement.appendChild(btnCancel.dom);
         
         const btnSave = new ButtonComponent(Lang.get("settings_save"), () => {
             Router.set({key : "main", value: this.state.value}, Lang.get("state_title_notebooks"),"main");
         });
-        this.settingsElement.appendChild(btnSave.get());
+        this.settingsElement.appendChild(btnSave.dom);
 
     }
 

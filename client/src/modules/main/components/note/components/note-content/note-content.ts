@@ -3,13 +3,6 @@ import Quill from 'quill';
 
 import './note-content.scss';
 
-import {Note} from '../../../../../../types';
-
-
-import Lang from '../../../../../../components/language/lang';
-
-import InputComponent from '../../../../../../components/controls/input/input-component';
-import DateFormat from '../../../../../../components/date/date';
 import TitlebarComponent from './components/titlebar/titlebar-component';
 import DatebarComponent from './components/datebar/datebar-component';
 
@@ -39,14 +32,12 @@ export default class NoteContentComponent {
                 this.onanimationend();
             }
         });
-
         const noteHeaderContainer: HTMLDivElement = document.createElement('div');
         noteHeaderContainer.className = "noteHeaderContainer";
         this.dom.appendChild(noteHeaderContainer);
         
         this.titlebarComponent = new TitlebarComponent();
         noteHeaderContainer.appendChild(this.titlebarComponent.dom);
-
 
         const noteDateContainer: HTMLDivElement = document.createElement('div');
         noteDateContainer.className = "noteHeaderContainer";

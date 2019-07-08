@@ -30,15 +30,15 @@ export default class LoginModule extends IWindow{
         this.loginContainer.appendChild(imgLogo);
 
         this.inputUsername = new InputComponent("text", "username", Lang.get("login_username"));
-        this.loginContainer.appendChild(this.inputUsername.get());
+        this.loginContainer.appendChild(this.inputUsername.dom);
         
         this.inputPassword = new InputComponent("password", "password", Lang.get("login_password"));
-        this.loginContainer.appendChild(this.inputPassword.get());
+        this.loginContainer.appendChild(this.inputPassword.dom);
 
         const btnLogin = new ButtonComponent(Lang.get("login_send"), () => {
             this.submit();
         });
-        this.loginContainer.appendChild(btnLogin.get());
+        this.loginContainer.appendChild(btnLogin.dom);
     }
 
     /*

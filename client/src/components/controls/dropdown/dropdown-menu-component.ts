@@ -5,7 +5,7 @@ import MenuItemComponent from '../menu-item/menu-item-component';
 
 export default class DropdownMenuComponent {
     private domBackdrop:HTMLElement = document.createElement("div");
-    private domItem:HTMLElement = document.createElement("div");
+    private dom:HTMLElement = document.createElement("div");
     public event = new EventEmitter();
 
     constructor(){
@@ -13,11 +13,11 @@ export default class DropdownMenuComponent {
         this.domBackdrop.onclick = () => { 
             this.event.emit("close");
         };
-        this.domItem.className = "dropdown";
+        this.dom.className = "dropdown";
     }
 
     addItem( menuItemComponent: MenuItemComponent) {
-        this.domItem.appendChild(menuItemComponent.get());
+        this.dom.appendChild(menuItemComponent.dom);
         menuItemComponent.event.on('click', () => {
             this.event.emit("close");
         });
@@ -25,11 +25,11 @@ export default class DropdownMenuComponent {
 
     public show() : void{
         document.body.appendChild(this.domBackdrop);
-        document.body.appendChild(this.domItem);
+        document.body.appendChild(this.dom);
     }
 
     public hide() : void{
         document.body.removeChild(this.domBackdrop);
-        document.body.removeChild(this.domItem);
+        document.body.removeChild(this.dom);
     }
 }

@@ -13,15 +13,18 @@ export class TabMenu extends Tab {
 	private tabMenuItems: Array<TabMenuItem> = new Array<TabMenuItem>();
 	private selectedTabMenuItem: TabMenuItem = null;
 
+	
+
 	constructor(labels: Map<string, string>, classes: string | undefined) {
 		super();
-		this.domTab.className = this.domTab.className + " tabMenu" + (classes != undefined && classes != "" ? " " + classes : "");
+		this.dom.className = this.dom.className + " tabMenu" + (classes != undefined && classes != "" ? " " + classes : "");
 		this.labels = labels;
 
-		this.domTab.addEventListener("transitionstart", () => {
+		this.dom.addEventListener("transitionstart", () => {
+
 			this.itemContainer.style.width = "180px";
 		});
-		this.domTab.addEventListener("transitionend", () => {
+		this.dom.addEventListener("transitionend", () => {
 			this.itemContainer.style.width =null;
 		});
 
@@ -33,7 +36,7 @@ export class TabMenu extends Tab {
 
 		domTabMenuContainer.appendChild(this.itemContainer);
 
-		this.domTab.appendChild(domTabMenuContainer);
+		this.dom.appendChild(domTabMenuContainer);
 
 		let domName = document.createElement("div");
 		domName.classList.add("name");
@@ -54,6 +57,7 @@ export class TabMenu extends Tab {
 		this.itemContainer.appendChild(domName);
 		this.itemContainer.appendChild(this.domItemList);
 		this.itemContainer.appendChild(domAdd);
+		
 	}
 
     /**
@@ -81,17 +85,16 @@ export class TabMenu extends Tab {
      * @param color 
      */
 	public addItem(identifier: number, name: string, obejct: any, color: undefined | string): void {
-		if (this.domTab.classList.contains("hidden")) {
-			this.domTab.classList.remove("hidden");
+		if (this.dom.classList.contains("hidden")) {
+			this.dom.classList.remove("hidden");
 		}
 
 		let tabMenuItem = new TabMenuItem(identifier, name, obejct, color);
 		tabMenuItem.click = (item: TabMenuItem, identifier: number, name: string, object: any) => {
-
 			this.click(item, identifier, name, object);
 			this.setMenuItemActive(identifier);
 		}
-		this.domItemList.appendChild(tabMenuItem.get());
+		this.domItemList.appendChild(tabMenuItem.dom);
 		this.tabMenuItems.push(tabMenuItem);
 	}
 
