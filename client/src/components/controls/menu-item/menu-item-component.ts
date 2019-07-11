@@ -28,15 +28,15 @@ export default class MenuItemComponent  {
         }
 
         this.dom.onclick = (e) => {
-            this.onClick(this);
-            this.click(this);
+            this.onClick(this, e);
+            this.click(this, e);
             this.event.emit("click");
         }
     }
 
-    public onClick(buttonComponent:MenuItemComponent){}
+    public onClick(buttonComponent:MenuItemComponent, e :Event){}
 
-    public click(buttonComponent:MenuItemComponent){
+    public click(buttonComponent:MenuItemComponent, e :Event){
         console.error("Method not yet implemented!");
     }
 }

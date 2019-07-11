@@ -1,4 +1,5 @@
 import Lang from 'components/language/lang';
+import { Constants } from '../../../../services/config/constants';
 
 export class TabMenuItem {
 	public dom:HTMLElement = document.createElement("div");
@@ -20,7 +21,7 @@ export class TabMenuItem {
         if(color !== undefined && color != ""){
             itemColor.style.backgroundColor = color;
         }else{
-            //itemColor.style.backgroundColor = this.getColor(identifier*6%142);
+            itemColor.style.backgroundColor = this.getColor(identifier*6%142);
         }
         this.dom.appendChild(itemColor);
 
@@ -37,6 +38,14 @@ export class TabMenuItem {
         };
         this.dom.appendChild(itemName);
     }
+
+    /**
+	 * 
+	 * @param index 
+	 */
+	private getColor(index: number): string {
+		return Constants.colorsMenu[index];
+	}
 
     public getId(){
         return this.identifier;
@@ -55,7 +64,7 @@ export class TabMenuItem {
         console.error("Method not yet implemented!");
     }
 
-    public setActive(active:boolean=true){
+    public activate(active:boolean=true){
         if(active){
             this.dom.classList.add("active");
         }else {

@@ -6,12 +6,9 @@
 
 @import "./assets/scss/tab-menu.scss";
 
-
-
-
 .main {
     display: flex; flex-direction: column; height: 100%;
-
+    
     .header {
         display: flex; 
         flex-direction: row;

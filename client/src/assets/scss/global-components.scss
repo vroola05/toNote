@@ -6,7 +6,7 @@
     cursor: pointer;
     
     .iconContainer {
-        width:40px;
+        width:$default-menu-icon-width;
         .icon {
             width: calc(100% - #{$default-padding*2});
             height: calc(100% - #{$default-padding*2});
@@ -92,7 +92,7 @@
     position: absolute;
     top: 0px;
     right: 1px;
-    min-width: 140px;
+    min-width: $default-menu-width;
     min-height: 40px;
     margin-top: $header-height;
     background: #ededed;

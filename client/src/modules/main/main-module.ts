@@ -42,13 +42,14 @@ export default class MainModule extends IWindow{
         tabs.appendChild( this.noteComponent.dom );
 
         window.onresize = (s) => {
-            this.recalculateMenus();
+            this.setDeviceLayout();
         };
 		
     }
 
-    public recalculateMenus() {
-        this.notebooksComponent.setMenuLayout();
+
+    public setDeviceLayout() {
+        this.notebooksComponent.setDeviceLayout();
     }
 
     
@@ -79,20 +80,20 @@ export default class MainModule extends IWindow{
                             if(currentState=="note"){
                                 this.noteComponent.getItem(mainState).then(() =>{
                                     this.noteComponent.show();
-                                    this.notebooksComponent.setMenuLayout();
+                                    this.notebooksComponent.setDeviceLayout();
                                 }).catch(() => {});;
                             } else{
-                                this.notebooksComponent.setMenuLayout();
+                                this.notebooksComponent.setDeviceLayout();
                                 this.noteComponent.hide();
                             }
                         }).catch(() => {});;
                     } else {
-                        this.notebooksComponent.setMenuLayout();
+                        this.notebooksComponent.setDeviceLayout();
                         this.notesComponent.hide();
                     }
                 }).catch(() => {});;
             } else {
-                this.notebooksComponent.setMenuLayout();
+                this.notebooksComponent.setDeviceLayout();
                 this.chaptersComponent.hide();
             }
         }).catch(() => {});

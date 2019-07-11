@@ -3,8 +3,6 @@ $default-width-tablet: 768px;
 $default-width-desktop: 1024px;
 $default-width-retina: 1280px;
 
-$menu-width: 200px;
-
 $default-animation-length: .3s;
 
 $color-primary : #6ac6e6;
@@ -37,6 +35,11 @@ $default-font-color: $color-dark;
 
 $font-size-big: 18px;
 
+/****************************
+    Menus
+****************************/
+$default-menu-width: 200px;
+$default-menu-icon-width: 30px;
 
 /****************************
     Global styling

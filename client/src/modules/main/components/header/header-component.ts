@@ -50,7 +50,7 @@ export default class HeaderComponent  {
         //
         this.addMenuItem(new ButtonIconComponent(svgHome, Lang.get("header_icon_back"), (item:any) => {
             this.mainModule.back();
-            this.mainModule.recalculateMenus();
+            this.mainModule.setDeviceLayout();
         }));
 
         //

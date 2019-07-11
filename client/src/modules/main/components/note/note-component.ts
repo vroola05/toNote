@@ -7,6 +7,7 @@ import InputComponent from '../../../../components/controls/input/input-componen
 import DateFormat from '../../../../components/date/date';
 import OverlayComponent from './components/overlay/overlay-component';
 import NoteContentComponent from './components/note-content/note-content';
+import { Constants } from '../../../../services/config/constants';
 import { Util } from '../../../../components/util/util';
 
 export default class NoteComponent extends Tab {
@@ -34,7 +35,7 @@ export default class NoteComponent extends Tab {
      * 
      */
     public onHide(){
-        if(Util.getDevice() == Util.mobile) {
+        if(Util.getDevice() == Constants.mobile) {
             this.noteContentComponent.hide();
             this.overlayComponent.show();
             this.clear();

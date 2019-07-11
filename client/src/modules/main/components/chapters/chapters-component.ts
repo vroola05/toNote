@@ -48,7 +48,7 @@ export default class ChaptersComponent extends TabMenu {
             this.clear();
             if(chapters !== null ){
                 for(let i in chapters){
-                    this.addItem(chapters[i].id, chapters[i].name, chapters[i], undefined);
+                    this.addItem(chapters[i].id, chapters[i].name, chapters[i], chapters[i].color);
                 }
                 if(mainState!=null && mainState.chapter!==undefined){
                     this.setMenuItemActive(mainState.chapter.id);

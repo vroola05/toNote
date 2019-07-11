@@ -12,7 +12,7 @@
 
    &.stack {
     flex : initial; -webkit-flex-direction : row; flex-direction : row; 
-    min-width : $menu-width; 
+    min-width : $default-menu-width; 
     &.hide { width: 0px; min-width: 0px; }
    }
 
@@ -23,7 +23,7 @@
      height : 100%; 
 
     .menuName { 
-      font-size : 16px;
+      font-size : $font-size-big;
       padding : $default-padding;
     }
    
@@ -33,15 +33,20 @@
       overflow-y : auto;
 
       .item { 
-        position : relative;
-        float : left;
-        width : calc(100% - #{$default-padding*2});
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
         padding : $default-padding/2 $default-padding $default-padding/2 $default-padding;
         font-size : 12px;
         line-height : 18px; 
         color : #585858;  
         &.active{
           color : $color-secondary;
+        }
+        .color {
+          min-width: $default-menu-icon-width/2;
+          min-height: $default-menu-icon-width/2;
         }
         .name {
           font-size : 12px; cursor : pointer;
@@ -89,3 +94,4 @@
 @media (max-width: $default-width-desktop) {
   
 }
+
