@@ -1,5 +1,3 @@
-import './tab-menu-item.scss';
-
 import Lang from 'components/language/lang';
 
 export class TabMenuItem {

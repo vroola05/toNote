@@ -1,4 +1,3 @@
-import './settings-module.scss';
 import Lang from '../../components/language/lang';
 
 import {State, IRouter} from "../../services/router/types";

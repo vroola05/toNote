@@ -1,5 +1,3 @@
-import './main-module.scss';
-
 import { State, IRouter } from "../../services/router/types";
 import { IWindow } from '../../components/controls/iwindow/iwindow';
 import { MainState } from '../../types';
@@ -68,7 +66,6 @@ export default class MainModule extends IWindow{
 
         let mainState : MainState = state.value;
         let currentState = this.getCurrentState(state.value);
-
         this.notebooksComponent.getItems(mainState).then(() => {
             this.notebooksComponent.show();
             if(currentState=="notebook" || currentState=="chapter" || currentState=="note"){

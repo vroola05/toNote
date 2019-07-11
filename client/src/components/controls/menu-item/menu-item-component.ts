@@ -1,5 +1,3 @@
-import './menu-item-component.scss';
-
 import { EventEmitter } from 'events';
 
 

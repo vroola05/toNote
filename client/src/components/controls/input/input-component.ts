@@ -1,5 +1,3 @@
-import './input-component.scss';
-
 export default class InputComponent  {
     public dom:HTMLElement = document.createElement("div");
     private domLabel:HTMLLabelElement;

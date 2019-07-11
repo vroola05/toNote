@@ -1,5 +1,3 @@
-import './titlebar-component.scss';
-
 export default class TitlebarComponent {
     public dom: HTMLDivElement = document.createElement('div');
     

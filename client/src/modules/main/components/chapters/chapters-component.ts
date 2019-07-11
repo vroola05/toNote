@@ -1,5 +1,3 @@
-import './chapters-component.scss';
-
 import Lang from '../../../../components/language/lang';
 
 import { Chapter, MainState } from '../../../../types';

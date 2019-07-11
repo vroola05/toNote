@@ -1,5 +1,3 @@
-import './note-component.scss';
-
 import { Note, MainState } from '../../../../types';
 import { NoteService } from '../../../../services/http/note-service';
 

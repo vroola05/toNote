@@ -1,5 +1,3 @@
-import './title-component.scss';
-
 export default class TitleComponent  {
     public dom:HTMLElement = document.createElement("div");
     private domMainTitle:HTMLElement = document.createElement("div");

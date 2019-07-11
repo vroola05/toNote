@@ -1,4 +1,3 @@
-import './datebar-component.scss';
 
 export default class DatebarComponent {
     public dom: HTMLSpanElement = document.createElement('span');

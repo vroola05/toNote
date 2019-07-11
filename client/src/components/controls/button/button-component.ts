@@ -1,5 +1,3 @@
-import './button-component.scss';
-
 export default class ButtonComponent  {
     public dom:HTMLInputElement = document.createElement("input");
     

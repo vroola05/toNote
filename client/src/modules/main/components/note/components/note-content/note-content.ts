@@ -1,8 +1,6 @@
 require('quill/dist/quill.snow.css');
 import Quill from 'quill';
 
-import './note-content.scss';
-
 import TitlebarComponent from './components/titlebar/titlebar-component';
 import DatebarComponent from './components/datebar/datebar-component';
 import ToolbarComponent from './components/toolbar/toolbar-component';
@@ -41,7 +39,7 @@ export default class NoteContentComponent {
         noteHeaderContainer.appendChild(this.titlebarComponent.dom);
 
         const noteDateContainer: HTMLDivElement = document.createElement('div');
-        noteDateContainer.className = "noteHeaderContainer";
+        noteDateContainer.className = "dateContainer";
         noteHeaderContainer.appendChild(noteDateContainer);
 
         this.dateCreated = new DatebarComponent("created");

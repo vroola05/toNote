@@ -1,82 +1,214 @@
-$default-width-mobile: 479px;
-$default-width-tablet: 768px;
-$default-width-desktop: 1024px;
-$default-width-retina: 1280px;
+@import "./assets/scss/global.scss";
+@import "./assets/scss/animations.scss";
 
-$color-primary : #6ac6e6;
-$color-secondary : #af7500;
+@import "./assets/scss/global-components.scss";
+@import "./assets/scss/login.scss";
 
-$color-shade-dark : #e0e0e0;
-$color-shade : #f1f1f1;
-$color-shade-light : #fdfdfd;
-
-$color-dark: #030303;
-$color-dark-grey: #4d4d4d;
-
-$color-border: #97c2ff;
-
-$default-margin:8px;
-$default-padding:8px;
-
-$header-height:60px;
-
-$default-shadow: #2e2e2e 0px 0px 6px 0px;
-$default-shadow-vague: $color-shade-dark 0px 0px 16px 0px;
+@import "./assets/scss/tab-menu.scss";
 
 
-/****************************
-    FONTS
-****************************/
-$default-font: Arial;
-$default-font-size: 12px;
-$default-font-color: $color-dark;
-
-$font-size-big: 18px;
 
 
-/****************************
-    Global styling
-****************************/
-html { height: 100%; }
-body { height: 100%; margin : 0px; padding : 0px; font-family: $default-font; font-size: $default-font-size; color: $default-font-color;}
+.main {
+    display: flex; flex-direction: column; height: 100%;
 
-h1 {}
-h2 {}
-h3 {}
+    .header {
+        display: flex; 
+        flex-direction: row;
+        height : $header-height; 
+        background: $color-primary; 
+    
+        .btnLeftContainer {
+            display: flex; 
+            flex-direction: row;
+        }
+    
+        .titleContainer {
+            flex: auto;
+            .title {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
 
-/****************************
-    Menu styling
-****************************/
-$menu-width: 200px;
+                .mainTitle {
+                    position: absolute;
+                    top:6px;
+                    max-width: calc(100% - #{$default-padding*2});
+                    padding-left: $default-padding;
+                    padding-right: $default-padding;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
 
-/****************************
-    Animations
-****************************/
-$default-animation-length: .3s;
-@keyframes show {
-    from { 
-        display: flex;
-        opacity: 0; 
+                    font-size: $font-size-big;
+                    font-weight: bold;
+                    color: $color-shade-dark;
+
+                }
+
+                .subTitle {
+                    position: absolute;
+                    top:34px;
+                    max-width: calc(100% - #{$default-padding*2});
+                    padding-left: $default-padding;
+                    padding-right: $default-padding;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+
+                    font-weight: bold;
+                    color: $color-dark-grey;
+
+                }
+            }
+        }
+        .btnRightContainer {
+            display: flex; 
+            flex-direction: row;
+        }
     }
-      to { 
-        opacity: 1; 
+
+    .tabs { 
+        display: flex; flex-direction: row; height: calc(100% - #{$header-height}); 
+
+        
+        .tab.chapter {
+            background : $color-shade;
+        }
+        .tab.notes {
+            background : $color-shade-light;
+        }
+
+        
+        .tab.tabNote {
+            position: relative; 
+            display: flex;
+            flex: auto; 
+            flex-direction: column; 
+            height: 100%;
+
+            .noteOverlay {
+                display: flex;
+                flex: auto; 
+                flex-direction: column;
+                align-items: center;
+                height: 100%;
+
+                background: $color-shade-dark;
+                
+                &.loading.active {
+                    animation-name: show;
+                    animation-duration: $default-animation-length/2;
+                }
+                &.active {
+                    opacity: 1;
+                }
+                &.loading.inactive {
+                    animation-name: hide;
+                    animation-duration: $default-animation-length/2;
+                }
+                &.inactive {
+                    opacity: 0;
+                }
+                &.loaded.inactive {
+                    display: none;
+                }
+                
+                .noteOverlayMessage {
+                    margin: auto;
+                    text-align: center;
+                    border: $color-border dashed 2px;
+                    padding: $default-padding*3 $default-padding*6;
+                    color: $color-dark-grey;
+                    font-style: italic;
+                }
+            }
+
+            .noteContent {
+                display: flex;
+                flex: auto; 
+                flex-direction: column;
+                align-items: stretch;
+                height: 100%;
+            
+                &.loading.active {
+                    animation-name: show;
+                    animation-duration: $default-animation-length/2;
+                }
+                &.active {
+                    opacity: 1;
+                    
+                }
+                &.loading.inactive {
+                    animation-name: hide;
+                    animation-duration: $default-animation-length/2;
+                }
+                &.inactive {
+                    opacity: 0;
+                }
+                &.loaded.inactive {
+                    display: none;
+                }
+
+                .toolbar {
+                    &.ql-toolbar.ql-snow {
+                        border: none;
+                    }
+                }
+
+                .noteHeaderContainer {
+                    .titlebar {
+                        min-height: 20px;
+                        margin: $default-margin $default-margin*2 $default-margin/2 $default-margin*2 ;
+                        padding: $default-padding 0 $default-padding 0;
+                    
+                        font-size: $font-size-big;
+                        font-weight: bold;
+                        border-bottom: $color-border solid 1px;
+                        cursor: pointer;
+                    }
+                    .dateContainer {
+                        .datebar {
+                            margin: $default-margin/2 0 0 $default-margin;
+                            padding: 0 0 0 $default-padding;
+                        
+                            font-size: $default-font-size;
+                            font-style: italic;
+                            color: $color-dark-grey;
+                            
+                            cursor: default;
+                        }
+                    }
+                }
+
+                .noteInnerContainer {
+                    overflow-y: auto;
+                    .note { 
+                        border: none;
+                        min-height: 300px;
+                    }
+                }
+            }
+        }
     }
 }
 
-@keyframes hide {
-    from { 
-        opacity: 1; 
-    }
-    to { 
-        opacity: 0; 
-        display: none;
+@media (min-width: 0px) and (max-width: $default-width-mobile) {
+    .tabNote { display: none; height: calc(100% - 10px); min-width: 100vw; /* 100vw is a trick for the animation so te text won't grow with the with */ padding:0px; }
+    .tabNote.stack.active { display: block; }
+
+    .datebar {
+        &.created {
+            display: none;
+        }
     }
 }
-
-/*.main {
-    position: fixed;
-    top : 90px;
-    display : -webkit-flex; display : flex; -webkit-flex-direction : row; flex-direction : row;
-    width : 100%;
-    height : calc(100% - 90px);
-}*/
+@media (min-width: $default-width-mobile) and (max-width: $default-width-tablet) {
+    .datebar {
+        &.created {
+            display: none;
+        }
+    }
+}

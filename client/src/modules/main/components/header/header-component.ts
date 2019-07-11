@@ -1,5 +1,3 @@
-import './header-component.scss';
-
 import svgHome from '../../../../assets/images/back.svg';
 import svgLocked from '../../../../assets/images/locked.svg';
 import svgUnlocked from '../../../../assets/images/unlocked.svg';

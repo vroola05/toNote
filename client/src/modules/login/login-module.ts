@@ -1,4 +1,3 @@
-import './login-module.scss';
 import Lang from '../../components/language/lang';
 
 import svgLogo from '../../assets/images/logo.svg';

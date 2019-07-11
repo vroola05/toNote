@@ -1,5 +1,3 @@
-import './tab-menu.scss';
-
 import Lang from '../../language/lang';
 import { TabMenuItem } from './components/tab-menu-item';
 import { Tab } from './tab';
@@ -28,18 +26,13 @@ export class TabMenu extends Tab {
 			this.itemContainer.style.width =null;
 		});
 
-		let domTabMenuContainer = document.createElement("div");
-		domTabMenuContainer.classList.add("tabMenuContainer");
-
 		this.itemContainer = document.createElement("div");
 		this.itemContainer.classList.add("itemContainer");
 
-		domTabMenuContainer.appendChild(this.itemContainer);
-
-		this.dom.appendChild(domTabMenuContainer);
+		this.dom.appendChild(this.itemContainer);
 
 		let domName = document.createElement("div");
-		domName.classList.add("name");
+		domName.classList.add("menuName");
 		domName.innerHTML = this.labels.get("name");
 
 		this.domItemList = document.createElement("div");
@@ -47,7 +40,7 @@ export class TabMenu extends Tab {
 
 		let domAdd = document.createElement("div");
 		domAdd.classList.add("options");
-		domAdd.innerHTML = "<span class='icon'>+</span><span class='text'>" + this.labels.get("add") + "</span><div>"
+		domAdd.innerHTML = "<div class='icon'>+</div><div class='text'>" + this.labels.get("add") + "</div><div>"
 
 		var self = this;
 		domAdd.addEventListener("click", function (e) {

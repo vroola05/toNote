@@ -1,5 +1,3 @@
-import './button-icon-component.scss';
-
 export default class ButtonIconComponent  {
     public dom:HTMLElement = document.createElement("div");
     private iconContainer:HTMLImageElement;

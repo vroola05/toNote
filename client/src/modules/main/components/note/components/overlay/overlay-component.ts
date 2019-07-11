@@ -1,6 +1,4 @@
 
-import './overlay-component.scss';
-
 import { EventEmitter } from 'events';
 
 import Lang from '../../../../../../components/language/lang';

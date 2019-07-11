@@ -1,4 +1,3 @@
-import './dropdown-menu-component.scss';
 
 import { EventEmitter } from 'events';
 import MenuItemComponent from '../menu-item/menu-item-component';

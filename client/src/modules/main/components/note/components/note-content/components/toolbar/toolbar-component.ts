@@ -1,5 +1,3 @@
-import './toolbar-component.scss';
-
 export default class ToolbarComponent {
     public dom: HTMLDivElement;
 

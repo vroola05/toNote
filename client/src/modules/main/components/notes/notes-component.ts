@@ -1,4 +1,3 @@
-import './notes-component.scss';
 
 import Lang from '../../../../components/language/lang';
 import { Note, MainState } from '../../../../types';

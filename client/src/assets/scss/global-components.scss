@@ -1,0 +1,101 @@
+.menuItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
+    
+    .iconContainer {
+        width:40px;
+        .icon {
+            width: calc(100% - #{$default-padding*2});
+            height: calc(100% - #{$default-padding*2});
+            padding: $default-padding;
+            fill: red;
+        }
+    }
+    .nameContainer {
+        flex: auto;
+    }
+}
+
+
+.btn {
+    padding: $default-padding;
+    
+    border: $color-border solid 1px;
+    background : $color-shade-light;
+    
+    font-weight: bold;
+    cursor: pointer;
+    
+}
+
+.btnIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    width: $header-height;
+    height: calc(#{$header-height} - 1px);
+
+    border-right: $color-shade-dark solid 1px;
+    background : $color-primary;
+
+    cursor: pointer;
+    
+    .icon {
+        width: calc(100% - #{$default-padding*2});
+        height: calc(100% - #{$default-padding*2});
+        padding: $default-padding;
+    }
+}
+
+
+.inputContainer {
+    width: calc(100% - #{$default-margin*2} - 2px);
+    margin: $default-margin;
+
+    label {
+        display: block;
+        font-size: 14px;
+        font-style: italic;
+    }
+    
+    input {
+        width: calc(100% - 18px);
+        padding: 4px 8px;
+        
+        border: $color-border solid 1px;
+        background : lighten($color-secondary,60%);//$color-shade-light;
+    }
+
+    input:-webkit-autofill, input:-moz-autofill {
+        -webkit-box-shadow: inset 0 0 0px 9999px lighten($color-secondary,60%);
+        -moz-box-shadow: inset 0 0 0px 9999px lighten($color-secondary,60%);
+        box-shadow: inset 0 0 0px 9999px lighten($color-secondary,60%);
+    }
+}
+
+
+.backdrop {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    opacity: .2;
+}
+
+.dropdown {
+    position: absolute;
+    top: 0px;
+    right: 1px;
+    min-width: 140px;
+    min-height: 40px;
+    margin-top: $header-height;
+    background: #ededed;
+    box-shadow: $default-shadow;
+    z-index: 3;
+}

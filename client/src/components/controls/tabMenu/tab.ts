@@ -35,6 +35,7 @@ export class Tab {
         const device = Util.getDevice();
         const tab = this.getFirstItem();
         const stackAmount = tab.getStackAmount();
+        
         if(device === Util.desktop){
             if(stackAmount>2){
                 tab.setHidden(1);
@@ -50,6 +51,25 @@ export class Tab {
             }
         }
         tab.setHidden(0);
+    }
+
+	public getStackAmount() : number {
+		if(this.dom.classList.contains("stack")){
+			return 1 + (this.child==null?0:this.child.getStackAmount());
+		} else {
+            return 0;
+        }
+	}
+
+    public setHidden(amount : number = 1){
+        if( amount > 0 ){
+            this.dom.classList.add("hide");
+        }else {
+            this.dom.classList.remove("hide");
+        }
+        if(this.child != null){
+            this.child.setHidden(amount-1);
+        }
     }
 
     private deactivateOther(direction:number=0){
@@ -103,25 +123,6 @@ export class Tab {
         return false;
     }
     
-	public getStackAmount() : number {
-		if(this.dom.classList.contains("stack")){
-			return 1 + (this.child==null?0:this.child.getStackAmount());
-		} else {
-            return 0;
-        }
-	}
-
-    public setHidden(amount : number = 1){
-        if( amount > 0 ){
-            this.dom.classList.add("hide");
-        }else {
-            this.dom.classList.remove("hide");
-        }
-        if(this.child != null){
-            this.child.setHidden(amount-1);
-        }
-    }
-
 
     /**
      * 
