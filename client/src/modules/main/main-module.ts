@@ -76,6 +76,7 @@ export default class MainModule extends IWindow{
                     if(currentState=="chapter" || currentState=="note"){
                         this.headerComponent.setSubTitle(mainState.chapter.name);
                         this.notesComponent.getItems(mainState).then(() => {
+                            this.notesComponent.setMenuColor(mainState.chapter.color);
                             this.notesComponent.show();
                             if(currentState=="note"){
                                 this.noteComponent.getItem(mainState).then(() =>{

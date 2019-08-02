@@ -9,7 +9,7 @@ export default class ButtonToggleComponent extends ButtonComponent {
         this.icons = icons;
     }
 
-    public onClick(buttonComponent:ButtonComponent){
+    public onClick(event:Event, buttonComponent:ButtonComponent){
         this.isOpened=!this.isOpened;
         if(this.isOpened){
             this.set(this.icons.open.icon,this.icons.open.description);

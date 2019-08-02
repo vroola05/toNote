@@ -1,3 +1,9 @@
+import svgRename from '../../../../assets/images/rename.svg';
+import svgDelete from '../../../../assets/images/delete.svg';
+import svgMove from '../../../../assets/images/move.svg';
+import svgColors from '../../../../assets/images/colors.svg';
+
+
 import Lang from '../../../../components/language/lang';
 
 import { Chapter, MainState } from '../../../../types';
@@ -6,7 +12,7 @@ import { Router } from '../../../../services/router/router-service';
 import { ChapterService } from '../../../../services/http/chapter-service';
 
 import { TabMenu } from '../../../../components/controls/tabMenu/tab-menu';
-
+import MenuItemComponent from '../../../../components/controls/menu-item/menu-item-component';
 
 export default class ChaptersComponent extends TabMenu {
     private notebookId : number;
@@ -17,7 +23,20 @@ export default class ChaptersComponent extends TabMenu {
             ["add", Lang.get("chapters_add")]
         ]);
 
-        super(labels, "chapter");
+        super(labels, "chapter", TabMenu.COLOR_TYPE_ITEM_COLOR);
+
+        this.dropdownMenu.addItem(new MenuItemComponent(svgRename, Lang.get("ctx_rename"), (e:any) => {
+            //Do nothing
+        }));
+        this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get("ctx_move"), (e:any) => {
+            //Do nothing
+        }));
+        this.dropdownMenu.addItem(new MenuItemComponent(svgDelete, Lang.get("ctx_remove"), (e:any) => {
+            //Do nothing
+        }));
+        this.dropdownMenu.addItem(new MenuItemComponent(svgColors, Lang.get("ctx_color"), (e:any) => {
+            //Do nothing
+        }));
     }
 
     public click(item:any, identifier:number, name:string, chapter:Chapter){

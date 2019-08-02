@@ -1,4 +1,3 @@
-
 .tab.tabMenu { 
     position : relative; 
     width : 0px; min-width : 0px; 
@@ -13,11 +12,28 @@
    &.stack {
     flex : initial; -webkit-flex-direction : row; flex-direction : row; 
     min-width : $default-menu-width; 
-    &.hide { width: 0px; min-width: 0px; }
+    &.hide { 
+      width: 0px; min-width: 0px; 
+    }
+
+    &.color {
+      border-left:$color-secondary solid 2px;
+    }
+    &.color:before {
+      border-left: 4px solid $color-shade-dark;
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      pointer-events: none;
+    }
    }
 
    .itemContainer {
-     float : left; 
+     //float : left; 
      display : flex; 
      flex-direction : column; 
      height : 100%; 
@@ -47,6 +63,15 @@
         .color {
           min-width: $default-menu-icon-width/2;
           min-height: $default-menu-icon-width/2;
+          padding-right: $default-padding;
+          svg {
+            vertical-align: middle;
+            .colorRect {
+              stroke: $color-dark-grey;
+              width: 15px;
+              height: 15px;
+            }
+          }
         }
         .name {
           font-size : 12px; cursor : pointer;

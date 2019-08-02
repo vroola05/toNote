@@ -55,7 +55,17 @@ var map = new Map<string, Map<string, string>>([[
         ["date_month_sep", "sep"],
         ["date_month_oct", "okt"],
         ["date_month_nov", "nov"],
-        ["date_month_dec", "dec"]
+        ["date_month_dec", "dec"],
+        /////////////////
+        ["ctx_color", "Kleurenkiezer"],
+        ["ctx_rename", "Hernoem"],
+        ["ctx_remove", "Verwijderen"],
+        ["ctx_move", "Verplaatsen"],
+        /////////////////
+        ["popup_btn_cancel", "Annuleren"],
+        ["popup_btn_ok", "Ok"],
+        ["popup_rename_title", "Hernoemen"],
+        ["popup_rename_label", "Hernoemen"],
     ])],[
     "en", new Map([
         ["login_username", "Username"],
@@ -112,7 +122,17 @@ var map = new Map<string, Map<string, string>>([[
         ["date_month_sep", "sep"],
         ["date_month_oct", "oct"],
         ["date_month_nov", "nov"],
-        ["date_month_dec", "dec"]
+        ["date_month_dec", "dec"],
+        /////////////////
+        ["ctx_color", "Colorpicker"],
+        ["ctx_rename", "Rename"],
+        ["ctx_remove", "Remove"],
+        ["ctx_move", "Move"],
+        /////////////////
+        ["popup_btn_cancel", "Cancel"],
+        ["popup_btn_ok", "Ok"],
+        ["popup_rename_title", "Rename"],
+        ["popup_rename_label", "Rename"],
     ])],[
     "en-US", new Map([
         ["login_username", "Username"],
@@ -169,7 +189,17 @@ var map = new Map<string, Map<string, string>>([[
         ["date_month_sep", "sep"],
         ["date_month_oct", "oct"],
         ["date_month_nov", "nov"],
-        ["date_month_dec", "dec"]
+        ["date_month_dec", "dec"],
+        /////////////////
+        ["ctx_color", "Colorpicker"],
+        ["ctx_rename", "Rename"],
+        ["ctx_remove", "Remove"],
+        ["ctx_move", "Move"],
+        /////////////////
+        ["popup_btn_cancel", "Cancel"],
+        ["popup_btn_ok", "Ok"],
+        ["popup_rename_title", "Rename"],
+        ["popup_rename_label", "Rename"],
     ])]
 ])
 

@@ -70,15 +70,13 @@ export default class HeaderComponent  {
         //////////////////////////////////////////////////////////////////
         //
 
-        const btnMenu= new ButtonDropdownComponent(svgMenu, Lang.get("header_icon_menu"), (item:any) => {
+        const btnMenu= new ButtonDropdownComponent(svgMenu, Lang.get("header_icon_menu"), (e:Event, item:any) => {
             console.log(item.isOpened);
-        })
+        });
         this.addAltMenuItem(btnMenu);
 
         btnMenu.addItem(new MenuItemComponent(svgSettings, Lang.get("header_menu_settings"), (e:any) => {
-            
             Router.set({ "key" : "settings", value : mainModule.state}, Lang.get("state_title_settings"),"settings");
-
         }));
         btnMenu.addItem(new MenuItemComponent(svgLogout, Lang.get("header_menu_logout"), (e:any) => {
             new LoginService().logout().then(()=>{
