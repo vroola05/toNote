@@ -26,6 +26,7 @@ class Startup {
         // 
         ////////////////////////////////////////
         new ConfigService( function() {
+            
             const loginService : LoginService = new LoginService();
             loginService.check().then(()=>{
                 let state = window.history.state;
@@ -33,7 +34,8 @@ class Startup {
                     state = { "key" : "main", value : null};
                 }
                 Router.set(state, Lang.get("state_title_notebooks"),"main");
-            }).catch(() => {});
+            }).catch(() => {
+            });
         } );
         
         

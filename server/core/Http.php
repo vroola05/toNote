@@ -1,6 +1,8 @@
 <?php
 namespace core;
 
+require_once 'core/Security.php';
+
 abstract class Http {
     const CONTENT_TYPE_TEXT = "text/plain";
     const CONTENT_TYPE_JSON = "application/json";
@@ -19,7 +21,6 @@ abstract class Http {
      */
 	function  __construct(){
     }
-
 
     public static function getHeader(string $name){
         foreach (getallheaders() as $key => $value) {
@@ -43,6 +44,8 @@ abstract class Http {
      * @param string $contentType the response contenttype if left empty the contenttype will be application/json but the data won't be encoded
      */
     public static function remand($content, $contentType=null){
+        Security::defaultHeaders();
+        
         if($contentType!=null){
             header('Content-Type: ' . $contentType);    
         }else{

@@ -76,7 +76,6 @@ try{
 		Router::route();
 	}
 } catch(Exception $e){
-	print("dsfsd ds");
 	Http::remand(new Message(500, $e->getMessage()),Http::CONTENT_TYPE_JSON);
 }
 ?>

@@ -54,4 +54,8 @@ export default class NotebooksComponent extends TabMenu {
             throw error 
         });
     }
+
+    public clickNewItem(e: Event) {
+		alert("Jaa!");
+	}
 }

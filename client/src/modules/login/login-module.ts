@@ -75,9 +75,6 @@ export default class LoginModule extends IWindow{
             });
             
             this.hide();
-        },
-        () => {
-            console.log("a");
         });
     }
 

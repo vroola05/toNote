@@ -15,10 +15,15 @@ abstract class Security {
 	function  __construct(){
     }
 
+    public static function defaultHeaders(){
+        header("Access-Control-Allow-Origin: " . Security::ALLOWED_HOST);
+    }
+
     public static function cors(){
         if($_SERVER['REQUEST_METHOD'] == "OPTIONS"){
             if($_SERVER['HTTP_ORIGIN'] == Security::ALLOWED_HOST) {
-                header("Access-Control-Allow-Origin: ". Security::ALLOWED_HOST);
+                Security::defaultHeaders();
+                
                 header("Access-Control-Allow-Methods: PUT, DELETE, POST, GET, OPTIONS");
                 header("Access-Control-Allow-Headers: ".Security::ALLOWED_HEADERS);
                 header("Access-Control-Max-Age: 1728000");
@@ -27,7 +32,6 @@ abstract class Security {
             } else {
                 header("HTTP/1.1 403 Access Forbidden");
                 header("Content-Type: text/plain");
-                echo "You cannot repeat this request";
             }
 
             return true;
@@ -61,9 +65,10 @@ abstract class Security {
         $connection = Database::getInstance();
         $connection->dbConnect();
 
-        if($connection->dbPreparedStatement("insert into sessions (apikey, lastAccessDate, expirationDate, description) values (?,?,?,?)",
+        if($connection->dbPreparedStatement("insert into sessions (apikey, userId, lastAccessDate, expirationDate, description) values (?,?,?,?,?)",
         array(
             $apikey,
+            $userId,
             $lastAccessDate->format('Y-m-d H:i:s'),
             $expirationDate->format('Y-m-d H:i:s'),
             $description
@@ -121,7 +126,5 @@ abstract class Security {
     public static function hashString(string $input, array $algorithm) {
         return password_hash($input, $algorithm["algorithm"], $algorithm["options"]);
     }
-
-    
 }
 ?>
