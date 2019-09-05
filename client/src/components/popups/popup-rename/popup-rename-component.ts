@@ -26,14 +26,14 @@ export default class PopupRenameComponent extends PopupComponent {
         popupRenameBtnContainer.appendChild(cancel.dom);
         
         const send = new ButtonComponent(Lang.get("popup_btn_ok"), (e:any)=>{
-            this.click(e, this.input.value());
+            this.click(e, this.object, this.input.value());
         });
         popupRenameBtnContainer.appendChild(send.dom);
         this.append(popupRenameBtnContainer);
         
     }
 
-    public click(e:any, value: string): void {
+    public click(e: any, object: any, value: string): void {
         alert("Not yet implemented!");
     }
 }

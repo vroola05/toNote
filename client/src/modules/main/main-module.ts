@@ -41,7 +41,7 @@ export default class MainModule extends IWindow{
         tabs.appendChild( this.notesComponent.dom );
         tabs.appendChild( this.noteComponent.dom );
 
-        window.onresize = (s) => {
+        window.onresize = (uiEvent:UIEvent) => {
             this.setDeviceLayout();
         };
 		

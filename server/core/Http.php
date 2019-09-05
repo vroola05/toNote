@@ -1,8 +1,6 @@
 <?php
 namespace core;
 
-require_once 'core/Security.php';
-
 abstract class Http {
     const CONTENT_TYPE_TEXT = "text/plain";
     const CONTENT_TYPE_JSON = "application/json";
@@ -21,6 +19,7 @@ abstract class Http {
      */
 	function  __construct(){
     }
+
 
     public static function getHeader(string $name){
         foreach (getallheaders() as $key => $value) {

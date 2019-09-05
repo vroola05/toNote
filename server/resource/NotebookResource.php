@@ -61,11 +61,17 @@ class NotebookResource {
         }
     }
 
-    public function putNotebook($parameters, $notebook) : Message{
+    public function postNotebook($parameters, $notebook) : Message{
         return new \Core\Message(200, "Notebook has been saved!");
     }
 
-    public function postNotebook($parameters, $data){
-        return new \Core\Message(200, "Notebook has been created!");
+    public function putNotebook($parameters, $data){
+        $connection = Database::getInstance();
+        $connection->dbConnect();
+        $n = new Notebook();
+        $n->setId($data->id);
+        $n->get(null, $connection);
+
+        return $n;//new \Core\Message(200, "Notebook has been created!");
     }
 }

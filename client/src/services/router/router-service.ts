@@ -15,7 +15,7 @@ export class Router{
     public static register(key:string, value:IRouter){
         if(Router.stateMap == null){
             Router.stateMap = new Map<string, IRouter>();
-            window.onpopstate = function(event) {
+            window.onpopstate = function(event: PopStateEvent) {
                 event.preventDefault();
                 Router.load(event.state);
             };

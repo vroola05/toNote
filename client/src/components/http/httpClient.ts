@@ -20,6 +20,10 @@ export default class HttpClient{
         return this.doRequest('POST', endpoint, body)
     }
 
+    public put<T, D>(endpoint: string, body: D) : Promise<T> {
+        return this.doRequest('PUT', endpoint, body)
+    }
+
     private doRequest<T, D>(method: Method, endpoint: string, data: D) : Promise<T>{
         let requestOptions: RequestInit = {
             method,

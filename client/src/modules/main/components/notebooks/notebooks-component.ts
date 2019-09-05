@@ -21,17 +21,11 @@ export default class NotebooksComponent extends TabMenu {
         ]);
         super(labels, "notebook");
 
-        this.dropdownMenu.addItem(new MenuItemComponent(svgRename, Lang.get("ctx_rename"), (e:any) => {
-            const renamePopup = new PopupRenameComponent(Lang.get("popup_rename_title"), Lang.get("notebooks_name"), this.dropdownMenu.object.name);
-            renamePopup.click = (e, value) => {
-                console.log("ja", value);
-                renamePopup.hide();    
-            };
-            renamePopup.show();
-        }));
-        this.dropdownMenu.addItem(new MenuItemComponent(svgDelete, Lang.get("ctx_remove"), (e:any) => {
-            //Do nothing
-        }));
+        
+        
+
+        this.bindRenamePopup();
+        this.bindDeletePopup();
     }
 
     public click(item:any, identifier:number, name:string, notebook:Notebook){
@@ -43,8 +37,7 @@ export default class NotebooksComponent extends TabMenu {
     }
 
     public getItems(mainState: MainState=null) : Promise<any>{
-        const notebookService : NotebookService = new NotebookService();
-        
+        const notebookService = new NotebookService();
         if(this.hasItems()){
             return new Promise((resolve, reject) => {
                 if(mainState!=null && mainState.notebook!==undefined){
@@ -69,5 +62,29 @@ export default class NotebooksComponent extends TabMenu {
             console.error(error.stack);   
             throw error 
         });
+    }
+
+    private bindRenamePopup() {
+        
+        const menuItem = new MenuItemComponent(svgRename, Lang.get("ctx_rename"));
+        this.dropdownMenu.addItem(menuItem);
+
+        menuItem.click = (e:any) => {
+            const object = this.dropdownMenu.object;
+            const renamePopup = new PopupRenameComponent(Lang.get("popup_rename_title"), Lang.get("notebooks_name"), object.name);
+            renamePopup.setObject(object)
+            renamePopup.click = (e, object, value) => {
+                object.name = value;
+                const notebookService = new NotebookService();
+                notebookService.putNotebook(object.id, object)
+                //renamePopup.hide();    
+            };
+            renamePopup.show();
+        };
+    }
+    private bindDeletePopup() {
+        this.dropdownMenu.addItem(new MenuItemComponent(svgDelete, Lang.get("ctx_remove"), (e:any) => {
+            //Do nothing
+        }));
     }
 }

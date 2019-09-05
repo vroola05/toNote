@@ -42,7 +42,6 @@ class LoginResource {
                     $this->checkPasswordAlgorithm((int)$u->userId, $u->password, $connection);        
 
                     $apikey = Security::createSession($u->userId, "DeviceName");
-
                     if($apikey !== false){
                         $message  = new \Core\Message(200, "Login succeded");
                         $message->addExtraInfo(Security::APIKEY, $apikey);
@@ -50,7 +49,6 @@ class LoginResource {
                         Http::remand($message,Http::CONTENT_TYPE_JSON);
                         return true;
                     }
-                    
                 }
             } 
         }

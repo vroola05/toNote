@@ -6,6 +6,7 @@ export default class PopupComponent  {
     protected dom: HTMLElement = document.createElement("div");
     protected domContainer: HTMLElement = document.createElement("div");
     private header: PopupHeaderComponent;
+    protected object: any;
 
     public event = new EventEmitter();
 
@@ -37,5 +38,13 @@ export default class PopupComponent  {
     public hide(): void {
         document.body.removeChild(this.domBackdrop);
         document.body.removeChild(this.dom);
+    }
+    
+    public setObject(object:any){
+        this.object = object
+    }
+
+    public getObject() {
+        return this.object;
     }
 }

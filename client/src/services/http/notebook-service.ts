@@ -9,4 +9,8 @@ export class NotebookService extends HttpClient{
     public getNotebooks() : Promise<Array<Notebook>>{
         return this.get("notebooks");
     }
+
+    public putNotebook(id:number, notebook:Notebook) : Promise<Array<Notebook>>{
+        return this.put("notebooks/" + id, notebook);
+    }
 }
