@@ -18,10 +18,11 @@ export default class ButtonDropdownComponent extends ButtonComponent {
          );
     }
 
-    public onClick(buttonComponent:ButtonComponent){
+    public onClick(event:MouseEvent, buttonComponent:ButtonComponent){
         this.isOpened=!this.isOpened;
         if(this.isOpened){
             this.dropdownMenu.show();
+            this.dropdownMenu.setPosition(event.pageX, event.pageY);
         }else{
             this.dropdownMenu.hide();
         }

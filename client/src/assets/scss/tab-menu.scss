@@ -1,0 +1,122 @@
+.tab.tabMenu { 
+    position : relative; 
+    width : 0px; min-width : 0px; 
+    height : 100%; 
+    background : $color-primary; 
+    box-shadow : 2px 4px 4px $color-shade-dark; 
+    font-family : $default-font; color : $color-dark-grey; overflow : hidden; 
+
+   -webkit-touch-callout : none; -webkit-user-select : none; -khtml-user-select : none; -moz-user-select : none; -ms-user-select : none; user-select : none;
+   -webkit-transition : min-width $default-animation-length, width $default-animation-length; transition : min-width $default-animation-length, width $default-animation-length;
+
+   &.stack {
+    flex : initial; -webkit-flex-direction : row; flex-direction : row; 
+    min-width : $default-menu-width; 
+    &.hide { 
+      width: 0px; min-width: 0px; 
+    }
+
+    &.color {
+      border-left:$color-secondary solid 2px;
+    }
+    &.color:before {
+      border-left: 4px solid $color-shade-dark;
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      pointer-events: none;
+    }
+   }
+
+   .itemContainer {
+     //float : left; 
+     display : flex; 
+     flex-direction : column; 
+     height : 100%; 
+
+    .menuName { 
+      font-size : $font-size-big;
+      padding : $default-padding;
+    }
+   
+    .itemList {
+      max-height : calc(100% - 108px);
+      padding : $default-padding;
+      overflow-y : auto;
+
+      .item { 
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        padding : $default-padding/2 $default-padding $default-padding/2 $default-padding;
+        font-size : 12px;
+        line-height : 18px; 
+        color : #585858;  
+        &.active{
+          color : $color-secondary;
+        }
+        .color {
+          min-width: $default-menu-icon-width/2;
+          min-height: $default-menu-icon-width/2;
+          padding-right: $default-padding;
+          svg {
+            vertical-align: middle;
+            .colorRect {
+              stroke: $color-dark-grey;
+              width: 15px;
+              height: 15px;
+            }
+          }
+        }
+        .name {
+          font-size : 12px; cursor : pointer;
+          &:hover {
+            color : darken($color-secondary, 25%);
+          }
+        }
+      }
+    }
+
+    .options {
+      display: flex;
+      flex-direction: row;
+      width : 100%;
+      font-weight : bold;
+      background-color : inherit;
+      cursor : pointer;
+      align-items: center;
+  
+      .icon{
+        float : left;
+        padding : $default-padding;
+        font-size : 20px;
+      }
+      .text{
+        float : left;
+  
+        padding-left : $default-padding;
+        font-size : 12px;
+      }
+    }
+  }
+}
+
+
+@media (min-width: 0px) and (max-width: $default-width-mobile) {
+  .tabMenu { width:0px;min-width:0px; height:100%; padding:0; }
+  .tabMenu.active { width:100%!important;;}
+  .tabMenu.stack:not(.active) {min-width:0px!important}
+}
+
+@media (max-width: $default-width-tablet) {
+
+}
+@media (max-width: $default-width-desktop) {
+  
+}
+

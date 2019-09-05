@@ -1,3 +1,7 @@
+import svgRename from '../../../../assets/images/rename.svg';
+import svgDelete from '../../../../assets/images/delete.svg';
+
+
 import Lang from '../../../../components/language/lang';
 
 import { Notebook, MainState } from '../../../../types';
@@ -6,8 +10,8 @@ import { Router } from '../../../../services/router/router-service';
 import { NotebookService } from '../../../../services/http/notebook-service';
 
 import { TabMenu } from '../../../../components/controls/tabMenu/tab-menu';
-import { stringify } from 'querystring';
-import { rejects } from 'assert';
+import MenuItemComponent from '../../../../components/controls/menu-item/menu-item-component';
+import PopupRenameComponent from '../../../../components/popups/popup-rename/popup-rename-component';
 
 export default class NotebooksComponent extends TabMenu {
     constructor(){
@@ -16,6 +20,18 @@ export default class NotebooksComponent extends TabMenu {
             ["add", Lang.get("notebooks_add")]
         ]);
         super(labels, "notebook");
+
+        this.dropdownMenu.addItem(new MenuItemComponent(svgRename, Lang.get("ctx_rename"), (e:any) => {
+            const renamePopup = new PopupRenameComponent(Lang.get("popup_rename_title"), Lang.get("notebooks_name"), this.dropdownMenu.object.name);
+            renamePopup.click = (e, value) => {
+                console.log("ja", value);
+                renamePopup.hide();    
+            };
+            renamePopup.show();
+        }));
+        this.dropdownMenu.addItem(new MenuItemComponent(svgDelete, Lang.get("ctx_remove"), (e:any) => {
+            //Do nothing
+        }));
     }
 
     public click(item:any, identifier:number, name:string, notebook:Notebook){
@@ -54,8 +70,4 @@ export default class NotebooksComponent extends TabMenu {
             throw error 
         });
     }
-
-    public clickNewItem(e: Event) {
-		alert("Jaa!");
-	}
 }

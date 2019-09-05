@@ -1,5 +1,3 @@
-import './main-module.scss';
-
 import { State, IRouter } from "../../services/router/types";
 import { IWindow } from '../../components/controls/iwindow/iwindow';
 import { MainState } from '../../types';
@@ -11,6 +9,7 @@ import NotebooksComponent from './components/notebooks/notebooks-component';
 import ChaptersComponent from './components/chapters/chapters-component';
 import NotesComponent from './components/notes/notes-component';
 import NoteComponent from './components/note/note-component';
+import { Util } from '../../components/util/util';
 
 export default class MainModule extends IWindow{
     protected notebooksComponent:NotebooksComponent = new NotebooksComponent();
@@ -25,33 +24,35 @@ export default class MainModule extends IWindow{
 
     constructor(){
         super("main", "Notities");
-        this.append(this.headerComponent.get());
-        
-        //let testBtn = new ButtonComponent("test");
-        //headerComponent.addMenuItem(testBtn);
+        this.append(this.headerComponent.dom);
 
         let tabs = document.createElement("div");
         tabs.className = "tabs";
         
         this.append(tabs);
-/*
-        var back = <HTMLDivElement>(document.createElement('div'));
-        header.appendChild(back);
-        back.innerHTML = "Back";
-        back.onclick = () => {
-            this.notebooksComponent.back();
-        };
-*/
-        this.notebooksComponent.setChild(this.chaptersComponent);
-        this.chaptersComponent.setChild(this.notesComponent);
-        this.notesComponent.setChild(this.noteComponent);
-        this.noteComponent.setParent(this.notesComponent);
 
-        tabs.appendChild( this.notebooksComponent.get());
-        tabs.appendChild( this.chaptersComponent.get());
-        tabs.appendChild( this.notesComponent.get());
-        tabs.appendChild( this.noteComponent.get());
+        this.notebooksComponent.setChild( this.chaptersComponent );
+        this.chaptersComponent.setChild( this.notesComponent );
+        this.notesComponent.setChild( this.noteComponent );
+        this.noteComponent.setParent( this.notesComponent );
+
+        tabs.appendChild( this.notebooksComponent.dom );
+        tabs.appendChild( this.chaptersComponent.dom );
+        tabs.appendChild( this.notesComponent.dom );
+        tabs.appendChild( this.noteComponent.dom );
+
+        window.onresize = (s) => {
+            this.setDeviceLayout();
+        };
+		
     }
+
+
+    public setDeviceLayout() {
+        this.notebooksComponent.setDeviceLayout();
+    }
+
+    
 
     public load( state : State ) : boolean {
         
@@ -66,34 +67,34 @@ export default class MainModule extends IWindow{
 
         let mainState : MainState = state.value;
         let currentState = this.getCurrentState(state.value);
-
         this.notebooksComponent.getItems(mainState).then(() => {
             this.notebooksComponent.show();
             if(currentState=="notebook" || currentState=="chapter" || currentState=="note"){
-                
                 this.headerComponent.setMainTitle(mainState.notebook.name);
-                
                 this.chaptersComponent.getItems(mainState).then(()=>{
                     this.chaptersComponent.show();
                     if(currentState=="chapter" || currentState=="note"){
-
                         this.headerComponent.setSubTitle(mainState.chapter.name);
-
                         this.notesComponent.getItems(mainState).then(() => {
+                            this.notesComponent.setMenuColor(mainState.chapter.color);
                             this.notesComponent.show();
                             if(currentState=="note"){
                                 this.noteComponent.getItem(mainState).then(() =>{
                                     this.noteComponent.show();
+                                    this.notebooksComponent.setDeviceLayout();
                                 }).catch(() => {});;
                             } else{
+                                this.notebooksComponent.setDeviceLayout();
                                 this.noteComponent.hide();
                             }
                         }).catch(() => {});;
                     } else {
+                        this.notebooksComponent.setDeviceLayout();
                         this.notesComponent.hide();
                     }
                 }).catch(() => {});;
             } else {
+                this.notebooksComponent.setDeviceLayout();
                 this.chaptersComponent.hide();
             }
         }).catch(() => {});

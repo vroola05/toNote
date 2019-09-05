@@ -1,18 +1,17 @@
-import './menu-item-component.scss';
-
 import { EventEmitter } from 'events';
 
 
 export default class MenuItemComponent  {
     public event = new EventEmitter();
 
-    private domItem:HTMLElement = document.createElement("div");
-        constructor( icon : any, name: string, click: any = undefined ){
-        this.domItem.className = "menuItem";
+    public dom:HTMLElement = document.createElement("div");
+    
+    constructor( icon : any, name: string, click: any = undefined ){
+        this.dom.className = "menuItem";
     
         const iconContainer = document.createElement("span");
         iconContainer.className = "iconContainer";
-        this.domItem.appendChild(iconContainer);
+        this.dom.appendChild(iconContainer);
 
         const iconImg:HTMLImageElement = document.createElement("img");
         iconImg.className = "icon";
@@ -22,26 +21,22 @@ export default class MenuItemComponent  {
         const nameContainer = document.createElement("span");
         nameContainer.className = "nameContainer";
         nameContainer.innerHTML = name;
-        this.domItem.appendChild(nameContainer);
+        this.dom.appendChild(nameContainer);
         
         if(click !== undefined){
             this.click = click;
         }
 
-        this.domItem.onclick = (e) => {
-            this.onClick(this);
-            this.click(this);
+        this.dom.onclick = (e) => {
+            this.onClick(this, e);
+            this.click(this, e);
             this.event.emit("click");
         }
     }
 
-    public get() : HTMLElement{
-        return this.domItem;
-    }
+    public onClick(buttonComponent:MenuItemComponent, e :Event){}
 
-    public onClick(buttonComponent:MenuItemComponent){}
-
-    public click(buttonComponent:MenuItemComponent){
+    public click(buttonComponent:MenuItemComponent, e :Event){
         console.error("Method not yet implemented!");
     }
 }

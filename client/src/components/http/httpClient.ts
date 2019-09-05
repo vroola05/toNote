@@ -23,13 +23,11 @@ export default class HttpClient{
     private doRequest<T, D>(method: Method, endpoint: string, data: D) : Promise<T>{
         let requestOptions: RequestInit = {
             method,
-            
-            body: data ? JSON.stringify(data) : null,
-            mode: 'cors'
+            body: data ? JSON.stringify(data) : null
         }
-
-        const headers = new Headers();
         
+        const headers = new Headers();
+        requestOptions.headers=headers;
 
         const apikey = this.auth.getApikey();
         if(apikey !== null){
@@ -40,8 +38,6 @@ export default class HttpClient{
         if(method!=="GET"){
             headers.append("Content-Type", "application/json");   
         }
-        
-        requestOptions.headers = headers;
 
         return fetch(combineUrl([this.apiUrl, endpoint], false), requestOptions).then(function(response) {
             if (response.ok) {
@@ -54,7 +50,6 @@ export default class HttpClient{
             throw response;
         })
         .catch(function(error) {
-            Router.set({ "key" : "login", "value" : null}, Lang.get("state_title_login"),"login");
             throw error;
         });
     }

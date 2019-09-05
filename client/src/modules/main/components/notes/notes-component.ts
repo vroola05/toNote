@@ -1,10 +1,13 @@
-import './notes-component.scss';
+import svgRename from '../../../../assets/images/rename.svg';
+import svgMove from '../../../../assets/images/move.svg';
+import svgDelete from '../../../../assets/images/delete.svg';
 
 import Lang from '../../../../components/language/lang';
 import { Note, MainState } from '../../../../types';
 import { Router } from '../../../../services/router/router-service';
 import { NoteService } from '../../../../services/http/note-service';
 import { TabMenu } from '../../../../components/controls/tabMenu/tab-menu';
+import MenuItemComponent from '../../../../components/controls/menu-item/menu-item-component';
 
 export default class NotesComponent extends TabMenu {
     private notebookId : number;
@@ -15,7 +18,17 @@ export default class NotesComponent extends TabMenu {
             ["name", Lang.get("notes_name")], 
             ["add", Lang.get("notes_add")]
         ]);
-        super(labels, "notes");
+        super(labels, "notes", TabMenu.COLOR_TYPE_MENU_COLOR);
+
+        this.dropdownMenu.addItem(new MenuItemComponent(svgRename, Lang.get("ctx_rename"), (e:any) => {
+            //Do nothing
+        }));
+        this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get("ctx_move"), (e:any) => {
+            //Do nothing
+        }));
+        this.dropdownMenu.addItem(new MenuItemComponent(svgDelete, Lang.get("ctx_remove"), (e:any) => {
+            //Do nothing
+        }));
     }
 
     public click(item:any, identifier:number, name:string, note:Note){

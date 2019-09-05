@@ -11,6 +11,9 @@ import SettingsModule from './modules/settings/settings-module';
 
 import { LoginService } from './services/http/login-service';
 
+    
+
+
 class Startup {
     public static main(): number {
 
@@ -26,7 +29,6 @@ class Startup {
         // 
         ////////////////////////////////////////
         new ConfigService( function() {
-            
             const loginService : LoginService = new LoginService();
             loginService.check().then(()=>{
                 let state = window.history.state;
@@ -34,8 +36,7 @@ class Startup {
                     state = { "key" : "main", value : null};
                 }
                 Router.set(state, Lang.get("state_title_notebooks"),"main");
-            }).catch(() => {
-            });
+            }).catch(() => {});
         } );
         
         

@@ -1,6 +1,4 @@
-import './note-component.scss';
-
-import {Note, MainState} from '../../../../types';
+import { Note, MainState } from '../../../../types';
 import { NoteService } from '../../../../services/http/note-service';
 
 import Lang from '../../../../components/language/lang';
@@ -9,6 +7,8 @@ import InputComponent from '../../../../components/controls/input/input-componen
 import DateFormat from '../../../../components/date/date';
 import OverlayComponent from './components/overlay/overlay-component';
 import NoteContentComponent from './components/note-content/note-content';
+import { Constants } from '../../../../services/config/constants';
+import { Util } from '../../../../components/util/util';
 
 export default class NoteComponent extends Tab {
     private notebookId : number = null;
@@ -22,21 +22,30 @@ export default class NoteComponent extends Tab {
 
     constructor(){
         super();
-        this.domTab.className = this.domTab.className +" tabNote";
+        this.dom.className = this.dom.className +" tabNote";
 
         this.overlayComponent = new OverlayComponent();
-        this.domTab.appendChild(this.overlayComponent.dom);
+        this.dom.appendChild(this.overlayComponent.dom);
 
         this.noteContentComponent = new NoteContentComponent();
-        this.domTab.appendChild(this.noteContentComponent.dom);
+        this.dom.appendChild(this.noteContentComponent.dom);
     }
 
-    public hide(){
-        this.noteContentComponent.hide(() => {
-            this.overlayComponent.show(() => {
-                this.clear();
+    /**
+     * 
+     */
+    public onHide(){
+        if(Util.getDevice() == Constants.mobile) {
+            this.noteContentComponent.hide();
+            this.overlayComponent.show();
+            this.clear();
+        } else {
+            this.noteContentComponent.hide(() => {
+                this.overlayComponent.show(() => {
+                    this.clear();
+                });
             });
-        });
+        }
     }
 
     public clear(){

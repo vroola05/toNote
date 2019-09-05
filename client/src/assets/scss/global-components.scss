@@ -1,0 +1,178 @@
+.menuItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
+    
+    .iconContainer {
+        width:$default-menu-icon-width;
+        .icon {
+            width: calc(100% - #{$default-padding*2});
+            height: calc(100% - #{$default-padding*2});
+            padding: $default-padding;
+            fill: red;
+        }
+    }
+    .nameContainer {
+        flex: auto;
+    }
+}
+
+
+.btn {
+    padding: $default-padding;
+    
+    border: $color-border solid 1px;
+    background : $color-shade-light;
+    
+    font-weight: bold;
+    cursor: pointer;
+    
+}
+
+.btnIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    width: $header-height;
+    height: calc(#{$header-height} - 1px);
+
+    border-right: $color-shade-dark solid 1px;
+    background : $color-primary;
+
+    cursor: pointer;
+    
+    &.small {
+        width: $header-height/2;
+        height: calc(#{$header-height/2} - 1px);
+        border-right: none;
+    }
+    .icon {
+        width: calc(100% - #{$default-padding*2});
+        height: calc(100% - #{$default-padding*2});
+        padding: $default-padding;
+    }
+}
+
+
+.inputContainer {
+    width: calc(100% - #{$default-margin*2} - 2px);
+    margin: $default-margin;
+
+    label {
+        display: block;
+        font-size: 14px;
+        font-style: italic;
+    }
+    
+    input {
+        width: calc(100% - 18px);
+        padding: 4px 8px;
+        
+        border: $color-border solid 1px;
+        background : lighten($color-secondary,60%);//$color-shade-light;
+    }
+
+    input:-webkit-autofill, input:-moz-autofill {
+        -webkit-box-shadow: inset 0 0 0px 9999px lighten($color-secondary,60%);
+        -moz-box-shadow: inset 0 0 0px 9999px lighten($color-secondary,60%);
+        box-shadow: inset 0 0 0px 9999px lighten($color-secondary,60%);
+    }
+}
+
+
+.backdrop {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    opacity: .2;
+}
+
+.dropdown {
+    position: absolute;
+    top: 0px;
+    min-width: $default-menu-width;
+    background: #ededed;
+    box-shadow: $default-shadow;
+    z-index: 3;
+}
+
+.popup {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+
+    .popupContainer {
+        background: #ededed;
+        box-shadow: $default-shadow;
+        .popupHeader {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: $header-height/2;
+            background: $color-primary;
+            color: $color-shade;
+
+            .titleContainer {
+                flex:  auto;
+                padding: $default-padding/2;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .btnRightContainer {
+                flex:  auto;
+                .btnIcon {
+                    float: right;
+                }
+            }
+        }
+
+        .popupRenameContainer {
+
+        }
+        .popupRenameBtnContainer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0px $default-padding $default-padding $default-padding;
+
+            .btn {
+                margin: $default-margin/2;
+            }
+        }
+    }
+}
+
+@media (min-width: 0px) and (max-width: $default-width-mobile) {
+    .dropdown {
+        top: 0px;
+        left: unset !important;
+        right: unset !important;
+        min-width: unset;
+        min-height: unset;
+        width: calc(100% - #{$default-padding*2});
+        max-height: calc(100% - #{$default-padding});
+        margin-top: unset;
+        margin: $default-margin;
+        
+        .menuItem {
+            height: $default-menu-item-mobile-height;
+            
+            .iconContainer {
+                width:$default-menu-icon-mobile-width;
+            }
+        }
+    }
+}

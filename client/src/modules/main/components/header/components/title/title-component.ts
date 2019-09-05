@@ -1,20 +1,14 @@
-import './title-component.scss';
-
 export default class TitleComponent  {
-    private domItem:HTMLElement = document.createElement("div");
+    public dom:HTMLElement = document.createElement("div");
     private domMainTitle:HTMLElement = document.createElement("div");
     private domSubTitle:HTMLElement = document.createElement("div");
     constructor(){
-        this.domItem.className = "title";
+        this.dom.className = "title";
         this.domMainTitle.className = "mainTitle";
         this.domSubTitle.className = "subTitle";
 
-        this.domItem.appendChild(this.domMainTitle);
-        this.domItem.appendChild(this.domSubTitle);
-    }
-
-    public get() : HTMLElement{
-        return this.domItem;
+        this.dom.appendChild(this.domMainTitle);
+        this.dom.appendChild(this.domSubTitle);
     }
 
     public setMainTitle(title: string){

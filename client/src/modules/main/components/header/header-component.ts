@@ -1,5 +1,3 @@
-import './header-component.scss';
-
 import svgHome from '../../../../assets/images/back.svg';
 import svgLocked from '../../../../assets/images/locked.svg';
 import svgUnlocked from '../../../../assets/images/unlocked.svg';
@@ -23,7 +21,7 @@ import MainModule from '../../main-module';
 
 
 export default class HeaderComponent  {
-    private domItem: HTMLElement = document.createElement("div");
+    public dom: HTMLElement = document.createElement("div");
     private btnLeftContainer: HTMLElement = document.createElement("div");
     private btnRightContainer: HTMLElement = document.createElement("div");
     private titleContainer: HTMLElement = document.createElement("div");
@@ -35,16 +33,16 @@ export default class HeaderComponent  {
 
     constructor(mainModule: MainModule){
         this.mainModule = mainModule;
-        this.domItem.className = "header";
+        this.dom.className = "header";
 
         this.btnLeftContainer.className = "btnLeftContainer";
         this.titleContainer.className = "titleContainer";
-        this.titleContainer.appendChild(this.titleComponent.get());
+        this.titleContainer.appendChild(this.titleComponent.dom);
         this.btnRightContainer.className = "btnRightContainer";
 
-        this.domItem.appendChild(this.btnLeftContainer);
-        this.domItem.appendChild(this.titleContainer);
-        this.domItem.appendChild(this.btnRightContainer);
+        this.dom.appendChild(this.btnLeftContainer);
+        this.dom.appendChild(this.titleContainer);
+        this.dom.appendChild(this.btnRightContainer);
 
         //////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////
@@ -52,6 +50,7 @@ export default class HeaderComponent  {
         //
         this.addMenuItem(new ButtonIconComponent(svgHome, Lang.get("header_icon_back"), (item:any) => {
             this.mainModule.back();
+            this.mainModule.setDeviceLayout();
         }));
 
         //
@@ -71,15 +70,13 @@ export default class HeaderComponent  {
         //////////////////////////////////////////////////////////////////
         //
 
-        const btnMenu= new ButtonDropdownComponent(svgMenu, Lang.get("header_icon_menu"), (item:any) => {
+        const btnMenu= new ButtonDropdownComponent(svgMenu, Lang.get("header_icon_menu"), (e:Event, item:any) => {
             console.log(item.isOpened);
-        })
+        });
         this.addAltMenuItem(btnMenu);
 
         btnMenu.addItem(new MenuItemComponent(svgSettings, Lang.get("header_menu_settings"), (e:any) => {
-            
             Router.set({ "key" : "settings", value : mainModule.state}, Lang.get("state_title_settings"),"settings");
-
         }));
         btnMenu.addItem(new MenuItemComponent(svgLogout, Lang.get("header_menu_logout"), (e:any) => {
             new LoginService().logout().then(()=>{
@@ -91,16 +88,12 @@ export default class HeaderComponent  {
 
     public addMenuItem(buttonComponent: ButtonIconComponent){
         this.buttonComponents.push(buttonComponent);
-        this.btnLeftContainer.appendChild(buttonComponent.get());
+        this.btnLeftContainer.appendChild(buttonComponent.dom);
     }
 
     public addAltMenuItem(buttonComponent: ButtonIconComponent){
         this.buttonComponents.push(buttonComponent);
-        this.btnRightContainer.appendChild(buttonComponent.get());
-    }
-
-    public get() : HTMLElement{
-        return this.domItem;
+        this.btnRightContainer.appendChild(buttonComponent.dom);
     }
 
     public setMainTitle(title: string){
