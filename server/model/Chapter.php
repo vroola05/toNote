@@ -36,7 +36,7 @@ class Chapter extends ModelBase {
     }
 
     function setId($id) {
-        $this->setVar("id", $id);
+        $this->id = $id;
     }
 
     function getId() {
@@ -44,7 +44,7 @@ class Chapter extends ModelBase {
     }
 
     function setNotebookId($notebookId) {
-        $this->setVar("notebookId", $notebookId);
+        $this->notebookId = $notebookId;
     }
 
     function getNotebookId() {
@@ -52,7 +52,7 @@ class Chapter extends ModelBase {
     }
 
     function setUserId($userId) {
-        $this->setVar("userId", $userId);
+        $this->userId = $userId;
     }
 
     function getUserId() {
@@ -60,7 +60,7 @@ class Chapter extends ModelBase {
     }
 
     function setName($name) {
-        $this->setVar("name", $name);
+        $this->name = $name;
     }
 
     function getName() {
@@ -68,7 +68,7 @@ class Chapter extends ModelBase {
     }
 
     function setColor($color) {
-        $this->setVar("color", $color);
+        $this->color = $color;
     }
 
     function getColor() {
@@ -76,7 +76,7 @@ class Chapter extends ModelBase {
     }
 
     function setCreationDate($creationDate) {
-        $this->setVar("creationDate", $creationDate);
+        $this->creationDate = $creationDate;
     }
 
     function getCreationDate() {
@@ -84,7 +84,7 @@ class Chapter extends ModelBase {
     }
 
     function setModifyDate($modifyDate) {
-        $this->setVar("modifyDate", $modifyDate);
+        $this->modifyDate = $modifyDate;
     }
 
     function getModifyDate() {

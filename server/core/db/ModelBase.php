@@ -1,6 +1,8 @@
 <?php
 namespace core\db;
 
+use \core\Validator;
+
 /**
 
  */
@@ -9,7 +11,7 @@ class ModelBase {
     private $error; //Stores any sql error
     private $messages; //Stores validation errors
     private $mapping; //Stores the mapping to the database    
-    private $isfieldSet;
+    
     private $in;
 
     function __construct() {
@@ -19,19 +21,13 @@ class ModelBase {
     public function set($json) {
         if ($json != null) {
             foreach ($json as $key => $value) {
-                $this->setVar($key, $value);
+                $this->{$key} = $value;
             }
         }
     }
 
-    public function setVar($field, $value) {
-        $this->{$field} = $value;
-        if ($this->isfieldSet == null)
-            $this->isfieldSet = array();
-        $this->isfieldSet[$field] = $value;
-    }
-
     public function validate() {
+        
         $validator = new Validator();
         $this->messages = array();
 
@@ -157,6 +153,52 @@ class ModelBase {
         $this->mapping->foreignKeys[$culumnName]->setPrefix($prefix);
     }
 
+    public function post($connection = null) {
+        if ($this->validate() == false) {
+            return false;
+        }
+
+        if ($connection == null) {
+            return false;
+        }
+        $output = null; 
+
+        $params = array();
+        $query = "";
+
+        foreach ($this->mapping->foreignKeys as $columnName => $foreignKey) {
+            $field = $this->mapping->columns[$columnName]->field;
+
+            if (!array_key_exists($field, $this->isfieldSet)) {
+                $this->error = array(
+                    "code" => "2001",
+                    "message" => "Foreignkeys can't be empty!",
+                );
+                return false;
+            }
+        }
+
+        $keys = "";
+        $values = "";
+        foreach ($this->mapping->columns as $columnName => $column) {
+            if (array_key_exists($column->field, $this->isfieldSet)) {
+                $keys .= ($keys != "" ? ", " : "") . "`" . $columnName . "`";
+                $values .= ($values != "") ? ", ?" : "?";
+                $params[] = $this->{$column->field};
+            }
+        }
+
+        $query = "insert into " . $this->mapping->tablename . " (" . $keys . ") values (" . $values . ")";
+
+        if ($connection->dbPreparedStatement($query, $params)) {
+            $output = $connection->getLastInsertId();
+        } else {
+            $this->error = $connection->getError();
+            $output = false;
+        }
+        
+        return $output;
+    }
     /**
      * Saves an object to the database. If the object has a primary key that is not null
      * it does an update, else it insert the object
@@ -167,134 +209,79 @@ class ModelBase {
      * errormessage.
      */
     public function put($connection = null) {
-        if ($this->validate() == false)
-            return false;
-
-        $output = null;
-
         if ($connection == null) {
             return false;
         }
 
+        if ($this->validate() === false) {
+            return true;
+        }
         $params = array();
-        $query = "";
-        $where = "";
+        
 
         $primaryKeys = array();
-
-        $hasPrimaryKey = true;
+        $foreignKeys = array();
+        //Check if all primary keys are set
         foreach ($this->mapping->primaryKeys as $columnName => $fieldName) {
             $primaryKeys[$columnName] = $this->$fieldName;
             //a zero is threated as empty so i added !is_numeric
             if (!isset( $primaryKeys[$columnName] ) || (empty($primaryKeys[$columnName]) && !is_numeric($primaryKeys[$columnName]))) {
-                $hasPrimaryKey = false; //insert..
-            } else {
-                $where .= ($where != "" ? " and " : "") . $columnName . "=?";
-                $params[] = $primaryKeys[$columnName];
+                $this->error = array(
+                    "code" => "2000",
+                    "message" => "Primarykeys can't be empty!",
+                );
+                return false;
             }
         }
-
-        $hasForeinKey = false;
-        foreach ($this->mapping->foreignKeys as $columnName => $foreignKey) {
-            $field = $this->mapping->columns[$columnName]->field;
-
-            if (!array_key_exists($field, $this->isfieldSet)) {
+        //Check if all foreignkeys are set
+        foreach ($this->mapping->foreignKeys as $columnName => $map) {
+            $foreignKeys[$columnName] = $this->$columnName;
+            //a zero is threated as empty so i added !is_numeric
+            if (!isset( $this->$columnName ) || (empty($this->$columnName) && !is_numeric($this->$columnName))) {
                 $this->error = array(
                     "code" => "2001",
-                    "message" => "De foreignkeys moeten zijn gevuld.",
+                    "message" => "Foreignkeys can't be empty!",
                 );
-                $output - false;
-            } else {
-
-                $hasForeinKey = true;
-                if (!array_key_exists($columnName, $this->mapping->primaryKeys)) {
-                    $where .= ($where != "" ? " and " : "") . $columnName . "=?";
-                    $params[] = $this->$field;
-                }
+                return false;
             }
         }
 
-        //If there are records found, there need to be a check if the record needs to be updated or inserted.
-        if ($hasForeinKey && $hasPrimaryKey) {
-            $query = "select count(*) as amount from " . $this->mapping->tablename . " where " . $where;
-            if ($connection->dbPreparedStatement($query, $params)) {
-                $records = $connection->getFetchData();
-
-                if ($records[0]['amount'] == 0) {
-                    $hasPrimaryKey = false;
-                }
+        $values = "";
+        $where = "";
+        
+        foreach ($this->mapping->columns as $columnName => $column) {
+            if (
+                !array_key_exists($columnName, $primaryKeys) 
+                && !array_key_exists($columnName, $this->mapping->foreignKeys)
+                ) {
+                $values .= ($values != "" ? ", " : "") . $columnName . "=?";
+print ( $columnName . " = ". $this->$columnName ."\n");
+                $params[] = $this->{$columnName};
             }
         }
 
-        unset($params);
-        $params = array();
-        $a = "";
-        $b = "";
-        $hasValues = false;
-
-        /*
-         *
-         * Als het een updatestatement is
-         *
-         */
-        if ($hasPrimaryKey) {
-            foreach ($this->mapping->columns as $columnName => $column) {
-                if (array_key_exists($column->field, $this->isfieldSet) &&
-                        !array_key_exists($columnName, $primaryKeys) &&
-                        !array_key_exists($columnName, $this->mapping->foreignKeys)) {
-
-                    $a .= ($a != "" ? ", " : "") . $columnName . "=?";
-                    $params[] = $this->{$column->field};
-                    $hasValues = true;
-                }
-            }
-            foreach ($primaryKeys as $columnName => $value) {
-                //because zero is seen as empty i put is_numeric in the statement
-                if (isset( $primaryKeys[$columnName] ) && (!empty($primaryKeys[$columnName]) || is_numeric($primaryKeys[$columnName]))) {
-                    $b .= ($b != "" ? " and " : "") . $columnName . "=?";
-                    $params[] = $value;
-                }
-            }
-            $query = "update " . $this->mapping->tablename . " set " . $a . " where " . $b;
-            /**
-             *
-             * Als het een insertstatement is
-             *
-             */
-        } else {
-            foreach ($this->mapping->columns as $columnName => $column) {
-                if (array_key_exists($column->field, $this->isfieldSet)) {
-                    $a .= ($a != "" ? ", " : "") . "`" . $columnName . "`";
-                    $b .= ($b != "") ? ", ?" : "?";
-                    $params[] = $this->{$column->field};
-                    $hasValues = true;
-                }
-            }
-            $query = "insert into " . $this->mapping->tablename . " (" . $a . ") values (" . $b . ")";
+        foreach ($primaryKeys as $columnName => $value) {
+            $where .= ($where != "" ? " and " : "") . $columnName . "=?";
+            $params[] = $value;
+        }
+        
+        foreach ($foreignKeys as $columnName => $value) {
+            $where .= ($where != "" ? " and " : "") . $columnName . "=?";
+            $params[] = $value;
         }
 
-        if (!$hasValues) {
-            $this->error = array(
-                "code" => "2002",
-                "message" => "Er moet minimaal één waarde worden opgeslagen",
-            );
-            $output = false;
-        }
+        $query = "update " . $this->mapping->tablename . " set " . $values . " where " . $where;
+        
+        print ($query);
         //If the query succeeds
-        else if ($connection->dbPreparedStatement($query, $params)) {
-            if (!$hasPrimaryKey) {
-                $output = $connection->getLastInsertId();
-            } else {
-                $output = true;
-            }
+        if ($connection->dbPreparedStatement($query, $params)) {
+            return true;
         }
         //If the query fails
         else {
             $this->error = $connection->getError();
-            $output = false;
+            return false;
         }
-        
-        return $output;
     }
 
     /**
@@ -479,7 +466,7 @@ class ModelBase {
          * options
          */
         foreach ($this->mapping->columns as $columnName => $column) {
-            if ($this->isfieldSet != null && array_key_exists($columnName, $this->isfieldSet)) {
+            //if ($this->isfieldSet != null && array_key_exists($columnName, $this->isfieldSet)) {
                 if ($operators != null) {
 
                     if (array_key_exists($columnName, $operators) && array_key_exists($prefix, $operators[$columnName])) {
@@ -539,7 +526,7 @@ class ModelBase {
                     $where .= ($where != "" ? " and " : "") . $prefixStr . "." . $columnName . "=?";
                     $params[] = $this->{$columnName};
                 }
-            }
+            //}
         }
         if (count($whereClause) > 0) {
             foreach ($whereClause as $clause) {

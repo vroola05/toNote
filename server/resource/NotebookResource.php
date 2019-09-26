@@ -70,8 +70,17 @@ class NotebookResource {
         $connection->dbConnect();
         $n = new Notebook();
         $n->setId($data->id);
-        $n->get(null, $connection);
-
-        return $n;//new \Core\Message(200, "Notebook has been created!");
+        $n->setUserId(Security::getUserId());
+        $n->setName($data->name);
+        $n->setCreationDate($data->creationDate);
+        $n->setModifyDate($data->modifyDate);
+        if($n->put($connection)){
+            return new \Core\Message(200, "Update successfull!");
+        } else {
+            //return $n->getMessages();
+            return new \Core\Message(400, "Something went wrong!");
+        }
+        
+        
     }
 }

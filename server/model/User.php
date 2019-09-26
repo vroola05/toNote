@@ -39,56 +39,56 @@ class User extends ModelBase {
     }
 
     function setUserId($userId) {
-        $this->setVar("userId", $userId);
+        $this->userId = $userId;
     }
     function getUserId() {
         return $this->userId;
     }
 
     function setUsername($username) {
-        $this->setVar("username", $username);
+        $this->username = $username;
     }
     function getUsername() {
         return $this->username;
     }
 
     function setPassword($password) {
-        $this->setVar("password", $password);
+        $this->password = $password;
     }
     function getPassword() {
         return $this->password;
     }
 
     function setActive($active) {
-        $this->setVar("active", $active);
+        $this->active = $active;
     }
     function getActive() {
         return $this->active;
     }
 
     function setFirstname($firstname) {
-        $this->setVar("firstname", $firstname);
+        $this->firstname = $firstname;
     }
     function getFistname() {
         return $this->firstname;
     }
 
     function setLastname($lastname) {
-        $this->setVar("lastname", $lastname);
+        $this->lastname = $lastname;
     }
     function getLastname() {
         return $this->lastname;
     }
 
     function setPhone($phone) {
-        $this->setVar("phone", $phone);
+        $this->phone = $phone;
     }
     function getPhone() {
         return $this->phone;
     }
 
     function setAddress($address) {
-        $this->setVar("address", $address);
+        $this->address = $address;
     }
     function getAddress() {
         return $this->address;
@@ -102,13 +102,13 @@ class User extends ModelBase {
     }
 
     function setStateType($stateType) {
-        $this->setVar("stateType", $stateType);
+        $this->stateType = $stateType;
     }
     function getStateType() {
         return $this->stateType;
     }
     function setStateId($stateId) {
-        $this->setVar("stateId", $stateId);
+        $this->stateId = $stateId;
     }
     function getStateId() {
         return $this->stateId;

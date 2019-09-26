@@ -2,6 +2,7 @@
 namespace core;
 
 use \core\db\Database;
+use \core\db\Store;
 
 abstract class Security {
     const SESSION_EXPIRATION_TIME = 30;
@@ -9,10 +10,19 @@ abstract class Security {
     const ALLOWED_HOST = "http://localhost:9000";
     const ALLOWED_HEADERS =  "Content-Type, ". Security::APIKEY;
 
+    private static $userId = null;
+
     /**
      * 
      */
 	function  __construct(){
+    }
+
+    public static function setUserId($userId){
+        self::$userId = $userId;
+    }
+    public static function getUserId(){
+        return self::$userId;
     }
 
     public static function defaultHeaders(){
@@ -47,6 +57,7 @@ abstract class Security {
             if($connection->dbPreparedStatement("select userId from sessions where expirationDate >= ? and apikey = ?", array( (new \DateTime("NOW"))->format('Y-m-d H:i:s'), $apikey ))){
                 $session = $connection->getFetchData();
                 if( $session != null && count($session)>0 ){
+                    Security::setUserId($session[0]['userId']);
                     Security::updateSession("", $apikey);
                     return true;
                 }

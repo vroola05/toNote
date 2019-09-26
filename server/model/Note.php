@@ -35,7 +35,7 @@ class Note extends ModelBase {
     }
 
     function setId($id) {
-        $this->setVar("id", $id);
+        $this->id = $id;
     }
 
     function getId() {
@@ -43,7 +43,7 @@ class Note extends ModelBase {
     }
 
     function setSectionId($sectionId) {
-        $this->setVar("sectionId", $sectionId);
+        $this->sectionId = $sectionId;
     }
 
     function getSectionId() {
@@ -51,7 +51,7 @@ class Note extends ModelBase {
     }
 
     function setUserId($userId) {
-        $this->setVar("userId", $userId);
+        $this->userId = $userId;
     }
 
     function getUserId() {
@@ -59,7 +59,7 @@ class Note extends ModelBase {
     }
 
     function setName($name) {
-        $this->setVar("name", $name);
+        $this->name = $name;
     }
 
     function getName() {
@@ -67,7 +67,7 @@ class Note extends ModelBase {
     }
 
     function setNote($note) {
-        $this->setVar("note", $note);
+        $this->note = $note;
     }
 
     function getNote() {
@@ -75,7 +75,7 @@ class Note extends ModelBase {
     }
 
     function setCreationDate($creationDate) {
-        $this->setVar("creationDate", $creationDate);
+        $this->creationDate = $creationDate;
     }
 
     function getCreationDate() {
@@ -83,7 +83,7 @@ class Note extends ModelBase {
     }
 
     function setModifyDate($modifyDate) {
-        $this->setVar("modifyDate", $modifyDate);
+        $this->modifyDate = $modifyDate;
     }
 
     function getModifyDate() {

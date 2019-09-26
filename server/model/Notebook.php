@@ -25,13 +25,14 @@ class Notebook extends ModelBase {
         $mapping->addColumn("hash", "string", null, 255);
 
         $mapping->addPrimaryKey("id", "id");
+        $mapping->addForeignKey("users", "userId", "userId");
 
         $this->setMapping($mapping);
         $this->set($json);
     }
 
     function setId( int $id ) {
-        $this->setVar("id", $id);
+        $this->id = $id;
     }
 
     function getId() : int {
@@ -39,7 +40,7 @@ class Notebook extends ModelBase {
     }
 
     function setUserId( int $userId ) {
-        $this->setVar("userId", $userId);
+        $this->userId = $userId;
     }
 
     function getUserId() : int {
@@ -47,7 +48,7 @@ class Notebook extends ModelBase {
     }
 
     function setName(string $name) {
-        $this->setVar("name", $name);
+        $this->name = $name;
     }
 
     function getName() : string {
@@ -55,7 +56,7 @@ class Notebook extends ModelBase {
     }
 
     function setCreationDate( string $creationDate ) {
-        $this->setVar("creationDate", $creationDate);
+        $this->creationDate = $creationDate;
     }
 
     function getCreationDate() : string {
@@ -63,7 +64,7 @@ class Notebook extends ModelBase {
     }
 
     function setModifyDate( string $modifyDate )  {
-        $this->setVar("modifyDate", $modifyDate);
+        $this->modifyDate = $modifyDate;
     }
 
     function getModifyDate() : string {

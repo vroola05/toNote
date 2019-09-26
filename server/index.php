@@ -1,4 +1,5 @@
 <?php
+require_once 'core/Validator.php';
 require_once 'core/db/Database.php';
 require_once 'core/db/CollectionParams.php';
 require_once 'core/db/Collection.php';
@@ -7,6 +8,7 @@ require_once 'core/db/ModelBase.php';
 
 require_once 'core/Conf.php';
 require_once 'core/Message.php';
+require_once 'core/Store.php';
 require_once 'core/Http.php';
 require_once 'core/GUID.php';
 require_once 'core/Security.php';
@@ -22,7 +24,9 @@ use \core\Http;
 use \core\Security;
 use \core\Router;
 use \core\Message;
+use \core\Store;
 
+print(Store::get(""));
 try{
 	Conf::read();
 	
