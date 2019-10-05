@@ -77,15 +77,14 @@ class Database {
     }
 
     function dbPreparedStatement($query, $param) {
-        $output = null;
         $this->stmt = $this->db->prepare($query);
         if ($param!=null && sizeof($param) > 0) {
             for ($i = 0; $i < sizeof($param); $i++) {
-                $this->stmt->bindParam($i + 1, $param[$i]);//, PDO::PARAM_NULL);
+                $this->stmt->bindParam($i + 1, $param[$i]);
             }
         }
         try {
-            $this->stmt->execute();
+            return $this->stmt->execute();
         } catch (Exception $e) {
             $this->error = array(
                 "code" => $e->getCode(),
@@ -94,7 +93,7 @@ class Database {
             );
             return false;
         }
-        return true;
+        
     }
 
     /**
@@ -115,6 +114,20 @@ class Database {
         return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * 
+     */
+    public function getSingleItem($item, string $query, array $param) {
+        if($this->dbPreparedStatement($query, $param)){
+            $this->stmt->setFetchMode(PDO::FETCH_INTO, $item);
+            $result = $this->stmt->fetch();
+            if($result!== false) {
+                return $result;
+            }
+            
+        }
+        return null;
+    }
 }
 
 ?>

@@ -88,7 +88,6 @@ abstract class Security {
         } else {
             return false;
         }
-        //$dateTime->format(\DateTime::W3C);
     }
 
     public static function updateSession( $description, $apikey ){

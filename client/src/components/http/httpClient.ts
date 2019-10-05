@@ -31,6 +31,8 @@ export default class HttpClient{
         }
         
         const headers = new Headers();
+        headers.append("Accept-Language", navigator.language);
+        
         requestOptions.headers=headers;
 
         const apikey = this.auth.getApikey();
@@ -46,6 +48,7 @@ export default class HttpClient{
         return fetch(combineUrl([this.apiUrl, endpoint], false), requestOptions).then(function(response) {
             if (response.ok) {
                 return response.json().catch((error) => {
+                    
                     throw error;
                 }) as Promise<T>;
             } else if(response.status===401){
@@ -54,6 +57,7 @@ export default class HttpClient{
             throw response;
         })
         .catch(function(error) {
+            console.log("s");
             throw error;
         });
     }

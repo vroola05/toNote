@@ -64,6 +64,9 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       { from: './config/appconfig.json', to: 'config' },
+    ]),
+    new CopyWebpackPlugin([
+      { from: './config/language.json', to: 'config' },
 		])
   ]
 };

@@ -6,6 +6,7 @@ require_once 'core/db/Collection.php';
 require_once 'core/db/Mapping.php';
 require_once 'core/db/ModelBase.php';
 
+require_once 'core/Lang.php';
 require_once 'core/Conf.php';
 require_once 'core/Message.php';
 require_once 'core/Store.php';
@@ -20,16 +21,17 @@ require 'resource/ChapterResource.php';
 require 'resource/NotesResource.php';
 
 use \core\Conf;
+use \core\Lang;
 use \core\Http;
 use \core\Security;
 use \core\Router;
 use \core\Message;
 use \core\Store;
 
-print(Store::get(""));
 try{
+	Lang::read();
 	Conf::read();
-	
+
 	if(Security::cors()){
 		exit(0);
 	}

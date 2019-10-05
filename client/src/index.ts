@@ -16,19 +16,14 @@ import { LoginService } from './services/http/login-service';
 
 class Startup {
     public static main(): number {
-
-        Router.register("login", new LoginModule());
-        Router.register("main", new MainModule());
-        Router.register("settings", new SettingsModule());
-
-        ////////////////////////////////////////
-        // 
-        ////////////////////////////////////////
-
         ////////////////////////////////////////
         // 
         ////////////////////////////////////////
         new ConfigService( function() {
+            Router.register("login", new LoginModule());
+            Router.register("main", new MainModule());
+            Router.register("settings", new SettingsModule());
+
             const loginService : LoginService = new LoginService();
             loginService.check().then(()=>{
                 let state = window.history.state;

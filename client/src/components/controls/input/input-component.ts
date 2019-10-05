@@ -28,4 +28,12 @@ export default class InputComponent  {
         
         return this.domInput.value;
     }
+
+    public focus(){
+        this.domInput.focus();
+    }
+
+    public addEventListener(event:string, func:any){
+        this.domInput.addEventListener(event, func);
+    }
 }

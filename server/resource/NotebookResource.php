@@ -9,6 +9,7 @@ use \core\db\Collection;
 use \core\db\Database;
 use \core\db\CollectionParams;
 use \core\Security;
+use \core\Http;
 
 use \model\Notebook;
 use \model\Notebooks;
@@ -49,13 +50,7 @@ class NotebookResource {
         if( count($parameters)>0 ){
             $connection = Database::getInstance();
             $connection->dbConnect();
-            $notebook = new Notebook();
-            $notebook->setId($parameters[0]);
             
-            $output = $notebook->get(null, $connection);
-            if($output !== false){
-                return $output;
-            }
             Http::setStatus(404);
             throw new \Exception('Not found!');
         }
@@ -65,22 +60,30 @@ class NotebookResource {
         return new \Core\Message(200, "Notebook has been saved!");
     }
 
-    public function putNotebook($parameters, $data){
+    public function putNotebook($parameters, $notebook){
         $connection = Database::getInstance();
         $connection->dbConnect();
-        $n = new Notebook();
-        $n->setId($data->id);
-        $n->setUserId(Security::getUserId());
-        $n->setName($data->name);
-        $n->setCreationDate($data->creationDate);
-        $n->setModifyDate($data->modifyDate);
-        if($n->put($connection)){
+        $input = new Notebook();
+        $input->setId($notebook->id);
+        $input->setUserId(Security::getUserId());
+        $input->setName($notebook->name);
+        
+        $input->setCreationDate((new \DateTime($notebook->creationDate))->format("Y-m-d H:i:s"));
+        $input->setModifyDate((new \DateTime($notebook->modifyDate))->format("Y-m-d H:i:s"));
+        $input->setHash('');
+        
+        if($input->put($connection)){
             return new \Core\Message(200, "Update successfull!");
         } else {
-            //return $n->getMessages();
-            return new \Core\Message(400, "Something went wrong!");
+            Http::setStatus(400);
+            $message = new \Core\Message(400, "Something went wrong!");
+            $messages = $input->getMessages();
+            if($messages){
+                foreach($messages as $m){
+                    $message->addExtraInfo($m->id, $m->faultcode);
+                }
+            }
+            return $message;
         }
-        
-        
     }
 }

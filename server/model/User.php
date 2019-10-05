@@ -25,12 +25,12 @@ class User extends ModelBase {
         $mapping->addColumn("username", "string", null, 70);
         $mapping->addColumn("password", "string", null, 14);
         $mapping->addColumn("active", "boolean");
-        $mapping->addColumn("firstname", "string", null, 255);
-        $mapping->addColumn("lastname", "string", null, 255);
-        $mapping->addColumn("phone", "string", null, 20);
-        $mapping->addColumn("address", "string", null, 255);
-        $mapping->addColumn("stateType", "string", null, 8);
-        $mapping->addColumn("stateId", "integer");
+        //$mapping->addColumn("firstname", "string", null, 255);
+        //$mapping->addColumn("lastname", "string", null, 255);
+        //$mapping->addColumn("phone", "string", null, 20);
+        //$mapping->addColumn("address", "string", null, 255);
+        //$mapping->addColumn("stateType", "string", null, 8);
+        //$mapping->addColumn("stateId", "integer");
 
         $mapping->addPrimaryKey("userId", "userId");
 

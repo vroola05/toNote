@@ -1,8 +1,9 @@
 <?php
 namespace core\db;
 
+use \core\Lang;
 use \core\Validator;
-
+use \core\Fault;
 /**
 
  */
@@ -27,7 +28,6 @@ class ModelBase {
     }
 
     public function validate() {
-        
         $validator = new Validator();
         $this->messages = array();
 
@@ -39,8 +39,9 @@ class ModelBase {
                 $this->messages[] = $fault;
             }
         }
-        foreach ($this->mapping->columns as $column) {
-            $value = $this->{$column->field};
+        foreach ($this->mapping->columns as $columnName => $column) {
+            $value = $this->{$columnName};
+            
             $faultcode = null;
             if ($value != null && $value != "") {
                 switch ($column->columnType) {
@@ -112,13 +113,14 @@ class ModelBase {
                 }
                 if ($faultcode != null) {
                     $fault = new Fault();
-                    $fault->setId($column->field);
+                    $fault->setId($columnName);
                     $fault->setFaultcode($faultcode);
+                    
                     $this->messages[] = $fault;
+                    
                 }
             }
         }
-
         if (count($this->messages) > 0)
             return false;
         else
@@ -212,10 +214,10 @@ class ModelBase {
         if ($connection == null) {
             return false;
         }
-
         if ($this->validate() === false) {
-            return true;
+            return false;
         }
+
         $params = array();
         
 
@@ -255,7 +257,6 @@ class ModelBase {
                 && !array_key_exists($columnName, $this->mapping->foreignKeys)
                 ) {
                 $values .= ($values != "" ? ", " : "") . $columnName . "=?";
-print ( $columnName . " = ". $this->$columnName ."\n");
                 $params[] = $this->{$columnName};
             }
         }
@@ -271,8 +272,7 @@ print ( $columnName . " = ". $this->$columnName ."\n");
         }
 
         $query = "update " . $this->mapping->tablename . " set " . $values . " where " . $where;
-        
-        print ($query);
+
         //If the query succeeds
         if ($connection->dbPreparedStatement($query, $params)) {
             return true;
@@ -342,8 +342,8 @@ print ( $columnName . " = ". $this->$columnName ."\n");
     /**
      *
      */
-    public function get($receiveColumns = null, $connection = null) {
-        
+    public function get($connection = null, array $identifiers, array $receiveColumns = null ) {
+
         //Open database connection
         if ($connection == null) {
             return false;
@@ -356,6 +356,7 @@ print ( $columnName . " = ". $this->$columnName ."\n");
         if ($receiveColumns != null) {
             foreach ($receiveColumns as $columnName) {
                 if (array_key_exists($columnName, $this->mapping->columns)) {
+                    
                     $select .= ($select != "" ? ", " : "") . $this->mapping->tablename . "." . $columnName;
                 }
             }
@@ -363,70 +364,63 @@ print ( $columnName . " = ". $this->$columnName ."\n");
             $select = "*";
         }
 
-        $this->getWhereClause($where, $params);
+        $this->getWhereClause($where, $params, $identifiers);
 
         $query = "select " . $select . " from " . $this->mapping->tablename . ($where == "" ? "" : (" where " . $where));
-        //If the query succeeds
+
+        //If the query succeeds       
         if ($connection->dbPreparedStatement($query, $params, "select") !== false) {
-            
             $records = $connection->getFetchData();
-            if (count($records) == 0) {
+            if (count($records) != 0 && $this->handleResult($receiveColumns, $records[0])) {
+                return true;
+            } else {
                 $this->error = array(
                     "code" => "2000",
                     "message" => "Er is geen object gevonden in de database!",
                 );
-                $output = false;
-            } else {
-                $output = $this->handleResult($receiveColumns, $records);
+                return false;
             }
-        }
-        //If the query fails
-        else {
+        } else {
             $this->error = $connection->getError();
-            $output = false;
+            return false;
         }
-
-        return $output;
     }
 
-    private function handleResult($receiveColumns, $records) {
+    private function handleResult($receiveColumns, $record) {
         if ($records == null) {
-            return null;
+            return false;
         }
-
+        
         $receiveColumns = $this->switchKeyValueMap($receiveColumns);
-        $baseObject = $this->createBaseObject($receiveColumns);
-
-        foreach ($records as $record) {
-            foreach ($record as $columnKey => $columnValue) {
-                
-                if (($receiveColumns == null || array_key_exists($columnKey, $receiveColumns))) {
-                    switch( $this->mapping->columns[$columnKey]->columnType){
-                        case "integer":
-                            $baseObject->$columnKey = (int)$columnValue;
-                            break;
-                        case "double":
-                            $baseObject->$columnKey = (double)$columnValue;
-                            break;
-                        case "datetime":
-                            $d = new \DateTime($columnValue);
-                            $baseObject->$columnKey = $d->format(\DateTime::W3C);
-                            break;
-                        case "date":
-                            $d = new \DateTime($columnValue);
-                            $baseObject->$columnKey = $d->format(\DateTime::W3C);
-                            break;
-                        case "boolean":
-                            $baseObject->$columnKey = (bool)$columnValue;
-                            break;
-                        default:
-                            $baseObject->$columnKey = $columnValue;
-                            break;
-                    }
-                    
+        
+        foreach ($record as $columnKey => $columnValue) {
+            
+            if (($receiveColumns == null || array_key_exists($columnKey, $receiveColumns))) {
+                switch( $this->mapping->columns[$columnKey]->columnType){
+                    case "integer":
+                        $this->$columnKey = (int)$columnValue;
+                        break;
+                    case "double":
+                        $this->$columnKey = (double)$columnValue;
+                        break;
+                    case "datetime":
+                        $d = new \DateTime($columnValue);
+                        $this->$columnKey = $d->format(\DateTime::W3C);
+                        break;
+                    case "date":
+                        $d = new \DateTime($columnValue);
+                        $this->$columnKey = $d->format(\DateTime::W3C);
+                        break;
+                    case "boolean":
+                        $this->$columnKey = (bool)$columnValue;
+                        break;
+                    default:
+                        $this->$columnKey = $columnValue;
+                        break;
                 }
+                
             }
-            return $baseObject;
+            
         }
     }
 
@@ -453,100 +447,26 @@ print ( $columnName . " = ". $this->$columnName ."\n");
      * @param type $operators
      * @param String $prefix - a string that functions as a prefix before the columnname
      */
-    public function getWhereClause(&$where, &$params, $operators = null, $prefix = null) {
+    public function getWhereClause(&$where, &$params, array $identifiers) {
         $prefixStr = ($prefix != null) ? $prefix : $this->mapping->tablename;
 
-        $whereClause = array();
+        foreach ($identifiers as $identifier) {
+            if (array_key_exists($identifier, $this->mapping->columns)) {
+                
+                $where .= ($where != "" ? " and " : "") . $prefixStr . "." . $identifier . "=?";
+                $params[] = $this->{$identifier};
+            }
+        }
 
-        /*
-         * prefix
-         * columnName
-         * operator
-         * wildcard
-         * options
-         */
-        foreach ($this->mapping->columns as $columnName => $column) {
-            //if ($this->isfieldSet != null && array_key_exists($columnName, $this->isfieldSet)) {
-                if ($operators != null) {
-
-                    if (array_key_exists($columnName, $operators) && array_key_exists($prefix, $operators[$columnName])) {
-
-                        $op = "";
-                        if (array_key_exists("operator", $operators[$columnName][$prefix])) {
-                            //use the operator as index
-                            $op = $operators[$columnName][$prefixStr]["operator"] == null ? "and" : $operators[$columnName][$prefixStr]["operator"];
-                        } else {
-                            //use the or operator as default. If there is an operator in the array, but not as string - probably only the wildcard is used
-                            //so you probably wan't to search a='%bla%' or b='%bla%' or c='%bla%'
-                            $op = "or";
-                        }
-
-                        if (!array_key_exists($op, $whereClause)) {
-                            $whereClause[$op] = array();
-                            $whereClause[$op]["where"] = "";
-                            $whereClause[$op]["params"] = array();
-                        }
-                        //$whereClause[$op]["where"] = "";
-                        //$whereClause[$op]["params"] = array();
-
-                        if (array_key_exists("wildcard", $operators[$columnName][$prefix]) && $operators[$columnName][$prefix]["wildcard"] != null) {
-                            $wildOptions = "surround";
-                            if (array_key_exists("options", $operators[$columnName][$prefix])) {
-                                $wildOptions = $operators[$columnName][$prefix]["options"] == null ? $wildOptions : $operators[$columnName][$prefix]["options"];
-                            }
-                            $wOpen = "";
-                            $wClose = "";
-                            $wildcard = $operators[$columnName][$prefix]["wildcard"];
-                            switch ($wildcard) {
-                                case "%":
-                                    $wOpen = $wildOptions != "end" ? "%" : "";
-                                    $wClose = $wildOptions != "start" ? "%" : "";
-                                    break;
-                                case "_":
-                                    $wOpen = $wildOptions != "end" ? "_" : "";
-                                    $wClose = $wildOptions != "start" ? "_" : "";
-                                    break;
-                                case "[]":
-                                    $wOpen = "[";
-                                    $wClose = "]";
-                                    break;
-                            }
-
-                            $whereClause[$op]["where"] .= ($whereClause[$op]["where"] != "" ? " " . $op . " " : "") . $prefixStr . "." . $columnName . " like ?";
-                            $whereClause[$op]["params"][] = $wOpen . $this->{$column->field} . $wClose;
-                        } else {
-                            $whereClause[$op]["where"] .= ($whereClause[$op]["where"] != "" ? " " . $op . " " : "") . $prefixStr . "." . $columnName . "=?";
-                            $whereClause[$op]["params"][] = $this->{$column->field};
-                        }
-                    } else {
-                        $where .= ($where != "" ? " and " : "") . $prefixStr . "." . $columnName . "=?";
-                        $params[] = $this->{$column->field};
-                    }
-                } else {
+        /*foreach ($this->mapping->columns as $columnName => $column) {
+            
+                
                     $where .= ($where != "" ? " and " : "") . $prefixStr . "." . $columnName . "=?";
                     $params[] = $this->{$columnName};
-                }
-            //}
-        }
-        if (count($whereClause) > 0) {
-            foreach ($whereClause as $clause) {
-                $where .= ($where != "" ? " and " : " ") . "(" . $clause["where"] . ")";
-                $params = array_merge($params, $clause["params"]);
-            }
-        }
-
-        if ($this->in != null) {
-            foreach ($this->in as $in) {
-                $inStr = "";
-                foreach ($in["values"] as $value) {
-                    $inStr .= ($inStr != "" ? ", ?" : "?");
-                    $params[] = $value;
-                }
-                if ($inStr != "") {
-                    $where .= ($where != "" ? " and " : "") . $prefixStr . "." . $in["columnName"] . " in (" . $inStr . ")";
-                }
-            }
-        }
+                
+            
+        }*/
+        
     }
 
     /**

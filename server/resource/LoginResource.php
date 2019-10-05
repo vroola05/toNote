@@ -30,11 +30,8 @@ class LoginResource {
         
         $connection = Database::getInstance();
         $connection->dbConnect();
+        $u = $connection->getSingleItem(new User(), "select * from users where username = ? and active = 1", array($user->username));
 
-        $u = new User();
-        $u->setUsername($user->username);
-        $u->setActive(1);
-        $u = $u->get(array("userId", "password"), $connection);
         if ($u !== false) {
             if ($u->userId !== null && $u->password != null && $u->password != "") {
                 if (password_verify($user->password, $u->password) === true) {

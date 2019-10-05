@@ -4,7 +4,7 @@ import svgDelete from '../../../../assets/images/delete.svg';
 
 import Lang from '../../../../components/language/lang';
 
-import { Notebook, MainState } from '../../../../types';
+import { Notebook, MainState, Message } from '../../../../types';
 
 import { Router } from '../../../../services/router/router-service';
 import { NotebookService } from '../../../../services/http/notebook-service';
@@ -76,8 +76,20 @@ export default class NotebooksComponent extends TabMenu {
             renamePopup.click = (e, object, value) => {
                 object.name = value;
                 const notebookService = new NotebookService();
-                notebookService.putNotebook(object.id, object)
-                //renamePopup.hide();    
+                notebookService.putNotebook(object.id, object).then((a:any) => {
+                    console.log("ok", a);
+                    renamePopup.hide();
+                }).catch((message:Message)=>{
+                   console.log(message);
+                    if(message.info){
+                        let error = "";
+                        for(let i=0; i<message.info.length; i++){
+                            error += "<span>" + message.info[i].value + "</span>";
+                            
+                        }
+                        renamePopup.setError(error);
+                    }
+                });
             };
             renamePopup.show();
         };

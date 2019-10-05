@@ -6,6 +6,8 @@ import ButtonComponent from '../../controls/button/button-component';
 
 export default class PopupRenameComponent extends PopupComponent {
     private input: InputComponent;
+    private popupError: HTMLDivElement;
+    
     constructor(title: string, description: string, value: string, submit: any = null) {
         super(title);
 
@@ -15,8 +17,22 @@ export default class PopupRenameComponent extends PopupComponent {
 
         this.input = new InputComponent("text", "rename", description);
         this.input.value(value);
+        this.input.addEventListener("keyup", (e:KeyboardEvent) => {
+            if (e.keyCode === 13) {
+                this.click(e, this.object, this.input.value());
+            }
+        });
         popupRenameContainer.appendChild(this.input.dom);
         this.append(popupRenameContainer);
+
+        const popupErrorContainer = document.createElement("div");
+        popupErrorContainer.className = "popupErrorContainer";
+
+        this.popupError = document.createElement("div");
+        this.popupError.className = "popupError";
+
+        popupErrorContainer.appendChild(this.popupError);
+        this.append(popupErrorContainer);
 
         const popupRenameBtnContainer = document.createElement("div");
         popupRenameBtnContainer.className = "popupRenameBtnContainer";
@@ -30,10 +46,18 @@ export default class PopupRenameComponent extends PopupComponent {
         });
         popupRenameBtnContainer.appendChild(send.dom);
         this.append(popupRenameBtnContainer);
-        
+    }
+
+    public show(): void {
+        super.show();
+        this.input.focus();
     }
 
     public click(e: any, object: any, value: string): void {
         alert("Not yet implemented!");
+    }
+    public setError(message: string): void {
+        console.log(message);
+        this.popupError.innerHTML = message;
     }
 }

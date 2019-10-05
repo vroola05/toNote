@@ -1,5 +1,7 @@
 import { ApplicationConfig } from './types';
-import combineUrl from '../../components/http/combineUrl'
+import combineUrl from '../../components/http/combineUrl';
+import Lang from '../../components/language/lang';
+
 
 export default class ConfigService {
     private static config: ApplicationConfig = null;
@@ -7,10 +9,33 @@ export default class ConfigService {
     constructor(callback: Function | undefined = undefined ) {
         ConfigService.readConfig().then((value: ApplicationConfig) => {
             ConfigService.config = value;
-            if(callback !== undefined){
-                callback();
+            ConfigService.readLanguage().then((lang: any) => {
+                Lang.setMap(lang);
+                if(callback !== undefined){
+                    callback();
+                }
+                console.log("config read!");
+            });
+            
+            
+        });
+    }
+
+    public static readLanguage() {
+        return fetch(combineUrl([process.env.APP_ROOT_URL as string, 'config/language.json'], false)).then((response) => {
+            if (response.status === 200) {
+                return response.json().catch((e) => {
+                    const jsonError = new Error('Could not parse the language file.') as any
+                    jsonError.source = 'config'
+                    jsonError.inner = e
+                    throw jsonError
+                }) as Promise<ApplicationConfig>
             }
-            console.log("config read!");
+
+            const error = new Error('Cannot configure the application: no access to the configuration file.') as any
+            error.source = 'config'
+            error.status = response.status
+            throw error
         });
     }
 
