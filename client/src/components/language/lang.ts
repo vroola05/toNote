@@ -8,6 +8,7 @@ export default class Lang{
 
     public static setMap(map:any){
         Lang.map = map;
-        Lang.language = Lang.map[navigator.language]!==undefined?navigator.language:"en-US";
+        const langCode = navigator.language.substring(0,2);
+        Lang.language = Lang.map[langCode]!==undefined?langCode:"en";
     }
 }

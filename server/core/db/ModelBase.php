@@ -35,7 +35,7 @@ class ModelBase {
             if (!$this->$fieldName == null && !ctype_digit((string) $this->$fieldName)) {
                 $fault = new Fault();
                 $fault->setId($fieldName);
-                $fault->setFaultcode("Het veld mag alleen een geheel getal bevatten!: " . $this->$fieldName);
+                $fault->setFaultcode(Lang::get("db_valid_int"));
                 $this->messages[] = $fault;
             }
         }
@@ -47,32 +47,32 @@ class ModelBase {
                 switch ($column->columnType) {
                     case "string":
                         if (!is_string($value)) {
-                            $faultcode = "Het veld bevat geen tekstuele waarde!";
+                            $faultcode = Lang::get("db_valid_string");
                         }
                         break;
                     case "boolean":
                         if (!is_bool($value) && $value != "1" && $value != "0") {
-                            $faultcode = "Het veld mag alleen de waarde waar of onwaar bevatten!";
+                            $faultcode = Lang::get("db_valid_bool");
                         }
                         break;
                     case "integer":
                         if (!ctype_digit((string) $value)) {
-                            $faultcode = "Het veld mag alleen een geheel getal bevatten!: " . $value;
+                            $faultcode = Lang::get("db_valid_int");
                         }
                         break;
                     case "double":
                         if (!is_numeric($value)) {
-                            $faultcode = "Het veld mag alleen een getal bevatten!";
+                            $faultcode = Lang::get("db_valid_double");
                         }
                         break;
                     case "date":
                         if (!$validator->checkSqlDate($value, 'Y-m-d')) {
-                            $faultcode = "De datum staat niet in de goede volgorde. Het juiste formaat is: yyyy-mm-dd!";
+                            $faultcode = Lang::get("db_valid_date_format", $value);
                         }
                         break;
                     case "datetime":
                         if (!$validator->checkSqlDate($value, 'Y-m-d H:i:s')) {
-                            $faultcode = "De datum " . $value . " staat niet in de goede volgorde. Het juiste formaat is: yyyy-mm-dd hh:mm:ss!";
+                            $faultcode = Lang::get("db_valid_datetime_format", $value);
                         }
                         break;
                     case "blob":
@@ -84,22 +84,22 @@ class ModelBase {
                     switch ($column->validate) {
                         case "email":
                             if (!$validator->checkMail($value)) {
-                                $faultcode = "Er zit een fout in het mailadres!";
+                                $faultcode = Lang::get("db_valid_email");
                             }
                             break;
                         case "phone":
                             if (!$validator->checkPhone($value)) {
-                                $faultcode = "Er zit een fout in het telefoonnummer!";
+                                $faultcode = Lang::get("db_valid_phone");
                             }
                             break;
                         case "postal":
                             if (!$validator->checkPostal($value)) {
-                                $faultcode = "Er zit een fout in de postcode!";
+                                $faultcode = Lang::get("db_valid_postal");
                             }
                             break;
                         case "password":
                             if (!$validator->checkPassword($value)) {
-                                $faultcode = "Het wachtwoord is niet sterk genoeg!";
+                                $faultcode = Lang::get("db_valid_password_strength");
                             }
                             break;
                         default :
@@ -108,7 +108,7 @@ class ModelBase {
                 }
                 if ($column->length != null) {
                     if (strlen($value) > $column->length) {
-                        $faultcode = "Het veld mag maximaal " . $column->length . " tekens bevatten!";
+                        $faultcode = Lang::get("db_valid_strlen", $column->length);
                     }
                 }
                 if ($faultcode != null) {
