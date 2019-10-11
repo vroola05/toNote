@@ -10,6 +10,7 @@ use \core\db\Database;
 use \core\db\CollectionParams;
 use \core\Security;
 use \core\Http;
+use \core\Lang;
 
 use \model\Notebook;
 use \model\Notebooks;
@@ -21,7 +22,8 @@ class NotebookResource {
 
     public function getNotebooks(array $parameters = null) {
         if(!Security::hasAccess()){
-            return new \Core\Message(401, "!");
+            
+            return new \Core\Message(401, Lang::get("generic_status_401"));
         }
 
         $result=array();
@@ -52,12 +54,12 @@ class NotebookResource {
             $connection->dbConnect();
             
             Http::setStatus(404);
-            throw new \Exception('Not found!');
+            throw new \Exception(Lang::get("generic_status_404"));
         }
     }
 
     public function postNotebook($parameters, $notebook) : Message{
-        return new \Core\Message(200, "Notebook has been saved!");
+        return new \Core\Message(200, Lang::get("notebook_post_saved"));
     }
 
     public function putNotebook($parameters, $notebook){
@@ -73,10 +75,10 @@ class NotebookResource {
         $input->setHash('');
         
         if($input->put($connection)){
-            return new \Core\Message(200, "Update successfull!");
+            return new \Core\Message(200, Lang::get("notebook_put_saved"));
         } else {
             Http::setStatus(400);
-            $message = new \Core\Message(400, "Something went wrong!");
+            $message = new \Core\Message(400, Lang::get("generic_status_400"));
             $messages = $input->getMessages();
             if($messages){
                 foreach($messages as $m){

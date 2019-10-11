@@ -76,19 +76,23 @@ export default class NotebooksComponent extends TabMenu {
             renamePopup.click = (e, object, value) => {
                 object.name = value;
                 const notebookService = new NotebookService();
-                notebookService.putNotebook(object.id, object).then((a:any) => {
-                    console.log("ok", a);
-                    renamePopup.hide();
-                }).catch((message:Message)=>{
-                   console.log(message);
-                    if(message.info){
-                        let error = "";
-                        for(let i=0; i<message.info.length; i++){
-                            error += "<span>" + message.info[i].value + "</span>";
-                            
+                notebookService.putNotebook(object.id, object).then((message:Message) => {
+                    if(message.status === 200){
+                        renamePopup.hide();
+                    } else {
+                        if(message.info){
+                            let error = "";
+                            for(let i=0; i<message.info.length; i++){
+                                error += "<span>" + message.info[i].value + "</span>";
+                                
+                            }
+                            renamePopup.setError(error);
                         }
-                        renamePopup.setError(error);
                     }
+                    
+                    
+                }).catch((e)=>{
+
                 });
             };
             renamePopup.show();

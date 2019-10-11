@@ -3,6 +3,7 @@ namespace Resource;
 
 require 'model/User.php';
 
+use \core\Lang;
 use \core\Message;
 use \core\Http;
 use \core\Security;
@@ -19,12 +20,12 @@ class LoginResource {
 
         if( $user==null || !array_key_exists("username", $user) || $user->username == "" ){
             Http::setStatus(401);
-            Http::remand(new \Core\Message(401, "Not authorized!"),Http::CONTENT_TYPE_JSON);
+            Http::remand(new \Core\Message(401, Lang::get("generic_status_401")),Http::CONTENT_TYPE_JSON);
             return false;
         }
         if( !array_key_exists("password", $user) || $user->password == "" ){
             Http::setStatus(401);
-            Http::remand(new \Core\Message(401, "Not authorized!"),Http::CONTENT_TYPE_JSON);
+            Http::remand(new \Core\Message(401, Lang::get("generic_status_401")),Http::CONTENT_TYPE_JSON);
             return false;
         }
         
@@ -40,7 +41,7 @@ class LoginResource {
 
                     $apikey = Security::createSession($u->userId, "DeviceName");
                     if($apikey !== false){
-                        $message  = new \Core\Message(200, "Login succeded");
+                        $message  = new \Core\Message(200, Lang::get("login_success"));
                         $message->addExtraInfo(Security::APIKEY, $apikey);
                         Http::setStatus(200);
                         Http::remand($message,Http::CONTENT_TYPE_JSON);
@@ -50,20 +51,20 @@ class LoginResource {
             } 
         }
         Http::setStatus(401);
-        Http::remand(new \Core\Message(401, "Username or password is wrong!"),Http::CONTENT_TYPE_JSON);
+        Http::remand(new \Core\Message(401, Lang::get("login_login_failed")),Http::CONTENT_TYPE_JSON);
         return false;
     }
 
     public function check( array $parameters ) : Message {
-        return new \Core\Message(200, "Apikey still valid!");
+        return new \Core\Message(200, Lang::get("login_valid"));
     }
 
     public function logout( array $parameters ) : Message {
         if(Security::removeSession()){
-            return new \Core\Message(200, "Session removed!");
+            return new \Core\Message(200, Lang::get("login_signed_out"));
         }
         Http::setStatus(400);
-        return new \Core\Message(400, "Not found!");
+        return new \Core\Message(400, Lang::get("generic_status_400"));
     }
 
     public function checkPasswordAlgorithm(int $id, string $hash, Database $connection ){

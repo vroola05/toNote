@@ -1,4 +1,4 @@
-import { Notebook } from '../../types';
+import { Notebook, Message } from '../../types';
 import HttpClient from '../../components/http/httpClient';
 
 export class NotebookService extends HttpClient{
@@ -10,7 +10,7 @@ export class NotebookService extends HttpClient{
         return this.get("notebooks");
     }
 
-    public putNotebook(id:number, notebook:Notebook) : Promise<Array<Notebook>>{
+    public putNotebook(id:number, notebook:Notebook) : Promise<Message>{
         return this.put("notebooks/" + id, notebook);
     }
 }
