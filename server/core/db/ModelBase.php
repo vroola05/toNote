@@ -164,10 +164,7 @@ class ModelBase {
         }
 
         $foreignKeys = array();
-
-        try {
-            $foreignKeys = $this->areForeignkeysSet();
-        } catch(Exception $e){
+        if(!$this->areForeignkeysSet($foreignKeys)){
             return false;
         }
 
@@ -175,15 +172,13 @@ class ModelBase {
         $keys = "";
         $values = "";
         foreach ($this->mapping->columns as $columnName => $column) {
-            if(!array_key_exists($columnName, $foreignKeys)) {
-                $keys .= ($keys != "" ? ", " : "") . "`" . $columnName . "`";
-                $values .= ($values != "") ? ", ?" : "?";
-                $params[] = $this->{$columnName};
-            }
+            $keys .= ($keys != "" ? ", " : "") . "`" . $columnName . "`";
+            $values .= ($values != "") ? ", ?" : "?";
+            $params[] = $this->{$columnName};
         }
 
         $query = "insert into " . $this->mapping->tablename . " (" . $keys . ") values (" . $values . ")";
-print ($qeury);
+
         if ($connection->dbPreparedStatement($query, $params)) {
             $output = $connection->getLastInsertId();
         } else {
@@ -210,17 +205,19 @@ print ($qeury);
             return false;
         }
 
+        $params = array();
         $primaryKeys = array();
         $foreignKeys = array();
 
-        try {
-            $primaryKeys = $this->arePrimarykeysSet();
-            $foreignKeys = $this->areForeignkeysSet();
-        } catch(Exception $e){
+        
+        if(!$this->arePrimarykeysSet($primaryKeys)){
             return false;
         }
 
-        $params = array();
+        if(!$this->areForeignkeysSet($foreignKeys)){
+            return false;
+        }
+
         $values = "";
         $where = "";
         
@@ -257,8 +254,8 @@ print ($qeury);
         }
     }
 
-    public function arePrimarykeysSet() {
-        $primaryKeys = array();
+    public function arePrimarykeysSet(array &$primaryKeys) {
+        
         foreach ($this->mapping->primaryKeys as $columnName => $fieldName) {
             $primaryKeys[$columnName] = $this->$fieldName;
             //a zero is threated as empty so i added !is_numeric
@@ -267,15 +264,14 @@ print ($qeury);
                     "code" => "2000",
                     "message" => "Primarykeys can't be empty!",
                 );
-                throw new \Exception('Something went wrong!');
+                return false;
                 
             }
         }
-        return $primaryKeys;
+        return true;
     }
 
-    public function areForeignkeysSet() {
-        $foreignKeys = array();
+    public function areForeignkeysSet(array &$primaryKeys) {
         foreach ($this->mapping->foreignKeys as $columnName => $map) {
             $foreignKeys[$columnName] = $this->$columnName;
             //a zero is threated as empty so i added !is_numeric
@@ -287,10 +283,10 @@ print ($qeury);
                     "code" => "2001",
                     "message" => "Foreignkeys can't be empty!",
                 );
-                throw new \Exception('Something went wrong!');
+                return false;
             }
         }
-        return $foreignKeys;
+        return true;
     }
 
     /**
@@ -299,53 +295,47 @@ print ($qeury);
      * errormessage.
      */
     public function delete($connection = null) {
-        $output = true;
-        //Open database connection
         if ($connection == null) {
             return false;
         }
-        
-        $params = array();
-        $query = "";
-
-        $where = "";
-
-        foreach ($this->mapping->primaryKeys as $columnName => $fieldName) {
-            if (isset($this->$fieldName) && (!empty($this->$fieldName) || is_numeric($this->$fieldName))) {
-                $where .= ($where != "" ? " and " : "") . $columnName . "=?";
-                $params[] = $this->$fieldName;
-            }
+        if ($this->validate() === false) {
+            return false;
         }
-        if ($where == "") {
-            foreach ($this->getForeignKeys() as $columnName => $fieldName) {
-                if ($this->$fieldName != null ) {
-                    $where .= ($where != "" ? " and " : "") . $columnName . "=?";
-                    $params[] = $this->$columnName;
-                }
-            }
+
+        
+        $primaryKeys = array();
+        $foreignKeys = array();
+
+        if(!$this->arePrimarykeysSet($primaryKeys) || !$this->areForeignkeysSet($foreignKeys)){
+            return false;
+        }
+
+        $params = array();
+        $where = "";
+        
+        foreach ($primaryKeys as $columnName => $value) {
+            $where .= ($where != "" ? " and " : "") . $columnName . "=?";
+            $params[] = $value;
+        }
+        
+        foreach ($foreignKeys as $columnName => $value) {
+            $where .= ($where != "" ? " and " : "") . $columnName . "=?";
+            $params[] = $value;
         }
 
         //There must be somekind of value in the id field... else all objects are deleted...
         if ($where != "") {
             $query = "delete from " . $this->mapping->tablename . " where " . $where;
-            //If the query succeeds            
+
             if ($connection->dbPreparedStatement($query, $params)) {
-                $output = true;
-            }
-            //If the query fails
-            else {
+                return true;
+            } else {
                 $this->error = $connection->getError();
-                $output = false;
+                return false;
             }
         } else {
-            $this->error = array(
-                "code" => "2003",
-                "message" => "Er kan alleen een delete worden uitgevoerd als primary key of de foreinkey gevuld is!",
-            );
-            $output = false;
+            return false;
         }
-
-        return $output;
     }
 
     /**

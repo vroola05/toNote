@@ -66,7 +66,9 @@
         "popup_btn_ok": "Ok",
         "popup_rename_title": "Hernoemen",
         "popup_rename_label": "Hernoemen",
-        "popup_new_title": "Nieuw"
+        "popup_new_title": "Nieuw",
+        "popup_new_msg_empty": "Geef het notitieblok een naam!"
+        
     },
     "en": {
         "login_username": "Username",
@@ -135,6 +137,7 @@
         "popup_btn_ok": "Ok",
         "popup_rename_title": "Rename",
         "popup_rename_label": "Rename",
-        "popup_new_title": "New"
+        "popup_new_title": "New",
+        "popup_new_msg_empty": "Geef het notitieblok een naam!"
     }
 }

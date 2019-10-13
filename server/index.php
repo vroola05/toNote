@@ -48,15 +48,15 @@ try{
 				"GET" => array("Resource\LoginResource", "logout", Http::CONTENT_TYPE_JSON)
 			),
 			"/notebooks" => array( 
-				"GET" => array("Resource\NotebookResource", "getNotebooks", Http::CONTENT_TYPE_JSON)
+				"GET" => array("Resource\NotebookResource", "getNotebooks", Http::CONTENT_TYPE_JSON),
+				"POST" => array("Resource\NotebookResource", "postNotebook", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
 			),
 			"/notebooks/order/{string}" => array( 
 				"GET" => array("Resource\NotebookResource", "getNotebooks", Http::CONTENT_TYPE_JSON)
 			),
 			"/notebooks/{number}" => array( 
 				"GET" => array("Resource\NotebookResource", "getNotebook", Http::CONTENT_TYPE_JSON),
-				"PUT" => array("Resource\NotebookResource", "putNotebook", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON),
-				"POST" => array("Resource\NotebookResource", "postNotebook", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
+				"PUT" => array("Resource\NotebookResource", "putNotebook", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)				
 			),
 			"/notebooks/{number}/chapters" => array( 
 				"GET" => array("Resource\ChapterResource", "getChapters", Http::CONTENT_TYPE_JSON)

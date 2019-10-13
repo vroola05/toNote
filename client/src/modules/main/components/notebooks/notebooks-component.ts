@@ -109,11 +109,15 @@ export default class NotebooksComponent extends TabMenu {
         const newPopup = new PopupInputComponent(Lang.get("popup_new_title"), Lang.get("notebooks_name"), '');
         
         newPopup.click = (e, object, value) => {
-            const notebook = Object.assign({},object);
+            if(value===''){
+                newPopup.setError("<span>"+Lang.get("popup_new_msg_empty")+"</span>");
+                return;
+            }
+            const notebook = new Notebook();
             notebook.name = value;
 
             const notebookService = new NotebookService();
-            notebookService.putNotebook(object.id, notebook).then((message:Message) => {
+            notebookService.postNotebook(notebook).then((message:Message) => {
                 if(message.status === 200){
                     newPopup.hide();
                 } else {

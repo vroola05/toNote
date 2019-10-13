@@ -13,4 +13,8 @@ export class NotebookService extends HttpClient{
     public putNotebook(id:number, notebook:Notebook) : Promise<Message>{
         return this.put("notebooks/" + id, notebook);
     }
+
+    public postNotebook(notebook:Notebook) : Promise<Message>{
+        return this.post("notebooks", notebook);
+    }
 }
