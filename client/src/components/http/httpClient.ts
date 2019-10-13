@@ -46,7 +46,8 @@ export default class HttpClient{
         }
 
         return fetch(combineUrl([this.apiUrl, endpoint], false), requestOptions).then(function(response) {
-            if(response.status===401){
+            if(response.status===401 && (!Router.getCurrentState() || Router.getCurrentState().key !== "login") ){
+                
                 Router.set({ "key" : "login", "value" : null}, Lang.get("state_title_login"),"login");
             } else {
                 return response.json().catch((error) => {

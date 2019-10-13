@@ -13,7 +13,7 @@ import InputComponent from '../../components/controls/input/input-component';
 
 export default class LoginModule extends IWindow{
     private loginContainer: HTMLElement = document.createElement("div");
-    
+    private loginError: HTMLDivElement;
     
     private inputUsername: InputComponent;
     private inputPassword: InputComponent;
@@ -32,7 +32,21 @@ export default class LoginModule extends IWindow{
         this.loginContainer.appendChild(this.inputUsername.dom);
         
         this.inputPassword = new InputComponent("password", "password", Lang.get("login_password"));
+        this.inputPassword.addEventListener("keyup", (e: KeyboardEvent) => { 
+            if( e.keyCode === 13 ) {
+                this.submit();    
+            }
+        });
         this.loginContainer.appendChild(this.inputPassword.dom);
+
+        const loginErrorContainer = document.createElement("div");
+        loginErrorContainer.className = "loginErrorContainer";
+
+        this.loginError = document.createElement("div");
+        this.loginError.className = "loginError";
+
+        loginErrorContainer.appendChild(this.loginError);
+        this.loginContainer.appendChild(loginErrorContainer);
 
         const btnLogin = new ButtonComponent(Lang.get("login_send"), () => {
             this.submit();
@@ -40,16 +54,7 @@ export default class LoginModule extends IWindow{
         this.loginContainer.appendChild(btnLogin.dom);
     }
 
-    /*
-    public show(){
-        document.body.appendChild(this.loginContainer);
-    }
-
-    public hide(){
-        document.body.removeChild(this.loginContainer);
-    }
-*/
-    private submit(){
+    private submit() {
         let user : User = {
             userId:undefined,
             username: this.inputUsername.value(),
@@ -58,33 +63,47 @@ export default class LoginModule extends IWindow{
 
         };
 
+        if(user.username === '' || user.password === '') {
+            this.setError(Lang.get("login_input_invalid"));
+            return;
+        }
+
         let  auth : AuthenticationService = new AuthenticationService();
         auth.clear();
         
         const loginService : LoginService = new LoginService();
         loginService.login(user).then((message:Message) => {
-            message.info.forEach( (info:Info) => {
-                if(info.id==="apikey" && info.value!==undefined && info.value != ""){
-                    const auth : AuthenticationService = new AuthenticationService();
-                    auth.setApikey(info.value);
-                    
-                    
-                    Router.set({ key : "main", value : null}, Lang.get("state_title_notebooks"),"main");
-                }
-            });
+            if( message.info ) {
+                message.info.forEach( (info:Info) => {
+                    if(info.id==="apikey" && info.value!==undefined && info.value != ""){
+                        const auth : AuthenticationService = new AuthenticationService();
+                        auth.setApikey(info.value);
+
+                        Router.set({ key : "main", value : null}, Lang.get("state_title_notebooks"),"main");
+                        this.hide();
+                    }
+                });
+            } else {
+                this.setError(message.message);
+            }
             
-            this.hide();
+            
         },
         () => {
             console.log("a");
         });
     }
 
+    public setError(message: string): void {
+        this.loginError.innerHTML = '';
+        const error = document.createElement("span");
+        error.innerText = message;
+        this.loginError.appendChild(error);
+    }
+
     public load( state : State ) : boolean {
-        
         this.show();
-        
-        
+        this.inputUsername.focus();
         return true;
     }
 }

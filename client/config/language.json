@@ -5,6 +5,7 @@
         "login_send": "Inloggen",
         "login_reset": "Wachtwoord vergeten?",
         "login_invalid": "Inloggen mislukt! Probeer het nogmaals!",
+        "login_input_invalid": "Gebruikersnaam en wachtwoord zijn verplicht!",
         
         "state_title_login": "Inloggen",
         "state_title_notebooks": "Overzicht Notitieblokken",
@@ -64,7 +65,8 @@
         "popup_btn_cancel": "Annuleren",
         "popup_btn_ok": "Ok",
         "popup_rename_title": "Hernoemen",
-        "popup_rename_label": "Hernoemen"
+        "popup_rename_label": "Hernoemen",
+        "popup_new_title": "Nieuw"
     },
     "en": {
         "login_username": "Username",
@@ -72,6 +74,7 @@
         "login_send": "Login",
         "login_reset": "Forgot password?",
         "login_invalid": "Login failed! Please try again!",
+        "login_input_invalid": "Username and password are required!",
 
         "state_title_login": "Login",
         "state_title_notebooks": "Overview notebooks",
@@ -131,6 +134,7 @@
         "popup_btn_cancel": "Cancel",
         "popup_btn_ok": "Ok",
         "popup_rename_title": "Rename",
-        "popup_rename_label": "Rename"
+        "popup_rename_label": "Rename",
+        "popup_new_title": "New"
     }
 }

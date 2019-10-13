@@ -11,7 +11,7 @@ import { NotebookService } from '../../../../services/http/notebook-service';
 
 import { TabMenu } from '../../../../components/controls/tabMenu/tab-menu';
 import MenuItemComponent from '../../../../components/controls/menu-item/menu-item-component';
-import PopupRenameComponent from '../../../../components/popups/popup-rename/popup-rename-component';
+import PopupInputComponent from '../../../../components/popups/popup-input/popup-input-component';
 
 export default class NotebooksComponent extends TabMenu {
     constructor(){
@@ -20,9 +20,6 @@ export default class NotebooksComponent extends TabMenu {
             ["add", Lang.get("notebooks_add")]
         ]);
         super(labels, "notebook");
-
-        
-        
 
         this.bindRenamePopup();
         this.bindDeletePopup();
@@ -71,12 +68,14 @@ export default class NotebooksComponent extends TabMenu {
 
         menuItem.click = (e:any) => {
             const object = this.dropdownMenu.object;
-            const renamePopup = new PopupRenameComponent(Lang.get("popup_rename_title"), Lang.get("notebooks_name"), object.name);
+            const renamePopup = new PopupInputComponent(Lang.get("popup_rename_title"), Lang.get("notebooks_name"), object.name);
             renamePopup.setObject(object)
             renamePopup.click = (e, object, value) => {
-                object.name = value;
+                const notebook = Object.assign({},object);
+                notebook.name = value;
+
                 const notebookService = new NotebookService();
-                notebookService.putNotebook(object.id, object).then((message:Message) => {
+                notebookService.putNotebook(object.id, notebook).then((message:Message) => {
                     if(message.status === 200){
                         renamePopup.hide();
                     } else {
@@ -98,9 +97,42 @@ export default class NotebooksComponent extends TabMenu {
             renamePopup.show();
         };
     }
+
     private bindDeletePopup() {
         this.dropdownMenu.addItem(new MenuItemComponent(svgDelete, Lang.get("ctx_remove"), (e:any) => {
             //Do nothing
         }));
+    }
+
+    public clickNewItem(e: Event) {
+        
+        const newPopup = new PopupInputComponent(Lang.get("popup_new_title"), Lang.get("notebooks_name"), '');
+        
+        newPopup.click = (e, object, value) => {
+            const notebook = Object.assign({},object);
+            notebook.name = value;
+
+            const notebookService = new NotebookService();
+            notebookService.putNotebook(object.id, notebook).then((message:Message) => {
+                if(message.status === 200){
+                    newPopup.hide();
+                } else {
+                    if(message.info){
+                        let error = "";
+                        for(let i=0; i<message.info.length; i++){
+                            error += "<span>" + message.info[i].value + "</span>";
+                            
+                        }
+                        newPopup.setError(error);
+                    }
+                }
+                
+                
+            }).catch((e)=>{
+
+            });
+        };
+        newPopup.show();
+    
     }
 }

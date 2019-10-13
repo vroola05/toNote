@@ -156,34 +156,42 @@ class ModelBase {
     }
 
     public function post($connection = null) {
+        if ($this->validate() == false) {
+            return false;
+        }
+
         if ($connection == null) {
             return false;
         }
-        if ($this->validate() === false) {
-            return false;
-        }
-
-        $foreignKeys = array();
-
-        try {
-            $foreignKeys = $this->areForeignkeysSet();
-        } catch(Exception $e){
-            return false;
-        }
+        $output = null; 
 
         $params = array();
+        $query = "";
+
+        foreach ($this->mapping->foreignKeys as $columnName => $foreignKey) {
+            $field = $this->mapping->columns[$columnName]->field;
+
+            if (!array_key_exists($field, $this->isfieldSet)) {
+                $this->error = array(
+                    "code" => "2001",
+                    "message" => "Foreignkeys can't be empty!",
+                );
+                return false;
+            }
+        }
+
         $keys = "";
         $values = "";
         foreach ($this->mapping->columns as $columnName => $column) {
-            if(!array_key_exists($columnName, $foreignKeys)) {
+            if (array_key_exists($column->field, $this->isfieldSet)) {
                 $keys .= ($keys != "" ? ", " : "") . "`" . $columnName . "`";
                 $values .= ($values != "") ? ", ?" : "?";
-                $params[] = $this->{$columnName};
+                $params[] = $this->{$column->field};
             }
         }
 
         $query = "insert into " . $this->mapping->tablename . " (" . $keys . ") values (" . $values . ")";
-print ($qeury);
+
         if ($connection->dbPreparedStatement($query, $params)) {
             $output = $connection->getLastInsertId();
         } else {
@@ -213,10 +221,11 @@ print ($qeury);
         $primaryKeys = array();
         $foreignKeys = array();
 
-        try {
-            $primaryKeys = $this->arePrimarykeysSet();
-            $foreignKeys = $this->areForeignkeysSet();
-        } catch(Exception $e){
+        if(!$this->arePrimarykeysSet()) {
+            return false;
+        }
+
+        if(!$this->areForeignkeysSet()) {
             return false;
         }
 
@@ -258,7 +267,6 @@ print ($qeury);
     }
 
     public function arePrimarykeysSet() {
-        $primaryKeys = array();
         foreach ($this->mapping->primaryKeys as $columnName => $fieldName) {
             $primaryKeys[$columnName] = $this->$fieldName;
             //a zero is threated as empty so i added !is_numeric
@@ -267,15 +275,13 @@ print ($qeury);
                     "code" => "2000",
                     "message" => "Primarykeys can't be empty!",
                 );
-                throw new \Exception('Something went wrong!');
-                
+                return false;
             }
         }
-        return $primaryKeys;
+        return true;
     }
 
     public function areForeignkeysSet() {
-        $foreignKeys = array();
         foreach ($this->mapping->foreignKeys as $columnName => $map) {
             $foreignKeys[$columnName] = $this->$columnName;
             //a zero is threated as empty so i added !is_numeric
@@ -287,10 +293,10 @@ print ($qeury);
                     "code" => "2001",
                     "message" => "Foreignkeys can't be empty!",
                 );
-                throw new \Exception('Something went wrong!');
+                return false;
             }
         }
-        return $foreignKeys;
+        return true;
     }
 
     /**

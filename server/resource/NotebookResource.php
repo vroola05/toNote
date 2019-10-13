@@ -58,13 +58,36 @@ class NotebookResource {
         }
     }
 
-    public function postNotebook($parameters, $notebook) : Message{
-        return new \Core\Message(200, Lang::get("notebook_post_saved"));
-    }
-
-    public function putNotebook($parameters, $notebook){
+    public function postNotebook($parameters, $notebook) : Message {
         $connection = Database::getInstance();
         $connection->dbConnect();
+
+        $input = new Notebook();
+        $input->setUserId(Security::getUserId());
+        $input->setName($notebook->name);
+
+        $now = (new \DateTime())->format("Y-m-d H:i:s");
+        $input->setCreationDate($now);
+        $input->setModifyDate($now);
+
+        $connection = Database::getInstance();
+        $connection->dbConnect();
+        if($input->post($connection)){
+            return new \Core\Message(200, Lang::get("notebook_post_saved"));
+        } else {
+            Http::setStatus(400);
+            $message = new \Core\Message(400, Lang::get("generic_status_400"));
+            $messages = $input->getMessages();
+            if($messages){
+                foreach($messages as $m){
+                    $message->addExtraInfo($m->id, $m->faultcode);
+                }
+            }
+            return $message;
+        }
+    }
+
+    public function putNotebook($parameters, $notebook) {
         $input = new Notebook();
         $input->setId($notebook->id);
         $input->setUserId(Security::getUserId());
@@ -74,6 +97,8 @@ class NotebookResource {
         $input->setModifyDate((new \DateTime($notebook->modifyDate))->format("Y-m-d H:i:s"));
         $input->setHash('');
         
+        $connection = Database::getInstance();
+        $connection->dbConnect();
         if($input->put($connection)){
             return new \Core\Message(200, Lang::get("notebook_put_saved"));
         } else {

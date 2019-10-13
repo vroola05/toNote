@@ -37,5 +37,10 @@
             border: $color-border solid 1px;
             background : $color-shade-light;
         }
+
+        .loginErrorContainer {
+            color: $color-error-msg;
+            font-style: italic;
+        }
     }
 }

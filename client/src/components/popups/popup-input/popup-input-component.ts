@@ -4,7 +4,7 @@ import InputComponent from '../../controls/input/input-component';
 import Lang from '../../language/lang';
 import ButtonComponent from '../../controls/button/button-component';
 
-export default class PopupRenameComponent extends PopupComponent {
+export default class PopupInputComponent extends PopupComponent {
     private input: InputComponent;
     private popupError: HTMLDivElement;
     
@@ -12,18 +12,19 @@ export default class PopupRenameComponent extends PopupComponent {
         super(title);
 
 
-        const popupRenameContainer = document.createElement("div");
-        popupRenameContainer.className = "popupRenameContainer";
+        const popupInputContainer = document.createElement("div");
+        popupInputContainer.className = "popupInputContainer";
 
-        this.input = new InputComponent("text", "rename", description);
+        this.input = new InputComponent("text", "inputfield", description);
+
         this.input.value(value);
         this.input.addEventListener("keyup", (e:KeyboardEvent) => {
             if (e.keyCode === 13) {
                 this.click(e, this.object, this.input.value());
             }
         });
-        popupRenameContainer.appendChild(this.input.dom);
-        this.append(popupRenameContainer);
+        popupInputContainer.appendChild(this.input.dom);
+        this.append(popupInputContainer);
 
         const popupErrorContainer = document.createElement("div");
         popupErrorContainer.className = "popupErrorContainer";
@@ -34,18 +35,18 @@ export default class PopupRenameComponent extends PopupComponent {
         popupErrorContainer.appendChild(this.popupError);
         this.append(popupErrorContainer);
 
-        const popupRenameBtnContainer = document.createElement("div");
-        popupRenameBtnContainer.className = "popupRenameBtnContainer";
+        const popupInputBtnContainer = document.createElement("div");
+        popupInputBtnContainer.className = "popupInputBtnContainer";
         const cancel = new ButtonComponent(Lang.get("popup_btn_cancel"), ()=>{
             this.hide();
         });
-        popupRenameBtnContainer.appendChild(cancel.dom);
+        popupInputBtnContainer.appendChild(cancel.dom);
         
         const send = new ButtonComponent(Lang.get("popup_btn_ok"), (e:any)=>{
             this.click(e, this.object, this.input.value());
         });
-        popupRenameBtnContainer.appendChild(send.dom);
-        this.append(popupRenameBtnContainer);
+        popupInputBtnContainer.appendChild(send.dom);
+        this.append(popupInputBtnContainer);
     }
 
     public show(): void {
@@ -57,7 +58,6 @@ export default class PopupRenameComponent extends PopupComponent {
         alert("Not yet implemented!");
     }
     public setError(message: string): void {
-        console.log(message);
         this.popupError.innerHTML = message;
     }
 }
