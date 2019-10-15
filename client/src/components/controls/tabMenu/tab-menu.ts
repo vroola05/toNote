@@ -133,10 +133,6 @@ export class TabMenu extends Tab {
 		return this.tabMenuItems.length>0;
 	}
 
-	public isSelectedMenuItem(id: number): boolean {
-		return this.selectedTabMenuItem == null ? false : this.selectedTabMenuItem.getId() == id;
-	}
-
 	public clearSelectedMenuItem(): void {
 		this.selectedTabMenuItem = null;
 	}
@@ -173,33 +169,6 @@ export class TabMenu extends Tab {
 				tabMenuItem.activate(false);
 			}
 		});
-	}
-
-	/**
-	 * 
-	 * @param identifier 
-	 * @param name 
-	 */
-	public renameItem(identifier: number, name: string) {
-		var item = this.domItemList.querySelector("[identifier='" + identifier + "']");
-
-		if (name === undefined || name == "") {
-			item.classList.add("noTitle");
-			item.querySelector(".name").innerHTML = this.getEmptyTitle();
-		} else {
-			if (item.classList.contains("noTitle")) {
-				item.classList.remove("noTitle")
-			}
-			item.querySelector(".name").innerHTML = name;
-		}
-	}
-
-	/**
-	 * 
-	 */
-	private getEmptyTitle(): string {
-		var e = this.domItemList.querySelectorAll(".item .noTitle");
-		return Lang.get("tabmenu_empty") + (e == null ? 1 : (e.length + 1));
 	}
 
 	/**

@@ -12,6 +12,7 @@ import { NotebookService } from '../../../../services/http/notebook-service';
 import { TabMenu } from '../../../../components/controls/tabMenu/tab-menu';
 import MenuItemComponent from '../../../../components/controls/menu-item/menu-item-component';
 import PopupInputComponent from '../../../../components/popups/popup-input/popup-input-component';
+import PopupConfirmComponent from '../../../../components/popups/popup-confirm/popup-confirm-component';
 
 export default class NotebooksComponent extends TabMenu {
     constructor(){
@@ -67,9 +68,8 @@ export default class NotebooksComponent extends TabMenu {
         this.dropdownMenu.addItem(menuItem);
 
         menuItem.click = (e:any) => {
-            const object = this.dropdownMenu.object;
-            const renamePopup = new PopupInputComponent(Lang.get("popup_rename_title"), Lang.get("notebooks_name"), object.name);
-            renamePopup.setObject(object)
+            const renamePopup = new PopupInputComponent(Lang.get("popup_rename_title"), Lang.get("notebooks_name"), this.dropdownMenu.object.name);
+            renamePopup.setObject(this.dropdownMenu.object);
             renamePopup.click = (e, object, value) => {
                 const notebook = Object.assign({},object);
                 notebook.name = value;
@@ -77,6 +77,7 @@ export default class NotebooksComponent extends TabMenu {
                 const notebookService = new NotebookService();
                 notebookService.putNotebook(object.id, notebook).then((message:Message) => {
                     if(message.status === 200){
+                        
                         renamePopup.hide();
                     } else {
                         if(message.info){
@@ -100,7 +101,32 @@ export default class NotebooksComponent extends TabMenu {
 
     private bindDeletePopup() {
         this.dropdownMenu.addItem(new MenuItemComponent(svgDelete, Lang.get("ctx_remove"), (e:any) => {
-            //Do nothing
+
+            const deleteMsg = Lang.get("popup_delete_confirm_msg1") +this.dropdownMenu.object.name+ Lang.get("popup_delete_confirm_msg2");
+            const deletePopup = new PopupConfirmComponent(Lang.get("popup_delete_title"), deleteMsg);
+            deletePopup.setObject(this.dropdownMenu.object);
+            deletePopup.click = (e, object) => {
+                const notebookService = new NotebookService();
+                notebookService.deleteNotebook(object.id).then((message:Message) => {
+                    if(message.status === 200){
+                        deletePopup.hide();
+                    } else {
+                        if(message.info){
+                            let error = "";
+                            for(let i=0; i<message.info.length; i++){
+                                error += "<span>" + message.info[i].value + "</span>";
+                                
+                            }
+                            deletePopup.setError(error);
+                        }
+                    }
+                    
+                    
+                }).catch((e)=>{
+    
+                });
+            };
+            deletePopup.show();
         }));
     }
 

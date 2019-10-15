@@ -22,7 +22,8 @@
         "login_signed_out": "U bent nu uitgelogd!",
 
         "notebook_post_saved": "Het nieuwe notitieblok is opgeslagen!",
-        "notebook_put_saved": "De wijzigingen in het notiteblok zijn opgeslagen!"
+        "notebook_put_saved": "De wijzigingen in het notiteblok zijn opgeslagen!",
+        "notebook_delete": "Het notitieblok is verwijderd!"
         
     },
     "en": {
@@ -49,6 +50,7 @@
         "login_signed_out": "You have been signed out!",
 
         "notebook_post_saved": "The new notebook has been saved!",
-        "notebook_put_saved": "The changes in the notebook have been saved!"
+        "notebook_put_saved": "The changes in the notebook have been saved!",
+        "notebook_delete": "Notebook has been deleted!"
     }
 }

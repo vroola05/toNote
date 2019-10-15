@@ -24,6 +24,10 @@ export default class HttpClient{
         return this.doRequest('PUT', endpoint, body)
     }
 
+    public delete<T, D>(endpoint: string, body: D = null) : Promise<T> {
+        return this.doRequest('DELETE', endpoint, body)
+    }
+
     private doRequest<T, D>(method: Method, endpoint: string, data: D) : Promise<T>{
         let requestOptions: RequestInit = {
             method,

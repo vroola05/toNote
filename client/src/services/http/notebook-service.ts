@@ -17,4 +17,8 @@ export class NotebookService extends HttpClient{
     public postNotebook(notebook:Notebook) : Promise<Message>{
         return this.post("notebooks", notebook);
     }
+
+    public deleteNotebook(id:number) : Promise<Message>{
+        return this.delete("notebooks/" + id);
+    }
 }

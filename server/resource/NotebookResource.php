@@ -116,20 +116,15 @@ class NotebookResource {
         }
     }
 
-    public function deleteNotebook($parameters, $notebook) {
+    public function deleteNotebook($parameters) {
         $input = new Notebook();
-        $input->setId($notebook->id);
+        $input->setId($parameters[0]);
         $input->setUserId(Security::getUserId());
-        $input->setName($notebook->name);
-        
-        $input->setCreationDate((new \DateTime($notebook->creationDate))->format("Y-m-d H:i:s"));
-        $input->setModifyDate((new \DateTime($notebook->modifyDate))->format("Y-m-d H:i:s"));
-        $input->setHash('');
         
         $connection = Database::getInstance();
         $connection->dbConnect();
-        if($input->put($connection)){
-            return new \Core\Message(200, Lang::get("notebook_put_saved"));
+        if($input->delete($connection)){
+            return new \Core\Message(200, Lang::get("notebook_delete"));
         } else {
             Http::setStatus(400);
             $message = new \Core\Message(400, Lang::get("generic_status_400"));

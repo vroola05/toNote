@@ -64,10 +64,15 @@
         
         "popup_btn_cancel": "Annuleren",
         "popup_btn_ok": "Ok",
+        "popup_confirm_btn_yes": "Ja",
+        "popup_confirm_btn_no": "Nee",
         "popup_rename_title": "Hernoemen",
         "popup_rename_label": "Hernoemen",
         "popup_new_title": "Nieuw",
-        "popup_new_msg_empty": "Geef het notitieblok een naam!"
+        "popup_new_msg_empty": "Geef het notitieblok een naam!",
+        "popup_delete_title": "Verwijderen",
+        "popup_delete_confirm_msg1": "Weet u zeker dat u ",
+        "popup_delete_confirm_msg2": " wilt verwijderen?"
         
     },
     "en": {
@@ -135,9 +140,14 @@
 
         "popup_btn_cancel": "Cancel",
         "popup_btn_ok": "Ok",
+        "popup_confirm_btn_yes": "Yes",
+        "popup_confirm_btn_no": "No",
         "popup_rename_title": "Rename",
         "popup_rename_label": "Rename",
         "popup_new_title": "New",
-        "popup_new_msg_empty": "Geef het notitieblok een naam!"
+        "popup_new_msg_empty": "Give the notebook a name!",
+        "popup_delete_title": "Delete",
+        "popup_delete_confirm_msg1": "Are you sure you want to delete ",
+        "popup_delete_confirm_msg2": "?"
     }
 }

@@ -220,6 +220,15 @@ class Router {
                 }
                 $result = call_user_func(array(new $class(), $function), $values, Http::getContent($reqContentType));
             } if( $method== Http::HTTP_METHOD_DELETE ){
+                if(count ($obj) > 3 ) {
+                    $reqContentType = $obj[2];
+                    $respContentType = $obj[3];
+                    $result = call_user_func(array(new $class(), $function), $values, Http::getContent($reqContentType));
+                } else {
+                    $respContentType = $obj[2];
+                    $result = call_user_func(array(new $class(), $function), $values);
+                }
+                
             }
             Http::remand($result, $respContentType);
             return true;
