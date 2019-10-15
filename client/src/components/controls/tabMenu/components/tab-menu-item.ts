@@ -2,7 +2,8 @@ import Lang from 'components/language/lang';
 import { Constants } from '../../../../services/config/constants';
 
 export class TabMenuItem {
-	public dom:HTMLElement = document.createElement("div");
+    public dom:HTMLElement = document.createElement("div");
+    private domName:HTMLElement = document.createElement("span");
     protected identifier:number;
     protected name:string;
     protected color:string|undefined;
@@ -10,7 +11,6 @@ export class TabMenuItem {
 
 	constructor(identifier: number, name: string, object: any, color: string | null = null){
         this.identifier = identifier;
-        this.name = name;
         this.object = object;
         this.color = color;
 
@@ -22,15 +22,10 @@ export class TabMenuItem {
             itemColor.appendChild(this.getIcon(color));
             this.dom.appendChild(itemColor);
         }
+        
+        this.domName.classList.add("name");
+        this.setName(name);
 
-        var itemName = document.createElement("span");
-        itemName.classList.add("name");
-        if (name === undefined || name == "") {
-            itemName.classList.add("noTitle");
-            
-        } else {
-            itemName.innerHTML = name;
-        }
         this.dom.onclick = (e) => {
             this.click(this, this.identifier, this.name, this.object);
         };
@@ -38,7 +33,7 @@ export class TabMenuItem {
             this.oncontextmenu(e, this, this.identifier, this.name, this.object);
             e.preventDefault();
         };
-        this.dom.appendChild(itemName);
+        this.dom.appendChild(this.domName);
     }
 
     public getIcon( color:string ){
@@ -67,7 +62,18 @@ export class TabMenuItem {
     public getObject(){
         return this.object;
     }
+    public setObject(object:any){
+        this.object = object;
+    }
 
+    public setName(name:string) {
+        this.name = name;
+        if (name === undefined || name == "") {
+            this.domName.classList.add("noTitle");
+        } else {
+            this.domName.innerHTML = name;
+        }
+    }
 	/**
 	 * 
 	 * @param e 

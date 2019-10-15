@@ -68,14 +68,16 @@ export default class NotebooksComponent extends TabMenu {
         this.dropdownMenu.addItem(menuItem);
 
         menuItem.click = (e:any) => {
+            
             const renamePopup = new PopupInputComponent(Lang.get("popup_rename_title"), Lang.get("notebooks_name"), this.dropdownMenu.object.name);
+
             renamePopup.setObject(this.dropdownMenu.object);
             renamePopup.click = (e, object, value) => {
-                const notebook = Object.assign({},object);
-                notebook.name = value;
+                object.setName(value);
+                object.object.name = value;
 
                 const notebookService = new NotebookService();
-                notebookService.putNotebook(object.id, notebook).then((message:Message) => {
+                notebookService.putNotebook(object.identifier, object.object).then((message:Message) => {
                     if(message.status === 200){
                         
                         renamePopup.hide();
@@ -101,13 +103,13 @@ export default class NotebooksComponent extends TabMenu {
 
     private bindDeletePopup() {
         this.dropdownMenu.addItem(new MenuItemComponent(svgDelete, Lang.get("ctx_remove"), (e:any) => {
-
             const deleteMsg = Lang.get("popup_delete_confirm_msg1") +this.dropdownMenu.object.name+ Lang.get("popup_delete_confirm_msg2");
             const deletePopup = new PopupConfirmComponent(Lang.get("popup_delete_title"), deleteMsg);
             deletePopup.setObject(this.dropdownMenu.object);
+
             deletePopup.click = (e, object) => {
                 const notebookService = new NotebookService();
-                notebookService.deleteNotebook(object.id).then((message:Message) => {
+                notebookService.deleteNotebook(object.identifier).then((message:Message) => {
                     if(message.status === 200){
                         deletePopup.hide();
                     } else {

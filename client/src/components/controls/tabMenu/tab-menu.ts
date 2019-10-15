@@ -105,7 +105,8 @@ export class TabMenu extends Tab {
 		}
 
 		tabMenuItem.oncontextmenu = (e, item: TabMenuItem, identifier: number, name: string, object: any) => {
-			this.dropdownMenu.setObject(object);
+			
+			this.dropdownMenu.setObject(item);
 			this.dropdownMenu.show();
 			this.dropdownMenu.setPosition(e.pageX, e.pageY);
 			
