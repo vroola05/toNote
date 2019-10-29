@@ -6,13 +6,17 @@ import svgColors from '../../../../assets/images/colors.svg';
 
 import Lang from '../../../../components/language/lang';
 
-import { Chapter, MainState } from '../../../../types';
+import { Chapter, MainState, Message } from '../../../../types';
 
 import { Router } from '../../../../services/router/router-service';
 import { ChapterService } from '../../../../services/http/chapter-service';
 
 import { TabMenu } from '../../../../components/controls/tabMenu/tab-menu';
 import MenuItemComponent from '../../../../components/controls/menu-item/menu-item-component';
+
+
+import PopupInputComponent from '../../../../components/popups/popup-input/popup-input-component';
+import PopupConfirmComponent from '../../../../components/popups/popup-confirm/popup-confirm-component';
 
 export default class ChaptersComponent extends TabMenu {
     private notebookId : number;
@@ -62,6 +66,7 @@ export default class ChaptersComponent extends TabMenu {
                 resolve(this.getObjects());
             });
         }
+
         this.notebookId = mainState.notebook.id;
         return chapterService.getChapters(mainState.notebook.id).then((chapters:Array<Chapter>) => {
             this.clear();
@@ -78,5 +83,52 @@ export default class ChaptersComponent extends TabMenu {
             console.error(error.stack);   
             throw error 
         });
+    }
+
+    private bindRenamePopup() {
+    }
+
+    public clickNewItem(e: Event) {
+        
+        const newPopup = new PopupInputComponent(Lang.get("popup_new_title"), Lang.get("notebooks_name"), '');
+        
+        newPopup.click = (e, object, value) => {
+            
+            if(value===''){
+                newPopup.setError("<span>"+Lang.get("popup_new_msg_empty")+"</span>");
+                return;
+            }
+            const chapter = new Chapter();
+            chapter.name = value;
+
+            const notebookService = new ChapterService();
+            notebookService.postChapter(this.notebookId, chapter).then((message:Message) => {
+                if(message.status === 200){
+                    for(let i=0; i<message.info.length; i++){
+                        if(message.info[i].id === "id"){
+                            chapter.id = Number(message.info[i].value);
+                            this.addItem(chapter.id, chapter.name, chapter, undefined);
+                        }
+                    }
+                    
+                    newPopup.hide();
+                } else {
+                    if(message.info){
+                        let error = "";
+                        for(let i=0; i<message.info.length; i++){
+                            error += "<span>" + message.info[i].value + "</span>";
+                            
+                        }
+                        newPopup.setError(error);
+                    }
+                }
+                
+                
+            }).catch((e)=>{
+
+            });
+        };
+        newPopup.show();
+    
     }
 }

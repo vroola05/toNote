@@ -74,6 +74,7 @@ export class TabMenuItem {
             this.domName.innerHTML = name;
         }
     }
+
 	/**
 	 * 
 	 * @param e 

@@ -12,6 +12,8 @@ use \core\Security;
 use \core\Http;
 use \core\Lang;
 
+use \dao\Dao;
+
 use \model\Notebook;
 use \model\Notebooks;
 
@@ -32,20 +34,26 @@ class NotebookResource {
         if($connection->dbPreparedStatement("select n.id, n.userId, n.name, n.creationDate, n.modifyDate, n.hash from notebooks n order by n.name asc" , null)){
             $records = $connection->getFetchData();
             foreach ($records as $record) {
-                $notebook = new Notebook();
-                $notebook->setId((int)$record["id"]);
-                $notebook->setUserId((int)$record["userId"]);
-                $notebook->setName($record["name"]);
-                if($record["creationDate"]!=null && $record["creationDate"]!="") {
-                    $notebook->setCreationDate((new \DateTime($record["creationDate"]))->format(\DateTime::W3C));
-                }
-                if($record["modifyDate"]!=null && $record["modifyDate"]!="") {
-                    $notebook->setModifyDate((new \DateTime($record["modifyDate"]))->format(\DateTime::W3C));
-                }
+                $notebook = $this->getNotebookRecord((int)$record["id"], (int)$record["userId"], $record["name"], $record["creationDate"], $record["modifyDate"]);
                 array_push($result, $notebook);
             }
         }
         return $result;
+    }
+
+    private function getNotebookRecord(int $id, $userId, $name, $creationDate, $modifyDate) {
+        $notebook = new Notebook();
+        $notebook->setId($id);
+        $notebook->setUserId($userId);
+        $notebook->setName($name);
+        if($creationDate!=null && $creationDate!="") {
+            $notebook->setCreationDate((new \DateTime($creationDate))->format(\DateTime::W3C));
+        }
+        if($modifyDate!=null && $modifyDate!="") {
+            $notebook->setModifyDate((new \DateTime($modifyDate))->format(\DateTime::W3C));
+        }
+
+        return $notebook;
     }
 
     public function getNotebook( array $parameters ) : Notebook {
@@ -59,9 +67,6 @@ class NotebookResource {
     }
 
     public function postNotebook($parameters, $notebook) : Message {
-        $connection = Database::getInstance();
-        $connection->dbConnect();
-
         $input = new Notebook();
         $input->setUserId(Security::getUserId());
         
@@ -74,8 +79,12 @@ class NotebookResource {
 
         $connection = Database::getInstance();
         $connection->dbConnect();
-        if($input->post($connection)){
-            return new \Core\Message(200, Lang::get("notebook_post_saved"));
+        $newId = $input->post($connection);
+        if($newId !== false){
+            
+            $message = new \Core\Message(200, Lang::get("notebook_post_saved"));
+            $message->addExtraInfo("id", $newId);
+            return $message;
         } else {
             Http::setStatus(400);
             $message = new \Core\Message(400, Lang::get("generic_status_400"));
@@ -123,6 +132,11 @@ class NotebookResource {
         
         $connection = Database::getInstance();
         $connection->dbConnect();
+        
+        $dao = new Dao();
+        $chapters = $dao->getChaptersByNotebookId( $connection, $parameters[0], Security::getUserId());
+
+
         if($input->delete($connection)){
             return new \Core\Message(200, Lang::get("notebook_delete"));
         } else {

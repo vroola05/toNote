@@ -91,6 +91,14 @@ class Chapter extends ModelBase {
         return $this->modifyDate;
     }
 
+    function setHash( string $hash )  {
+        $this->hash = $hash;
+    }
+
+    function getHash() : string {
+        return $this->hash;
+    }
+
     function setNotes($notes){
         $this->notes = $notes;
     }

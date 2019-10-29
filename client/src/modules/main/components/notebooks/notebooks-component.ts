@@ -73,13 +73,17 @@ export default class NotebooksComponent extends TabMenu {
 
             renamePopup.setObject(this.dropdownMenu.object);
             renamePopup.click = (e, object, value) => {
-                object.setName(value);
+                if(value===""){
+                    renamePopup.setError("<span>" + Lang.get("popup_rename_empty") + "</span>");
+                    return;
+                }
                 object.object.name = value;
 
                 const notebookService = new NotebookService();
                 notebookService.putNotebook(object.identifier, object.object).then((message:Message) => {
                     if(message.status === 200){
-                        
+                        object.setName(value);
+                        object.object.name = value;
                         renamePopup.hide();
                     } else {
                         if(message.info){
@@ -102,7 +106,10 @@ export default class NotebooksComponent extends TabMenu {
     }
 
     private bindDeletePopup() {
-        this.dropdownMenu.addItem(new MenuItemComponent(svgDelete, Lang.get("ctx_remove"), (e:any) => {
+        const menuItem = new MenuItemComponent(svgDelete, Lang.get("ctx_remove"));
+        this.dropdownMenu.addItem(menuItem);
+        
+        menuItem.click = (e:any) => {
             const deleteMsg = Lang.get("popup_delete_confirm_msg1") +this.dropdownMenu.object.name+ Lang.get("popup_delete_confirm_msg2");
             const deletePopup = new PopupConfirmComponent(Lang.get("popup_delete_title"), deleteMsg);
             deletePopup.setObject(this.dropdownMenu.object);
@@ -111,6 +118,8 @@ export default class NotebooksComponent extends TabMenu {
                 const notebookService = new NotebookService();
                 notebookService.deleteNotebook(object.identifier).then((message:Message) => {
                     if(message.status === 200){
+                        this.removeItem(object);
+                        console.log(object);
                         deletePopup.hide();
                     } else {
                         if(message.info){
@@ -129,7 +138,7 @@ export default class NotebooksComponent extends TabMenu {
                 });
             };
             deletePopup.show();
-        }));
+        };
     }
 
     public clickNewItem(e: Event) {
@@ -147,6 +156,13 @@ export default class NotebooksComponent extends TabMenu {
             const notebookService = new NotebookService();
             notebookService.postNotebook(notebook).then((message:Message) => {
                 if(message.status === 200){
+                    for(let i=0; i<message.info.length; i++){
+                        if(message.info[i].id === "id"){
+                            notebook.id = Number(message.info[i].value);
+                            this.addItem(notebook.id, notebook.name, notebook, undefined);
+                        }
+                    }
+                    
                     newPopup.hide();
                 } else {
                     if(message.info){

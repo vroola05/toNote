@@ -82,6 +82,11 @@ export class TabMenu extends Tab {
 		super.hide();
 	}
 
+	public removeItem(tabMenuItem:TabMenuItem){
+		this.domItemList.removeChild(tabMenuItem.dom);
+		this.tabMenuItems.splice(this.tabMenuItems.indexOf(tabMenuItem), 1);
+	}
+
     /**
      * 
      * @param name 

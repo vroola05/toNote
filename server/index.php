@@ -15,6 +15,8 @@ require_once 'core/GUID.php';
 require_once 'core/Security.php';
 require_once 'core/Router.php';
 
+require_once 'dao/Dao.php';
+
 require 'resource/LoginResource.php';
 require 'resource/NotebookResource.php';
 require 'resource/ChapterResource.php';
@@ -60,13 +62,13 @@ try{
 				"DELETE" => array("Resource\NotebookResource", "deleteNotebook", Http::CONTENT_TYPE_JSON)
 			),
 			"/notebooks/{number}/chapters" => array( 
-				"GET" => array("Resource\ChapterResource", "getChapters", Http::CONTENT_TYPE_JSON)
+				"GET" => array("Resource\ChapterResource", "getChapters", Http::CONTENT_TYPE_JSON),
+				"POST" => array("Resource\ChapterResource", "postChapter", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
 			),
 			
 			"/notebooks/{number}/chapters/{number}" =>  array( 
 				"GET" => array("Resource\ChapterResource", "getChapter", Http::CONTENT_TYPE_JSON),
-				"PUT" => array("Resource\ChapterResource", "putChapter", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON),
-				"POST" => array("Resource\ChapterResource", "postChapter", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
+				"PUT" => array("Resource\ChapterResource", "putChapter", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
 			),
 			"/notebooks/{number}/chapters/{number}/notes" => array( 
 				"GET" => array("Resource\NotesResource", "getNotes", Http::CONTENT_TYPE_JSON)
