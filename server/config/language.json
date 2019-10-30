@@ -23,7 +23,11 @@
 
         "notebook_post_saved": "Het nieuwe notitieblok is opgeslagen!",
         "notebook_put_saved": "De wijzigingen in het notiteblok zijn opgeslagen!",
-        "notebook_delete": "Het notitieblok is verwijderd!"
+        "notebook_delete": "Het notitieblok is verwijderd!",
+
+        "chapter_post_saved": "Het nieuwe hoofdstuk is opgeslagen!",
+        "chapter_put_saved": "De wijzigingen in het hoofdstuk zijn opgeslagen!",
+        "chapter_delete": "Het hoofdstuk is verwijderd!"
         
     },
     "en": {
@@ -50,7 +54,11 @@
         "login_signed_out": "You have been signed out!",
 
         "notebook_post_saved": "The new notebook has been saved!",
-        "notebook_put_saved": "The changes in the notebook have been saved!",
-        "notebook_delete": "Notebook has been deleted!"
+        "notebook_put_saved": "The changes in this notebook have been saved!",
+        "notebook_delete": "Notebook has been deleted!",
+
+        "chapter_post_saved": "The new chapter has been saved!",
+        "chapter_put_saved": "The changes in this chapter have been saved!",
+        "chapter_delete": "Chapter has been deleted!"
     }
 }

@@ -68,7 +68,8 @@ try{
 			
 			"/notebooks/{number}/chapters/{number}" =>  array( 
 				"GET" => array("Resource\ChapterResource", "getChapter", Http::CONTENT_TYPE_JSON),
-				"PUT" => array("Resource\ChapterResource", "putChapter", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
+				"PUT" => array("Resource\ChapterResource", "putChapter", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON),
+				"DELETE" => array("Resource\ChapterResource", "deleteChapter", Http::CONTENT_TYPE_JSON)
 			),
 			"/notebooks/{number}/chapters/{number}/notes" => array( 
 				"GET" => array("Resource\NotesResource", "getNotes", Http::CONTENT_TYPE_JSON)

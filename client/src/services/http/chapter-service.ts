@@ -18,7 +18,7 @@ export class ChapterService extends HttpClient{
         return this.post("notebooks/" + notebookId + "/chapters", chapter);
     }
 
-    public deleteChapter(notebookId:number) : Promise<Message>{
-        return this.delete("notebooks/" + notebookId);
+    public deleteChapter(notebookId:number, chapterId:number) : Promise<Message>{
+        return this.delete("notebooks/" + notebookId + "/chapters/" + chapterId);
     }
 }

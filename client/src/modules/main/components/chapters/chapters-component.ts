@@ -29,15 +29,14 @@ export default class ChaptersComponent extends TabMenu {
 
         super(labels, "chapter", TabMenu.COLOR_TYPE_ITEM_COLOR);
 
-        this.dropdownMenu.addItem(new MenuItemComponent(svgRename, Lang.get("ctx_rename"), (e:any) => {
-            //Do nothing
-        }));
+        
+        this.bindRenamePopup();
         this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get("ctx_move"), (e:any) => {
             //Do nothing
         }));
-        this.dropdownMenu.addItem(new MenuItemComponent(svgDelete, Lang.get("ctx_remove"), (e:any) => {
-            //Do nothing
-        }));
+        
+        this.bindDeletePopup();
+
         this.dropdownMenu.addItem(new MenuItemComponent(svgColors, Lang.get("ctx_color"), (e:any) => {
             //Do nothing
         }));
@@ -86,20 +85,93 @@ export default class ChaptersComponent extends TabMenu {
     }
 
     private bindRenamePopup() {
+        const menuItem = new MenuItemComponent(svgRename, Lang.get("ctx_rename"));
+        this.dropdownMenu.addItem(menuItem);
+
+        menuItem.click = (e:any) => {
+            
+            const renamePopup = new PopupInputComponent(Lang.get("popup_rename_title"), Lang.get("notebooks_name"), this.dropdownMenu.object.name);
+
+            renamePopup.setObject(this.dropdownMenu.object);
+            renamePopup.click = (e, object, value) => {
+                if(value===""){
+                    renamePopup.setError("<span>" + Lang.get("popup_rename_empty") + "</span>");
+                    return;
+                }
+                object.object.name = value;
+
+                const chapterService = new ChapterService();
+                chapterService.putChapter(object.object.notebookId, object.object.id, object.object).then((message:Message) => {
+                    if(message.status === 200){
+                        object.setName(value);
+                        object.object.name = value;
+                        renamePopup.hide();
+                    } else {
+                        if(message.info){
+                            let error = "";
+                            for(let i=0; i<message.info.length; i++){
+                                error += "<span>" + message.info[i].value + "</span>";
+                                
+                            }
+                            renamePopup.setError(error);
+                        }
+                    }
+                    
+                    
+                }).catch((e)=>{
+
+                });
+            };
+            renamePopup.show();
+        };
+    }
+
+    private bindDeletePopup() {
+        
+        const menuItem = new MenuItemComponent(svgDelete, Lang.get("ctx_remove"));
+        this.dropdownMenu.addItem(menuItem);
+        
+        menuItem.click = (e:any) => {
+            const deleteMsg = Lang.get("popup_delete_confirm_msg1") +this.dropdownMenu.object.name+ Lang.get("popup_delete_confirm_msg2");
+            const deletePopup = new PopupConfirmComponent(Lang.get("popup_delete_title"), deleteMsg);
+            deletePopup.setObject(this.dropdownMenu.object);
+
+            deletePopup.click = (e, object) => {
+                const chapterService = new ChapterService();
+                chapterService.deleteChapter(object.object.notebookId, object.object.id).then((message:Message) => {
+                    if(message.status === 200){
+                        this.removeItem(object);
+                        deletePopup.hide();
+                    } else {
+                        if(message.info){
+                            let error = "";
+                            for(let i=0; i<message.info.length; i++){
+                                error += "<span>" + message.info[i].value + "</span>";
+                                
+                            }
+                            deletePopup.setError(error);
+                        }
+                    }
+                    
+                    
+                }).catch((e)=>{
+    
+                });
+            };
+            deletePopup.show();
+        };
     }
 
     public clickNewItem(e: Event) {
-        
-        const newPopup = new PopupInputComponent(Lang.get("popup_new_title"), Lang.get("notebooks_name"), '');
-        
+        const newPopup = new PopupInputComponent(Lang.get("popup_new_title"), Lang.get("chapters_name"), '');
         newPopup.click = (e, object, value) => {
-            
             if(value===''){
                 newPopup.setError("<span>"+Lang.get("popup_new_msg_empty")+"</span>");
                 return;
             }
             const chapter = new Chapter();
             chapter.name = value;
+            chapter.notebookId = this.notebookId;
 
             const notebookService = new ChapterService();
             notebookService.postChapter(this.notebookId, chapter).then((message:Message) => {

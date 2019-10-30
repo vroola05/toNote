@@ -25,8 +25,8 @@ class ChapterResource {
             $connection = Database::getInstance();
             $connection->dbConnect();
 
-            $dao = new Dao();
-            return $dao->getChaptersByNotebookId( $connection, $parameters[0], Security::getUserId());
+            
+            return Dao::getChaptersByNotebookId( $connection, $parameters[0], Security::getUserId());
         }
     }
 
@@ -73,6 +73,34 @@ class ChapterResource {
                 $message = new \Core\Message(200, Lang::get("notebook_post_saved"));
                 $message->addExtraInfo("id", $newId);
                 return $message;
+            } else {
+                Http::setStatus(400);
+                $message = new \Core\Message(400, Lang::get("generic_status_400"));
+                $messages = $input->getMessages();
+                if($messages){
+                    foreach($messages as $m){
+                        $message->addExtraInfo($m->id, $m->faultcode);
+                    }
+                }
+                return $message;
+            }
+        }
+    }
+
+    public function deleteChapter($parameters) {
+        if($parameters != null && count($parameters) == 2) {
+
+            $connection = Database::getInstance();
+            $connection->dbConnect();
+            
+            Dao::deleteNotes( $connection, $parameters[1], Security::getUserId() );
+
+            $input = new Chapter();
+            $input->setId($parameters[1]);
+            $input->setNotebookId($parameters[0]);
+            $input->setUserId(Security::getUserId());
+            if($input->delete($connection)){
+                return new \Core\Message(200, Lang::get("chapter_delete"));
             } else {
                 Http::setStatus(400);
                 $message = new \Core\Message(400, Lang::get("generic_status_400"));

@@ -326,7 +326,6 @@ class ModelBase {
         //There must be somekind of value in the id field... else all objects are deleted...
         if ($where != "") {
             $query = "delete from " . $this->mapping->tablename . " where " . $where;
-
             if ($connection->dbPreparedStatement($query, $params)) {
                 return true;
             } else {

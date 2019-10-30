@@ -126,17 +126,19 @@ class NotebookResource {
     }
 
     public function deleteNotebook($parameters) {
-        $input = new Notebook();
-        $input->setId($parameters[0]);
-        $input->setUserId(Security::getUserId());
         
         $connection = Database::getInstance();
         $connection->dbConnect();
-        
-        $dao = new Dao();
-        $chapters = $dao->getChaptersByNotebookId( $connection, $parameters[0], Security::getUserId());
+        $chapters = Dao::getChaptersByNotebookId( $connection, $parameters[0], Security::getUserId() );
+        foreach ($chapters as $chapter) {
+            Dao::deleteNotes( $connection, $chapter->getId(), Security::getUserId() );
+        }
 
+        Dao::deleteChapters( $connection, $parameters[0], Security::getUserId() );
 
+        $input = new Notebook();
+        $input->setId($parameters[0]);
+        $input->setUserId(Security::getUserId());
         if($input->delete($connection)){
             return new \Core\Message(200, Lang::get("notebook_delete"));
         } else {

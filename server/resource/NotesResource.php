@@ -5,7 +5,10 @@ require 'model/Note.php';
 
 use \core\Message;
 use \core\Http;
+use \core\Security;
 use \core\db\Database;
+
+use \dao\Dao;
 
 use \model\Note;
 
@@ -15,28 +18,10 @@ class NotesResource {
 
     public function getNotes( array $parameters ) {
         if( $parameters!=null && count($parameters) == 2 ){
-
-            $result=array();
             $connection = Database::getInstance();
             $connection->dbConnect();
-            if($connection->dbPreparedStatement("select n.id, n.sectionId, n.userId, n.name, n.creationDate, n.modifyDate, n.hash from notes n where n.sectionId = ? order by n.name asc" , array_slice($parameters,1))){
-                $records = $connection->getFetchData();
-                foreach ($records as $record) {
-                    $note = new Note();
-                    $note->setId((int)$record["id"]);
-                    $note->setSectionId((int)$record["sectionId"]);
-                    $note->setUserId((int)$record["userId"]);
-                    $note->setName($record["name"]);
-                    if($record["creationDate"]!=null && $record["creationDate"]!="") {
-                        $note->setCreationDate((new \DateTime($record["creationDate"]))->format(\DateTime::W3C));
-                    }
-                    if($record["modifyDate"]!=null && $record["modifyDate"]!="") {
-                        $note->setModifyDate((new \DateTime($record["modifyDate"]))->format(\DateTime::W3C));
-                    }
-                    array_push($result, $note);
-                }
-            }
-            return $result;
+            
+            return Dao::getNotesByChapterId($connection, $parameters[1], Security::getUserId());
         }
     }
 
