@@ -178,7 +178,6 @@ class ModelBase {
         }
 
         $query = "insert into " . $this->mapping->tablename . " (" . $keys . ") values (" . $values . ")";
-
         if ($connection->dbPreparedStatement($query, $params)) {
             $output = $connection->getLastInsertId();
         } else {
@@ -341,7 +340,6 @@ class ModelBase {
      *
      */
     public function get($connection = null, array $identifiers, array $receiveColumns = null ) {
-
         //Open database connection
         if ($connection == null) {
             return false;
@@ -350,7 +348,7 @@ class ModelBase {
         $select = "";
         $where = "";
         $params = array();
-
+        
         if ($receiveColumns != null) {
             foreach ($receiveColumns as $columnName) {
                 if (array_key_exists($columnName, $this->mapping->columns)) {

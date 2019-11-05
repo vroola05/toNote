@@ -71,7 +71,7 @@ export default class NotebooksComponent extends TabMenu {
             
             const renamePopup = new PopupInputComponent(Lang.get("popup_rename_title"), Lang.get("notebooks_name"), this.dropdownMenu.object.name);
 
-            renamePopup.setObject(this.dropdownMenu.object);
+            renamePopup.object = this.dropdownMenu.object;
             renamePopup.click = (e, object, value) => {
                 if(value===""){
                     renamePopup.setError("<span>" + Lang.get("popup_rename_empty") + "</span>");
@@ -112,7 +112,7 @@ export default class NotebooksComponent extends TabMenu {
         menuItem.click = (e:any) => {
             const deleteMsg = Lang.get("popup_delete_confirm_msg1") +this.dropdownMenu.object.name+ Lang.get("popup_delete_confirm_msg2");
             const deletePopup = new PopupConfirmComponent(Lang.get("popup_delete_title"), deleteMsg);
-            deletePopup.setObject(this.dropdownMenu.object);
+            deletePopup.object = this.dropdownMenu.object;
 
             deletePopup.click = (e, object) => {
                 const notebookService = new NotebookService();

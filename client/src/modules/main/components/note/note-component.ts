@@ -74,7 +74,9 @@ export default class NoteComponent extends Tab {
                 this.noteContentComponent.setDateCreated(Lang.get("main_note_header_created") +": "+ DateFormat.get(note.creationDate));
                 this.noteContentComponent.setDateModified(Lang.get("main_note_header_modified") +": "+ DateFormat.get(note.modifyDate));
 
-                this.object = JSON.parse(content);
+                if (content) {
+                    this.object = JSON.parse(content);
+                }
                 this.noteContentComponent.setContent(this.object);
 
                 this.overlayComponent.hide(() => {

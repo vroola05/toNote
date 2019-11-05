@@ -27,7 +27,12 @@
 
         "chapter_post_saved": "Het nieuwe hoofdstuk is opgeslagen!",
         "chapter_put_saved": "De wijzigingen in het hoofdstuk zijn opgeslagen!",
-        "chapter_delete": "Het hoofdstuk is verwijderd!"
+        "chapter_delete": "Het hoofdstuk is verwijderd!",
+
+        "note_post_saved": "De nieuwe notitie is opgeslagen!",
+        "note_put_saved": "De wijzigingen in de notitie zijn opgeslagen!",
+        "note_delete": "De notitie is verwijderd!"
+
         
     },
     "en": {

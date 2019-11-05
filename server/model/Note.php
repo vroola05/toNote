@@ -28,7 +28,7 @@ class Note extends ModelBase {
         $mapping->addColumn("hash", "string", null, 255);
 
         $mapping->addPrimaryKey("id", "id");
-        $mapping->addForeignKey("sections", "id", "sectionId");
+        $mapping->addForeignKey("chapters", "id", "sectionId");
 
         $this->setMapping($mapping);
         $this->set($json);
@@ -64,6 +64,14 @@ class Note extends ModelBase {
 
     function getName() {
         return $this->name;
+    }
+
+    function setHash($hash) {
+        $this->hash = $hash;
+    }
+
+    function getHash() {
+        return $this->hash;
     }
 
     function setNote($note) {

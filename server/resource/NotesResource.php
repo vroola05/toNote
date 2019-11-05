@@ -5,6 +5,7 @@ require 'model/Note.php';
 
 use \core\Message;
 use \core\Http;
+use \core\Lang;
 use \core\Security;
 use \core\db\Database;
 
@@ -25,21 +26,16 @@ class NotesResource {
         }
     }
 
-    public function getNote( array $parameters ) : Note {
+    public function getNote( array $parameters )  {
+        
         if( $parameters!=null && count($parameters) == 3 ){
             $connection = Database::getInstance();
             $connection->dbConnect();
 
-            $note = new Note();
-            $note->setSectionId($parameters[1]);
-            $note->setId($parameters[2]);
-            $output = $note->get(array("id", "sectionId", "userId", "name", "creationDate", "modifyDate", "hash"), $connection);
-            if($output !== false){
-                return $output;
-            }
-
-            Http::setStatus(404);
-            throw new \Exception('Not found!');
+            return $connection->getSingleItem(new Note(), "select * from notes where userId = ? and sectionId = ? and id = ?", 
+            array(Security::getUserId(), $parameters[1], $parameters[2]));
+            
+            //array("id", "sectionId", "userId", "name", "creationDate", "modifyDate", "hash")
         }
     }
 
@@ -58,11 +54,52 @@ class NotesResource {
         throw new \Exception('Not found!');
     }
 
+    public function putNoteContent($parameters, $content) : Message{
+        var_dump($parameters);
+        var_dump($content);
+        return new \Core\Message(200, "Note has been saved!");
+    }
+
     public function putNote($parameters, $note) : Message{
         return new \Core\Message(200, "Note has been saved!");
     }
 
     public function postNote($parameters, $note){
-        return new \Core\Message(200, "Note has been created!");
+        
+        if( $parameters!=null && count($parameters) == 2 ){
+            
+            $input = new Note();
+            $input->setUserId(Security::getUserId());
+            
+            $input->setSectionId($parameters[1]);
+            $input->setName($note->name);
+            
+            $now = (new \DateTime())->format("Y-m-d H:i:s");
+            
+            $input->setCreationDate($now);
+            $input->setModifyDate($now);
+            $input->setNote("");
+            $input->setHash("");
+            
+            $connection = Database::getInstance();
+            $connection->dbConnect();
+            $newId = $input->post($connection);
+            if($newId !== false){
+              
+                $message = new \Core\Message(200, Lang::get("note_post_saved"));
+                $message->addExtraInfo("id", $newId);
+                return $message;
+            } else {
+                Http::setStatus(400);
+                $message = new \Core\Message(400, Lang::get("generic_status_400"));
+                $messages = $input->getMessages();
+                if($messages){
+                    foreach($messages as $m){
+                        $message->addExtraInfo($m->id, $m->faultcode);
+                    }
+                }
+                return $message;
+            }
+        }
     }
 }

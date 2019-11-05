@@ -72,15 +72,17 @@ try{
 				"DELETE" => array("Resource\ChapterResource", "deleteChapter", Http::CONTENT_TYPE_JSON)
 			),
 			"/notebooks/{number}/chapters/{number}/notes" => array( 
-				"GET" => array("Resource\NotesResource", "getNotes", Http::CONTENT_TYPE_JSON)
+				"GET" => array("Resource\NotesResource", "getNotes", Http::CONTENT_TYPE_JSON),
+				"POST" => array("Resource\NotesResource", "postNote", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
 			),
 			"/notebooks/{number}/chapters/{number}/notes/{number}" => array( 
 				"GET" => array("Resource\NotesResource", "getNote", Http::CONTENT_TYPE_JSON),
-				"PUT" => array("Resource\NotesResource", "putNote", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON),
-				"POST" => array("Resource\NotesResource", "postNote", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
+				"PUT" => array("Resource\NotesResource", "putNote", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
+				
 			),
 			"/notebooks/{number}/chapters/{number}/notes/{number}/content" => array( 
 				"GET" => array("Resource\NotesResource", "getNoteContent", Http::CONTENT_TYPE_JSON),
+				"PUT" => array("Resource\NotesResource", "putNoteContent", Http::CONTENT_TYPE_JSON)
 			)
 		));
 		Router::route();

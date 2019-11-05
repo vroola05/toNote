@@ -3,6 +3,7 @@ namespace dao;
 
 use \core\db\Database;
 use \model\Chapter;
+use \model\Note;
 
 class Dao {
     
