@@ -1,10 +1,8 @@
 import { Note, MainState } from '../../../../types';
 import { NoteService } from '../../../../services/http/note-service';
 
-import Lang from '../../../../components/language/lang';
+
 import { Tab } from '../../../../components/controls/tabMenu/tab';
-import InputComponent from '../../../../components/controls/input/input-component';
-import DateFormat from '../../../../components/date/date';
 import OverlayComponent from './components/overlay/overlay-component';
 import NoteContentComponent from './components/note-content/note-content';
 import { Constants } from '../../../../services/config/constants';
@@ -14,7 +12,7 @@ export default class NoteComponent extends Tab {
     private notebookId : number = null;
     private chapterId : number = null;
     private noteId : number = null;
-
+    private noteService : NoteService;
     private overlayComponent: OverlayComponent;
     private noteContentComponent: NoteContentComponent;
 
@@ -22,6 +20,9 @@ export default class NoteComponent extends Tab {
 
     constructor(){
         super();
+
+        this.noteService = new NoteService();
+
         this.dom.className = this.dom.className +" tabNote";
 
         this.overlayComponent = new OverlayComponent();
@@ -29,6 +30,12 @@ export default class NoteComponent extends Tab {
 
         this.noteContentComponent = new NoteContentComponent();
         this.dom.appendChild(this.noteContentComponent.dom);
+        this.noteContentComponent.event.on("text-change", text => {
+            this.noteService.putNoteContent(this.notebookId, this.chapterId, this.noteId, text);
+        });
+        this.noteContentComponent.event.on("change", text => {
+            console.log("de", text);
+        });
     }
 
     /**
@@ -49,10 +56,7 @@ export default class NoteComponent extends Tab {
     }
 
     public clear(){
-        this.noteContentComponent.setContent("");
-        this.noteContentComponent.setTitle("");
-        this.noteContentComponent.setDateCreated("");
-        this.noteContentComponent.setDateModified("");
+        this.noteContentComponent.clear();
     }
 
     public hasContent() : boolean{
@@ -60,7 +64,7 @@ export default class NoteComponent extends Tab {
     }
 
     public getItem( mainState: MainState ) : Promise<any>{
-        const noteService : NoteService = new NoteService();
+        
 
         if(this.hasContent() && this.notebookId == mainState.notebook.id && this.chapterId == mainState.chapter.id && this.noteId == mainState.note.id){
             return new Promise((resolve, reject) => {
@@ -68,12 +72,13 @@ export default class NoteComponent extends Tab {
             });
         }
 
-        return noteService.getNote(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((note:Note) => {
-            noteService.getNoteContent(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((content:any) => {
-                this.noteContentComponent.setTitle(note.name);
-                this.noteContentComponent.setDateCreated(Lang.get("main_note_header_created") +": "+ DateFormat.get(note.creationDate));
-                this.noteContentComponent.setDateModified(Lang.get("main_note_header_modified") +": "+ DateFormat.get(note.modifyDate));
-
+        this.notebookId = mainState.notebook.id;
+        this.chapterId = mainState.chapter.id
+        this.noteId = mainState.note.id;
+        return this.noteService.getNote(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((note:Note) => {
+            this.noteService.getNoteContent(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((content:any) => {
+                this.noteContentComponent.setNote(note);
+ 
                 if (content) {
                     this.object = JSON.parse(content);
                 }

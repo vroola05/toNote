@@ -64,6 +64,10 @@
 
         "chapter_post_saved": "The new chapter has been saved!",
         "chapter_put_saved": "The changes in this chapter have been saved!",
-        "chapter_delete": "Chapter has been deleted!"
+        "chapter_delete": "Chapter has been deleted!",
+
+        "note_post_saved": "The new note has been saved!",
+        "note_put_saved": "The changes in the note are saved!",
+        "note_delete": "Note has been deleted!"
     }
 }

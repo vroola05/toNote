@@ -55,9 +55,18 @@ class NotesResource {
     }
 
     public function putNoteContent($parameters, $content) : Message{
-        var_dump($parameters);
-        var_dump($content);
-        return new \Core\Message(200, "Note has been saved!");
+        if( $parameters!=null && count($parameters) == 3 ){
+
+            $connection = Database::getInstance();
+            $connection->dbConnect();
+            
+            if($connection->dbPreparedStatement("update notes set note = ?, modifyDate=now() where userid = ? and sectionId = ? and id = ?", array(\json_encode($content), Security::getUserId(), $parameters[1], $parameters[2]))) {
+                $message = new \Core\Message(200, Lang::get("note_put_saved"));
+                return $message;
+            }
+        }
+        Http::setStatus(400);
+        return new \Core\Message(400, Lang::get("generic_status_400"));
     }
 
     public function putNote($parameters, $note) : Message{

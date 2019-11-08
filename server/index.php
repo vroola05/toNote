@@ -82,7 +82,7 @@ try{
 			),
 			"/notebooks/{number}/chapters/{number}/notes/{number}/content" => array( 
 				"GET" => array("Resource\NotesResource", "getNoteContent", Http::CONTENT_TYPE_JSON),
-				"PUT" => array("Resource\NotesResource", "putNoteContent", Http::CONTENT_TYPE_JSON)
+				"PUT" => array("Resource\NotesResource", "putNoteContent", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
 			)
 		));
 		Router::route();
