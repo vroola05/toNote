@@ -5,7 +5,7 @@ export interface Entity{
 
 export interface Info extends Entity {
     id: string;
-    value : string;
+    value : any;
 }
 
 

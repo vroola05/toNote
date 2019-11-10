@@ -21,7 +21,6 @@ export default class MainModule extends IWindow{
 
     public state: State;
 
-
     constructor(){
         super("main", "Notities");
         this.append(this.headerComponent.dom);
@@ -52,53 +51,18 @@ export default class MainModule extends IWindow{
         this.notebooksComponent.setDeviceLayout();
     }
 
-    
-
     public load( state : State ) : boolean {
-        
         if(state.value== null){
             state.value = new MainState();
         }
-
         this.state = state;
 
         this.headerComponent.setMainTitle("");
         this.headerComponent.setSubTitle("");
 
-        let mainState : MainState = state.value;
+        let newState : MainState = state.value;
         let currentState = this.getCurrentState(state.value);
-        this.notebooksComponent.getItems(mainState).then(() => {
-            this.notebooksComponent.show();
-            if(currentState=="notebook" || currentState=="chapter" || currentState=="note"){
-                this.headerComponent.setMainTitle(mainState.notebook.name);
-                this.chaptersComponent.getItems(mainState).then(()=>{
-                    this.chaptersComponent.show();
-                    if(currentState=="chapter" || currentState=="note"){
-                        this.headerComponent.setSubTitle(mainState.chapter.name);
-                        this.notesComponent.getItems(mainState).then(() => {
-                            this.notesComponent.setMenuColor(mainState.chapter.color);
-                            this.notesComponent.show();
-                            if(currentState=="note"){
-                                this.noteComponent.getItem(mainState).then(() =>{
-                                    this.noteComponent.show();
-                                    this.notebooksComponent.setDeviceLayout();
-                                }).catch(() => {});;
-                            } else{
-                                this.notebooksComponent.setDeviceLayout();
-                                this.noteComponent.hide();
-                            }
-                        }).catch(() => {});;
-                    } else {
-                        this.notebooksComponent.setDeviceLayout();
-                        this.notesComponent.hide();
-                    }
-                }).catch(() => {});;
-            } else {
-                this.notebooksComponent.setDeviceLayout();
-                this.chaptersComponent.hide();
-            }
-        }).catch(() => {});
-
+        this.loadNotebooks(currentState, newState);
         this.show();
         return true;
         
@@ -106,6 +70,49 @@ export default class MainModule extends IWindow{
 
     public back(){
         this.notebooksComponent.back();
+    }
+
+    private loadNotebooks(state: string, newState: MainState) {
+        this.notebooksComponent.getItems(newState).then(() => {
+            this.notebooksComponent.show();
+            if(state=="notebook" || state=="chapter" || state=="note"){
+                this.headerComponent.setMainTitle(newState.notebook.name);
+                this.chaptersComponent.getItems(newState).then(()=>{
+                    this.chaptersComponent.show();
+                    this.loadChapters(state, newState);
+                    
+                }).catch(() => {});;
+            } else {
+                this.notebooksComponent.setDeviceLayout();
+                this.chaptersComponent.hide();
+            }
+        }).catch(() => {});
+    }
+
+    private loadChapters(state: string, newState: MainState) {
+        if(state=="chapter" || state=="note"){
+            this.headerComponent.setSubTitle(newState.chapter.name);
+            this.notesComponent.getItems(newState).then(() => {
+                this.notesComponent.setMenuColor(newState.chapter.color);
+                this.notesComponent.show();
+                this.loadNote(state, newState);
+            }).catch(() => {});;
+        } else {
+            this.notebooksComponent.setDeviceLayout();
+            this.notesComponent.hide();
+        }
+    }
+
+    private loadNote(state: string, newState: MainState) {
+        if(state=="note"){
+            this.noteComponent.getItem(newState).then(() =>{
+                this.noteComponent.show();
+                this.notebooksComponent.setDeviceLayout();
+            }).catch(() => {});;
+        } else{
+            this.notebooksComponent.setDeviceLayout();
+            this.noteComponent.hide();
+        }
     }
 
     private getCurrentState(mainState : MainState){

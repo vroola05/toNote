@@ -33,7 +33,13 @@ export default class NotesComponent extends TabMenu {
         }));
     }
 
-    public click(item:any, identifier:number, name:string, note:Note){
+    public clear() : void {
+        super.clear();
+        this.notebookId = null;
+        this.chapterId = null;
+    }
+
+    public click(item:any, identifier:number, name:string, note:Note) : void {
         let state = Router.getCurrentState();
         let mainState: MainState = state.value;
         mainState.note = note;
@@ -69,7 +75,7 @@ export default class NotesComponent extends TabMenu {
         });
     }
 
-    public clickNewItem(e: Event) {
+    public clickNewItem(e: Event) : void {
         const newPopup = new PopupInputComponent(Lang.get("popup_new_title"), Lang.get("chapters_name"), '');
         newPopup.click = (e, object, value) => {
             if(value===''){
@@ -108,6 +114,5 @@ export default class NotesComponent extends TabMenu {
             });
         };
         newPopup.show();
-    
     }
 }

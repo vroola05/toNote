@@ -90,7 +90,7 @@ export default class LoginModule extends IWindow{
             
         },
         () => {
-            console.log("a");
+            
         });
     }
 

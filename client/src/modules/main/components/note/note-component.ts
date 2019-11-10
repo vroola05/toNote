@@ -1,4 +1,4 @@
-import { Note, MainState } from '../../../../types';
+import { Note, MainState, Message } from '../../../../types';
 import { NoteService } from '../../../../services/http/note-service';
 
 
@@ -31,17 +31,19 @@ export default class NoteComponent extends Tab {
         this.noteContentComponent = new NoteContentComponent();
         this.dom.appendChild(this.noteContentComponent.dom);
         this.noteContentComponent.event.on("text-change", text => {
-            this.noteService.putNoteContent(this.notebookId, this.chapterId, this.noteId, text);
+            this.noteService.putNoteContent(this.notebookId, this.chapterId, this.noteId, text)
+            .then((message: Message) => {
+                this.noteContentComponent.setDateModified(this.getInfoValue(message.info, "modifyDate"));
+            });
         });
         this.noteContentComponent.event.on("change", text => {
-            console.log("de", text);
         });
     }
 
     /**
      * 
      */
-    public onHide(){
+    public onHide() : void{
         if(Util.getDevice() == Constants.mobile) {
             this.noteContentComponent.hide();
             this.overlayComponent.show();
@@ -55,17 +57,18 @@ export default class NoteComponent extends Tab {
         }
     }
 
-    public clear(){
+    public clear() : void {
         this.noteContentComponent.clear();
+        this.notebookId = null;
+        this.chapterId = null;
+        this.noteId = null;
     }
 
     public hasContent() : boolean{
         return this.object != null;
     }
 
-    public getItem( mainState: MainState ) : Promise<any>{
-        
-
+    public getItem( mainState: MainState ) : Promise<any> {
         if(this.hasContent() && this.notebookId == mainState.notebook.id && this.chapterId == mainState.chapter.id && this.noteId == mainState.note.id){
             return new Promise((resolve, reject) => {
                 resolve(this.object);
@@ -100,6 +103,4 @@ export default class NoteComponent extends Tab {
             throw error 
         });
     }
-
-    
 }

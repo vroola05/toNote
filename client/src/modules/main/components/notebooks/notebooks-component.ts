@@ -26,7 +26,7 @@ export default class NotebooksComponent extends TabMenu {
         this.bindDeletePopup();
     }
 
-    public click(item:any, identifier:number, name:string, notebook:Notebook){
+    public click(item:any, identifier:number, name:string, notebook:Notebook) : void {
         let state = Router.getCurrentState();
         let mainState = new MainState();
         mainState.notebook = notebook;
@@ -62,7 +62,7 @@ export default class NotebooksComponent extends TabMenu {
         });
     }
 
-    private bindRenamePopup() {
+    private bindRenamePopup() : void {
         
         const menuItem = new MenuItemComponent(svgRename, Lang.get("ctx_rename"));
         this.dropdownMenu.addItem(menuItem);
@@ -105,7 +105,7 @@ export default class NotebooksComponent extends TabMenu {
         };
     }
 
-    private bindDeletePopup() {
+    private bindDeletePopup() : void {
         const menuItem = new MenuItemComponent(svgDelete, Lang.get("ctx_remove"));
         this.dropdownMenu.addItem(menuItem);
         
@@ -118,8 +118,7 @@ export default class NotebooksComponent extends TabMenu {
                 const notebookService = new NotebookService();
                 notebookService.deleteNotebook(object.identifier).then((message:Message) => {
                     if(message.status === 200){
-                        this.removeItem(object);
-                        console.log(object);
+                        this.removeItem(object);                        
                         deletePopup.hide();
                     } else {
                         if(message.info){
@@ -141,7 +140,7 @@ export default class NotebooksComponent extends TabMenu {
         };
     }
 
-    public clickNewItem(e: Event) {
+    public clickNewItem(e: Event) : void {
         
         const newPopup = new PopupInputComponent(Lang.get("popup_new_title"), Lang.get("notebooks_name"), '');
         

@@ -1,5 +1,6 @@
 import { Util } from '../../../components/util/util';
 import { Constants } from '../../../services/config/constants';
+import { Info } from 'types';
 
 /**
  * 
@@ -9,7 +10,7 @@ export class Tab {
     public parent:Tab = null;
 	public dom:HTMLElement;
 
-    constructor(){
+    constructor() {
         this.dom = document.createElement("div");
         this.dom.className = "tab";
     }
@@ -20,7 +21,7 @@ export class Tab {
      * - on desktop: show max two items
      * - on retina: always show all items
      */
-    public setDeviceLayout(){
+    public setDeviceLayout() : void {
         const device = Util.getDevice();
         const tab = this.getFirstTab();
         const stackAmount = tab.getStackSize();
@@ -50,7 +51,7 @@ export class Tab {
         }
 	}
 
-    public setHidden(amount : number = 1){
+    public setHidden(amount : number = 1) : void {
         if( amount > 0 ){
             this.dom.classList.add("hide");
         }else {
@@ -65,7 +66,7 @@ export class Tab {
      * Link a child Tab item. 
      * @param child 
      */
-	public setChild(child:Tab){
+	public setChild(child:Tab) : void {
         this.child = child;
         this.child.setParent(this);
     }
@@ -74,7 +75,7 @@ export class Tab {
      * Link a parent Tab item. 
      * @param parent 
      */
-    public setParent(parent:Tab){
+    public setParent(parent:Tab) : void {
 		this.parent = parent;
     }
 
@@ -114,13 +115,15 @@ export class Tab {
         return false;
     }
 
-    public activate(){
+    public activate() : void {
         this.dom.classList.add("active");
     }
-    public deactivate(){
+
+    public deactivate() : void {
         this.dom.classList.remove("active");
     }
-    public deactivateAll() : void{
+
+    public deactivateAll() : void {
         let tab: Tab = this.getFirstTab();
         while(tab != null){
             tab.deactivate();
@@ -156,5 +159,15 @@ export class Tab {
      * IF IMPLEMENTED
      */
     public onHide() : void {
+    }
+
+    public getInfoValue(infoItems: Array<Info>, key: string) : any {
+        
+        for(const info of infoItems) {
+            if (info.id == key) {
+                return info.value;
+            }
+        }
+        return null;
     }
 }

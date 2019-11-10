@@ -14,10 +14,7 @@ export default class ConfigService {
                 if(callback !== undefined){
                     callback();
                 }
-                console.log("config read!");
             });
-            
-            
         });
     }
 

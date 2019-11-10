@@ -1,7 +1,7 @@
 require('quill/dist/quill.snow.css');
 import Quill from 'quill';
 import DateFormat from '../../../../../../components/date/date';
-
+import ConfigService from '../../../../../../services/config/configService';
 import TitlebarComponent from './components/titlebar/titlebar-component';
 import DatebarComponent from './components/datebar/datebar-component';
 import ToolbarComponent from './components/toolbar/toolbar-component';
@@ -25,8 +25,7 @@ export default class NoteContentComponent {
 
     private note: Note;
 
-    constructor(){
-        
+    constructor() {
         this.dom = document.createElement('div');
         this.dom.className = "noteContent loaded inactive";
         this.dom.addEventListener("animationend", (a) => {
@@ -77,17 +76,18 @@ export default class NoteContentComponent {
             }
         });
         this.editor.on("text-change", (delta, oldDelta, source: string) => {
+            
             if (source == "user") {
                 clearTimeout(this.timeout);
                 this.timeout = setTimeout(() => {
                     this.event.emit("text-change", this.getContent());
-                }, 400);
+                }, ConfigService.get().content.delay);
             }
         });
         
     }
 
-    public setNote(note: Note): void {
+    public setNote(note: Note) : void {
         this.clear();
         this.note = note;
         this.setTitle(note.name);
@@ -95,7 +95,7 @@ export default class NoteContentComponent {
         this.setDateModified(note.modifyDate);
     }
     
-    public clear(): void {
+    public clear() : void {
         this.note = null;
         this.setContent("");
         this.setTitle("");
@@ -103,11 +103,11 @@ export default class NoteContentComponent {
         this.setDateModified(null);
     }
 
-    private setTitle( title: string ){
+    private setTitle( title: string ) : void {
         this.titlebarComponent.value(title);
     }
 
-    private setDateCreated( date: Date ){
+    public setDateCreated( date: Date ) : void {
         if (!date) {
             this.dateCreated.value("");    
         } else {
@@ -115,7 +115,7 @@ export default class NoteContentComponent {
         }
     }
 
-    private setDateModified( date: Date ){
+    public setDateModified( date: Date ) : void {
         if (!date) {
             this.dateCreated.value("");    
         } else {
@@ -123,15 +123,15 @@ export default class NoteContentComponent {
         }
     }
 
-    public setContent( content : any ){
+    public setContent( content : any ) : void {
         this.editor.setContents(content);
     }
 
-    public getContent(){
+    public getContent() : any{
         return this.editor.getContents();
     }
 
-    public hide(onanimationend: any = undefined){
+    public hide(onanimationend: any = undefined) : void {
         if( !this.hidden ){
             this.onanimationend = onanimationend;
             this.hidden = true;
@@ -143,7 +143,7 @@ export default class NoteContentComponent {
         
     }
 
-    public show(onanimationend: any = undefined){
+    public show(onanimationend: any = undefined) : void {
         if( this.hidden ){
             this.onanimationend = onanimationend;
             this.hidden = false;

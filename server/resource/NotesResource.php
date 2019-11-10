@@ -60,8 +60,11 @@ class NotesResource {
             $connection = Database::getInstance();
             $connection->dbConnect();
             
-            if($connection->dbPreparedStatement("update notes set note = ?, modifyDate=now() where userid = ? and sectionId = ? and id = ?", array(\json_encode($content), Security::getUserId(), $parameters[1], $parameters[2]))) {
+            $now = (new \DateTime())->format("Y-m-d H:i:s");
+
+            if($connection->dbPreparedStatement("update notes set note = ?, modifyDate=? where userid = ? and sectionId = ? and id = ?", array(\json_encode($content), $now, Security::getUserId(), $parameters[1], $parameters[2]))) {
                 $message = new \Core\Message(200, Lang::get("note_put_saved"));
+                $message->addExtraInfo("modifyDate", $now);
                 return $message;
             }
         }

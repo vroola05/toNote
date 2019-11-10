@@ -42,7 +42,7 @@ export default class ChaptersComponent extends TabMenu {
         }));
     }
 
-    public click(item:any, identifier:number, name:string, chapter:Chapter){
+    public click(item:any, identifier:number, name:string, chapter:Chapter) : void {
         let state = Router.getCurrentState();
 
         let mainState: MainState = state.value;
@@ -51,6 +51,11 @@ export default class ChaptersComponent extends TabMenu {
         state.value = mainState;
         
         Router.set(state, Lang.get("state_title_notes") +" - "+ name, "notes" );
+    }
+
+    public clear() : void {
+        super.clear();
+        this.notebookId = null;
     }
 
     public getItems(mainState: MainState) : Promise<Array<Chapter>> {
@@ -84,7 +89,7 @@ export default class ChaptersComponent extends TabMenu {
         });
     }
 
-    private bindRenamePopup() {
+    private bindRenamePopup() : void {
         const menuItem = new MenuItemComponent(svgRename, Lang.get("ctx_rename"));
         this.dropdownMenu.addItem(menuItem);
 
@@ -126,7 +131,7 @@ export default class ChaptersComponent extends TabMenu {
         };
     }
 
-    private bindDeletePopup() {
+    private bindDeletePopup() : void {
         
         const menuItem = new MenuItemComponent(svgDelete, Lang.get("ctx_remove"));
         this.dropdownMenu.addItem(menuItem);
@@ -162,7 +167,7 @@ export default class ChaptersComponent extends TabMenu {
         };
     }
 
-    public clickNewItem(e: Event) {
+    public clickNewItem(e: Event) : void {
         const newPopup = new PopupInputComponent(Lang.get("popup_new_title"), Lang.get("chapters_name"), '');
         newPopup.click = (e, object, value) => {
             if(value===''){
