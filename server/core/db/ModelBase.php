@@ -196,7 +196,7 @@ class ModelBase {
      * @return boolean - if returned false check the getError function for the
      * errormessage.
      */
-    public function put($connection = null) {
+    public function put($connection = null, array $keys = null) {
         if ($connection == null) {
             return false;
         }
@@ -224,6 +224,7 @@ class ModelBase {
             if (
                 !array_key_exists($columnName, $primaryKeys) 
                 && !array_key_exists($columnName, $this->mapping->foreignKeys)
+                && ($keys == null || array_key_exists($columnName, $keys))
                 ) {
                 $values .= ($values != "" ? ", " : "") . $columnName . "=?";
                 $params[] = $this->{$columnName};

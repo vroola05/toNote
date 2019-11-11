@@ -83,6 +83,9 @@ export class TabMenu extends Tab {
 	}
 
 	public removeItem(tabMenuItem:TabMenuItem){
+		if (tabMenuItem === this.selectedTabMenuItem) { 
+			this.clearSelectedMenuItem();
+		}
 		this.domItemList.removeChild(tabMenuItem.dom);
 		this.tabMenuItems.splice(this.tabMenuItems.indexOf(tabMenuItem), 1);
 	}
@@ -141,6 +144,9 @@ export class TabMenu extends Tab {
 
 	public clearSelectedMenuItem(): void {
 		this.selectedTabMenuItem = null;
+		if( this.child != null ){
+			this.child.hide();
+		}
 	}
 
 	public getSelectedMenuItem(): TabMenuItem {

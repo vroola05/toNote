@@ -162,7 +162,6 @@ export class Tab {
     }
 
     public getInfoValue(infoItems: Array<Info>, key: string) : any {
-        
         for(const info of infoItems) {
             if (info.id == key) {
                 return info.value;

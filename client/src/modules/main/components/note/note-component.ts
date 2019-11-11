@@ -62,6 +62,7 @@ export default class NoteComponent extends Tab {
         this.notebookId = null;
         this.chapterId = null;
         this.noteId = null;
+        this.object = null;
     }
 
     public hasContent() : boolean{
@@ -74,6 +75,8 @@ export default class NoteComponent extends Tab {
                 resolve(this.object);
             });
         }
+        
+        this.clear();
 
         this.notebookId = mainState.notebook.id;
         this.chapterId = mainState.chapter.id
@@ -81,7 +84,7 @@ export default class NoteComponent extends Tab {
         return this.noteService.getNote(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((note:Note) => {
             this.noteService.getNoteContent(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((content:any) => {
                 this.noteContentComponent.setNote(note);
- 
+                
                 if (content) {
                     this.object = JSON.parse(content);
                 }

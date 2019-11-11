@@ -7,6 +7,7 @@ require_once 'core/db/Mapping.php';
 require_once 'core/db/ModelBase.php';
 
 require_once 'core/Lang.php';
+require_once 'core/Formatter.php';
 require_once 'core/Conf.php';
 require_once 'core/Message.php';
 require_once 'core/Store.php';
@@ -78,7 +79,6 @@ try{
 			"/notebooks/{number}/chapters/{number}/notes/{number}" => array( 
 				"GET" => array("Resource\NotesResource", "getNote", Http::CONTENT_TYPE_JSON),
 				"PUT" => array("Resource\NotesResource", "putNote", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
-				
 			),
 			"/notebooks/{number}/chapters/{number}/notes/{number}/content" => array( 
 				"GET" => array("Resource\NotesResource", "getNoteContent", Http::CONTENT_TYPE_JSON),

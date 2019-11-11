@@ -22,9 +22,7 @@ export default class NotesComponent extends TabMenu {
         ]);
         super(labels, "notes", TabMenu.COLOR_TYPE_MENU_COLOR);
 
-        this.dropdownMenu.addItem(new MenuItemComponent(svgRename, Lang.get("ctx_rename"), (e:any) => {
-            //Do nothing
-        }));
+        this.bindRenamePopup();
         this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get("ctx_move"), (e:any) => {
             //Do nothing
         }));
@@ -56,10 +54,12 @@ export default class NotesComponent extends TabMenu {
                 resolve(this.getObjects());
             });
         }
+
+        this.clear();
         this.notebookId = mainState.notebook.id;
         this.chapterId = mainState.chapter.id;
+
         return noteService.getNotes(mainState.notebook.id, mainState.chapter.id).then((notes:Array<Note>) => {
-            this.clear();
             if(notes !== null ){
                 for(let i in notes){
                     this.addItem(notes[i].id, notes[i].name, notes[i], undefined);
@@ -73,6 +73,47 @@ export default class NotesComponent extends TabMenu {
             console.error(error.stack);   
             throw error;
         });
+    }
+
+    private bindRenamePopup() : void {
+        const menuItem = new MenuItemComponent(svgRename, Lang.get("ctx_rename"));
+        this.dropdownMenu.addItem(menuItem);
+
+        menuItem.click = (e:any) => {
+            const renamePopup = new PopupInputComponent(Lang.get("popup_rename_title"), Lang.get("notes_name"), this.dropdownMenu.object.name);
+
+            renamePopup.object = this.dropdownMenu.object;
+            renamePopup.click = (e, object, value) => {
+                if(value===""){
+                    renamePopup.setError("<span>" + Lang.get("popup_rename_empty") + "</span>");
+                    return;
+                }
+                object.object.name = value;
+                
+                const noteService = new NoteService();
+                noteService.putNote(this.notebookId, object.object.sectionId, object.object.id, object.object).then((message:Message) => {
+                    if(message.status === 200){
+                        object.setName(value);
+                        object.object.name = value;
+                        renamePopup.hide();
+                    } else {
+                        if(message.info){
+                            let error = "";
+                            for(let i=0; i<message.info.length; i++){
+                                error += "<span>" + message.info[i].value + "</span>";
+                                
+                            }
+                            renamePopup.setError(error);
+                        }
+                    }
+                    
+                    
+                }).catch((e)=>{
+
+                });
+            };
+            renamePopup.show();
+        };
     }
 
     public clickNewItem(e: Event) : void {

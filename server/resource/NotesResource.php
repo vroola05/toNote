@@ -8,6 +8,7 @@ use \core\Http;
 use \core\Lang;
 use \core\Security;
 use \core\db\Database;
+use \core\Formatter;
 
 use \dao\Dao;
 
@@ -27,15 +28,13 @@ class NotesResource {
     }
 
     public function getNote( array $parameters )  {
-        
+
         if( $parameters!=null && count($parameters) == 3 ){
             $connection = Database::getInstance();
             $connection->dbConnect();
 
             return $connection->getSingleItem(new Note(), "select * from notes where userId = ? and sectionId = ? and id = ?", 
             array(Security::getUserId(), $parameters[1], $parameters[2]));
-            
-            //array("id", "sectionId", "userId", "name", "creationDate", "modifyDate", "hash")
         }
     }
 
@@ -68,19 +67,38 @@ class NotesResource {
                 return $message;
             }
         }
-        Http::setStatus(400);
-        return new \Core\Message(400, Lang::get("generic_status_400"));
+        return $this->getFaultMessage(null);
     }
 
-    public function putNote($parameters, $note) : Message{
-        return new \Core\Message(200, "Note has been saved!");
+    public function putNote($parameters, $note){
+        $input = new Note();
+        if( $parameters != null && count($parameters) == 3 && $note->sectionId == $parameters[1] && $note->id == $parameters[2]) {
+            $input->setId($note->id);
+            $input->setSectionId($note->sectionId);
+            $input->setUserId(Security::getUserId());
+            $input->setName($note->name);
+            $input->setCreationDate(Formatter::w3cToSqlDate($note->creationDate));
+            $now = (new \DateTime())->format("Y-m-d H:i:s");
+            $input->setModifyDate($now);
+            $input->setHash('');
+            
+            $connection = Database::getInstance();
+            $connection->dbConnect();
+            if($input->put($connection)){
+                $message = new \Core\Message(200, Lang::get("note_put_saved"));
+                $message->addExtraInfo("modifyDate", $now);
+                return $message;
+            }
+        }
+        
+        $message = new \Core\Message(200, Lang::get("note_put_saved"));
+         return $message;
+        //return $this->getFaultMessage($input->getMessages());
     }
 
     public function postNote($parameters, $note){
-        
-        if( $parameters!=null && count($parameters) == 2 ){
-            
-            $input = new Note();
+        $input = new Note();
+        if( $parameters!=null && count($parameters) == 2 ) {
             $input->setUserId(Security::getUserId());
             
             $input->setSectionId($parameters[1]);
@@ -101,17 +119,19 @@ class NotesResource {
                 $message = new \Core\Message(200, Lang::get("note_post_saved"));
                 $message->addExtraInfo("id", $newId);
                 return $message;
-            } else {
-                Http::setStatus(400);
-                $message = new \Core\Message(400, Lang::get("generic_status_400"));
-                $messages = $input->getMessages();
-                if($messages){
-                    foreach($messages as $m){
-                        $message->addExtraInfo($m->id, $m->faultcode);
-                    }
-                }
-                return $message;
             }
         }
+        return $this->getFaultMessage($input->getMessages());
+    }
+
+    private function getFaultMessage(array $faults) {
+        Http::setStatus(400);
+        $message = new \Core\Message(400, Lang::get("generic_status_400"));
+        if($faults){
+            foreach($faults as $fault){
+                $message->addExtraInfo($fault->id, $fault->faultcode);
+            }
+        }
+        return $message;
     }
 }

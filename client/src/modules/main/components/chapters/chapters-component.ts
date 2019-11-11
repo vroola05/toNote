@@ -71,9 +71,10 @@ export default class ChaptersComponent extends TabMenu {
             });
         }
 
+        this.clear();
         this.notebookId = mainState.notebook.id;
+
         return chapterService.getChapters(mainState.notebook.id).then((chapters:Array<Chapter>) => {
-            this.clear();
             if(chapters !== null ){
                 for(let i in chapters){
                     this.addItem(chapters[i].id, chapters[i].name, chapters[i], chapters[i].color);

@@ -11,6 +11,7 @@ use \core\db\CollectionParams;
 use \core\Security;
 use \core\Http;
 use \core\Lang;
+use \core\Formatter;
 
 use \dao\Dao;
 
@@ -81,21 +82,11 @@ class NotebookResource {
         $connection->dbConnect();
         $newId = $input->post($connection);
         if($newId !== false){
-            
             $message = new \Core\Message(200, Lang::get("notebook_post_saved"));
             $message->addExtraInfo("id", $newId);
             return $message;
-        } else {
-            Http::setStatus(400);
-            $message = new \Core\Message(400, Lang::get("generic_status_400"));
-            $messages = $input->getMessages();
-            if($messages){
-                foreach($messages as $m){
-                    $message->addExtraInfo($m->id, $m->faultcode);
-                }
-            }
-            return $message;
         }
+        return $this->getFaultMessage($input->getMessages());
     }
 
     public function putNotebook($parameters, $notebook) {
@@ -104,25 +95,17 @@ class NotebookResource {
         $input->setUserId(Security::getUserId());
         $input->setName($notebook->name);
         
-        $input->setCreationDate((new \DateTime($notebook->creationDate))->format("Y-m-d H:i:s"));
-        $input->setModifyDate((new \DateTime($notebook->modifyDate))->format("Y-m-d H:i:s"));
+        $input->setCreationDate(Formatter::w3cToSqlDate($notebook->creationDate));
+        $now = (new \DateTime())->format("Y-m-d H:i:s");
+        $input->setModifyDate($now);
         $input->setHash('');
         
         $connection = Database::getInstance();
         $connection->dbConnect();
         if($input->put($connection)){
             return new \Core\Message(200, Lang::get("notebook_put_saved"));
-        } else {
-            Http::setStatus(400);
-            $message = new \Core\Message(400, Lang::get("generic_status_400"));
-            $messages = $input->getMessages();
-            if($messages){
-                foreach($messages as $m){
-                    $message->addExtraInfo($m->id, $m->faultcode);
-                }
-            }
-            return $message;
         }
+        return $this->getFaultMessage($input->getMessages());
     }
 
     public function deleteNotebook($parameters) {
@@ -141,16 +124,19 @@ class NotebookResource {
         $input->setUserId(Security::getUserId());
         if($input->delete($connection)){
             return new \Core\Message(200, Lang::get("notebook_delete"));
-        } else {
-            Http::setStatus(400);
-            $message = new \Core\Message(400, Lang::get("generic_status_400"));
-            $messages = $input->getMessages();
-            if($messages){
-                foreach($messages as $m){
-                    $message->addExtraInfo($m->id, $m->faultcode);
-                }
-            }
-            return $message;
         }
+
+        return $this->getFaultMessage($input->getMessages());
+    }
+
+    private function getFaultMessage(array $faults) {
+        Http::setStatus(400);
+        $message = new \Core\Message(400, Lang::get("generic_status_400"));
+        if($faults){
+            foreach($faults as $fault){
+                $message->addExtraInfo($fault->id, $fault->faultcode);
+            }
+        }
+        return $message;
     }
 }
