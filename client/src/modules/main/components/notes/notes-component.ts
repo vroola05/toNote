@@ -10,11 +10,13 @@ import { TabMenu } from '../../../../components/controls/tabMenu/tab-menu';
 import MenuItemComponent from '../../../../components/controls/menu-item/menu-item-component';
 
 import PopupInputComponent from '../../../../components/popups/popup-input/popup-input-component';
+import PopupConfirmComponent from '../../../../components/popups/popup-confirm/popup-confirm-component';
 
 export default class NotesComponent extends TabMenu {
     private notebookId : number;
     private chapterId : number;
-
+    private noteService: NoteService;
+    
     constructor(){
         let labels = new Map<string,string>([
             ["name", Lang.get("notes_name")], 
@@ -22,13 +24,13 @@ export default class NotesComponent extends TabMenu {
         ]);
         super(labels, "notes", TabMenu.COLOR_TYPE_MENU_COLOR);
 
+        this.noteService = new NoteService();
+
         this.bindRenamePopup();
         this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get("ctx_move"), (e:any) => {
             //Do nothing
         }));
-        this.dropdownMenu.addItem(new MenuItemComponent(svgDelete, Lang.get("ctx_remove"), (e:any) => {
-            //Do nothing
-        }));
+        this.bindDeletePopup();
     }
 
     public clear() : void {
@@ -47,8 +49,6 @@ export default class NotesComponent extends TabMenu {
     }
 
     public getItems(mainState: MainState) : Promise<Array<Note>> {
-        const noteService : NoteService = new NoteService();
-
         if(this.hasItems() && this.notebookId == mainState.notebook.id && this.chapterId == mainState.chapter.id){
             return new Promise((resolve, reject) => {
                 resolve(this.getObjects());
@@ -59,7 +59,7 @@ export default class NotesComponent extends TabMenu {
         this.notebookId = mainState.notebook.id;
         this.chapterId = mainState.chapter.id;
 
-        return noteService.getNotes(mainState.notebook.id, mainState.chapter.id).then((notes:Array<Note>) => {
+        return this.noteService.getNotes(mainState.notebook.id, mainState.chapter.id).then((notes:Array<Note>) => {
             if(notes !== null ){
                 for(let i in notes){
                     this.addItem(notes[i].id, notes[i].name, notes[i], undefined);
@@ -90,8 +90,8 @@ export default class NotesComponent extends TabMenu {
                 }
                 object.object.name = value;
                 
-                const noteService = new NoteService();
-                noteService.putNote(this.notebookId, object.object.sectionId, object.object.id, object.object).then((message:Message) => {
+                
+                this.noteService.putNote(this.notebookId, object.object.sectionId, object.object.id, object.object).then((message:Message) => {
                     if(message.status === 200){
                         object.setName(value);
                         object.object.name = value;
@@ -106,13 +106,46 @@ export default class NotesComponent extends TabMenu {
                             renamePopup.setError(error);
                         }
                     }
-                    
-                    
                 }).catch((e)=>{
 
                 });
             };
             renamePopup.show();
+        };
+    }
+
+    private bindDeletePopup() : void {
+        
+        const menuItem = new MenuItemComponent(svgDelete, Lang.get("ctx_remove"));
+        this.dropdownMenu.addItem(menuItem);
+        
+        menuItem.click = (e:any) => {
+            const deleteMsg = Lang.get("popup_delete_confirm_msg1") +this.dropdownMenu.object.name+ Lang.get("popup_delete_confirm_msg2");
+            const deletePopup = new PopupConfirmComponent(Lang.get("popup_delete_title"), deleteMsg);
+            deletePopup.object = this.dropdownMenu.object;
+
+            deletePopup.click = (e, object) => {
+                this.noteService.deleteNote(this.notebookId, object.object.sectionId, object.object.id).then((message:Message) => {
+                    if(message.status === 200){
+                        this.removeItem(object);
+                        deletePopup.hide();
+                    } else {
+                        if(message.info){
+                            let error = "";
+                            for(let i=0; i<message.info.length; i++){
+                                error += "<span>" + message.info[i].value + "</span>";
+                                
+                            }
+                            deletePopup.setError(error);
+                        }
+                    }
+                    
+                    
+                }).catch((e)=>{
+    
+                });
+            };
+            deletePopup.show();
         };
     }
 
@@ -127,8 +160,7 @@ export default class NotesComponent extends TabMenu {
             note.name = value;
             note.sectionId = this.chapterId;
 
-            const notebookService = new NoteService();
-            notebookService.postNote(this.notebookId, this.chapterId, note).then((message:Message) => {
+            this.noteService.postNote(this.notebookId, this.chapterId, note).then((message:Message) => {
                 if(message.status === 200){
                     for(let i=0; i<message.info.length; i++){
                         if(message.info[i].id === "id"){

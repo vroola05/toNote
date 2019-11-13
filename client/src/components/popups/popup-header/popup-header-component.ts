@@ -1,5 +1,5 @@
 import svgClose from '../../../assets/images/close.svg';
-import ButtonIconComponent from '../../controls/button-icon/button-icon-component';
+import ButtonIconComponent from '../../controls/buttons/button-icon/button-icon-component';
 
 export default class PopupHeaderComponent  {
     public dom: HTMLElement = document.createElement("div");

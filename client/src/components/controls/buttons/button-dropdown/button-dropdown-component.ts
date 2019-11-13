@@ -1,6 +1,6 @@
 import ButtonComponent from '../button-icon/button-icon-component';
-import DropdownMenuComponent from '../dropdown/dropdown-menu-component';
-import MenuItemComponent from '../menu-item/menu-item-component';
+import DropdownMenuComponent from '../../dropdown/dropdown-menu-component';
+import MenuItemComponent from '../../menu-item/menu-item-component';
 
 
 

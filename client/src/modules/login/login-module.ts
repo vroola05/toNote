@@ -8,7 +8,7 @@ import { Router } from '../../services/router/router-service';
 import { LoginService } from '../../services/http/login-service';
 import { AuthenticationService } from '../../services/authentication/authentication-service';
 import { IWindow } from '../../components/controls/iwindow/iwindow';
-import ButtonComponent from '../../components/controls/button/button-component';
+import ButtonComponent from '../../components/controls/buttons/button/button-component';
 import InputComponent from '../../components/controls/input/input-component';
 
 export default class LoginModule extends IWindow{

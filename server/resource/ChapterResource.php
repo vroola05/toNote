@@ -30,6 +30,16 @@ class ChapterResource {
         }
     }
 
+    public function getMoveChapterList( array $parameters ) {
+        if( $parameters!=null && count($parameters) == 2 ){
+            $connection = Database::getInstance();
+            $connection->dbConnect();
+
+            return Dao::getNotebooksWhereNotNotebookId( $connection, $parameters[0], Security::getUserId());
+        }
+    }
+    
+
     public function getChapter( array $parameters ) : Chapter {
         if( $parameters!=null && count($parameters) == 2 ){
             $connection = Database::getInstance();

@@ -29,4 +29,9 @@ export class NoteService extends HttpClient{
     public putNoteContent(notebookId:number, chapterId:number, noteId:number, content: string) : Promise<Message>{
         return this.put("notebooks/" + notebookId + "/chapters/" + chapterId + "/notes/" + noteId + "/content", content);
     }
+
+    public deleteNote(notebookId:number, chapterId:number, noteId:number) : Promise<Message>{
+        return this.delete("notebooks/" + notebookId + "/chapters/" + chapterId + "/notes/" + noteId);
+    }
+    
 }

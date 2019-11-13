@@ -10,7 +10,6 @@ class Note extends ModelBase {
     public $sectionId;
     public $userId;
     public $name;
-    public $note;
     public $creationDate;
     public $modifyDate;
     public $hash;
@@ -22,7 +21,6 @@ class Note extends ModelBase {
         $mapping->addColumn("sectionId", "integer");
         $mapping->addColumn("userId", "integer");
         $mapping->addColumn("name", "string", null, 255);
-        $mapping->addColumn("note", "string", null);
         $mapping->addColumn("creationDate", "datetime", "date");
         $mapping->addColumn("modifyDate", "datetime", "date");
         $mapping->addColumn("hash", "string", null, 255);
@@ -72,14 +70,6 @@ class Note extends ModelBase {
 
     function getHash() {
         return $this->hash;
-    }
-
-    function setNote($note) {
-        $this->note = $note;
-    }
-
-    function getNote() {
-        return $this->note;
     }
 
     function setCreationDate($creationDate) {

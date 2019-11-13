@@ -7,6 +7,27 @@ use \model\Note;
 
 class Dao {
     
+    public static function getNotebooksWhereNotNotebookId( Database $connection, int $notebookId, int $userId ) : array {
+
+        $result=array();
+        if($connection->dbPreparedStatement("select c.id, c.userId, c.name, c.creationDate, c.modifyDate, c.hash from notebooks c where c.id != ? and c.userId = ? order by c.name asc" , array($notebookId, $userId))){
+            $records = $connection->getFetchData();
+            foreach ($records as $record) {
+                $chapter = new Chapter();
+                $chapter->setId((int)$record["id"]);
+                $chapter->setUserId((int)$record["userId"]);
+                $chapter->setName($record["name"]);
+                if($record["creationDate"]!=null && $record["creationDate"]!="") {
+                    $chapter->setCreationDate((new \DateTime($record["creationDate"]))->format(\DateTime::W3C));
+                }
+                if($record["modifyDate"]!=null && $record["modifyDate"]!="") {
+                    $chapter->setModifyDate((new \DateTime($record["modifyDate"]))->format(\DateTime::W3C));
+                }
+                array_push($result, $chapter);
+            }
+        }
+        return $result;
+    }
 
     public static function getChaptersByNotebookId( Database $connection, int $notebookId, int $userId ) : array {
 

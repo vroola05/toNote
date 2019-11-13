@@ -142,7 +142,20 @@
 
         .popupInputContainer {
             width: 400px;
+
+            .popupInputInnerContainer {
+                margin: $default-margin*2 $default-margin $default-margin/2 $default-margin;
+            }
         }
+
+        .popupMoveContainer {
+            width: 500px;
+
+            .popupMoveInnerContainer {
+                margin: $default-margin*2 $default-margin $default-margin/2 $default-margin;
+            }
+        }
+
         .popupErrorContainer {
             margin-left: $default-margin;
             margin-right: $default-margin;

@@ -28,7 +28,6 @@ class NotesResource {
     }
 
     public function getNote( array $parameters )  {
-
         if( $parameters!=null && count($parameters) == 3 ){
             $connection = Database::getInstance();
             $connection->dbConnect();
@@ -91,9 +90,7 @@ class NotesResource {
             }
         }
         
-        $message = new \Core\Message(200, Lang::get("note_put_saved"));
-         return $message;
-        //return $this->getFaultMessage($input->getMessages());
+        return $this->getFaultMessage($input->getMessages());
     }
 
     public function postNote($parameters, $note){
@@ -119,6 +116,22 @@ class NotesResource {
                 $message = new \Core\Message(200, Lang::get("note_post_saved"));
                 $message->addExtraInfo("id", $newId);
                 return $message;
+            }
+        }
+        return $this->getFaultMessage($input->getMessages());
+    }
+
+    public function deleteNote($parameters) {
+        $input = new Note();
+        if($parameters != null && count($parameters) == 3) {
+            $connection = Database::getInstance();
+            $connection->dbConnect();
+
+            $input->setId($parameters[2]);
+            $input->setSectionId($parameters[1]);
+            $input->setUserId(Security::getUserId());
+            if($input->delete($connection)){
+                return new \Core\Message(200, Lang::get("note_delete"));
             }
         }
         return $this->getFaultMessage($input->getMessages());

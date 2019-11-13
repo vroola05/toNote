@@ -6,7 +6,7 @@ import svgColors from '../../../../assets/images/colors.svg';
 
 import Lang from '../../../../components/language/lang';
 
-import { Chapter, MainState, Message } from '../../../../types';
+import { Chapter, MainState, Message, Notebook } from '../../../../types';
 
 import { Router } from '../../../../services/router/router-service';
 import { ChapterService } from '../../../../services/http/chapter-service';
@@ -17,9 +17,11 @@ import MenuItemComponent from '../../../../components/controls/menu-item/menu-it
 
 import PopupInputComponent from '../../../../components/popups/popup-input/popup-input-component';
 import PopupConfirmComponent from '../../../../components/popups/popup-confirm/popup-confirm-component';
+import PopupMoveComponent from '../../../../components/popups/popup-move/popup-move-component';
 
 export default class ChaptersComponent extends TabMenu {
     private notebookId : number;
+    private chapterService: ChapterService;
 
     constructor(){
         let labels = new Map<string,string>([
@@ -29,10 +31,21 @@ export default class ChaptersComponent extends TabMenu {
 
         super(labels, "chapter", TabMenu.COLOR_TYPE_ITEM_COLOR);
 
-        
+        this.chapterService = new ChapterService();
+
         this.bindRenamePopup();
+
         this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get("ctx_move"), (e:any) => {
-            //Do nothing
+            console.log(this.dropdownMenu.object.identifier);
+            this.chapterService.getMoveChapterList(this.notebookId, this.dropdownMenu.object.identifier).then((notebooks:Array<Notebook>) => {
+                const movePopup = new PopupMoveComponent(Lang.get("popup_move_title"), Lang.get("notebooks_name"));
+                for(let i in notebooks){
+                    movePopup.add(notebooks[i].name, notebooks[i]);
+                }
+                movePopup.show();
+
+            });
+            
         }));
         
         this.bindDeletePopup();
@@ -59,8 +72,6 @@ export default class ChaptersComponent extends TabMenu {
     }
 
     public getItems(mainState: MainState) : Promise<Array<Chapter>> {
-        const chapterService : ChapterService = new ChapterService();
-
         if (this.hasItems() && this.notebookId == mainState.notebook.id ){
             return new Promise((resolve, reject) => {
                 if(mainState!=null && mainState.chapter!==undefined){
@@ -74,7 +85,7 @@ export default class ChaptersComponent extends TabMenu {
         this.clear();
         this.notebookId = mainState.notebook.id;
 
-        return chapterService.getChapters(mainState.notebook.id).then((chapters:Array<Chapter>) => {
+        return this.chapterService.getChapters(mainState.notebook.id).then((chapters:Array<Chapter>) => {
             if(chapters !== null ){
                 for(let i in chapters){
                     this.addItem(chapters[i].id, chapters[i].name, chapters[i], chapters[i].color);
@@ -106,8 +117,7 @@ export default class ChaptersComponent extends TabMenu {
                 }
                 object.object.name = value;
 
-                const chapterService = new ChapterService();
-                chapterService.putChapter(object.object.notebookId, object.object.id, object.object).then((message:Message) => {
+                this.chapterService.putChapter(object.object.notebookId, object.object.id, object.object).then((message:Message) => {
                     if(message.status === 200){
                         object.setName(value);
                         object.object.name = value;
@@ -122,8 +132,6 @@ export default class ChaptersComponent extends TabMenu {
                             renamePopup.setError(error);
                         }
                     }
-                    
-                    
                 }).catch((e)=>{
 
                 });
@@ -143,8 +151,7 @@ export default class ChaptersComponent extends TabMenu {
             deletePopup.object = this.dropdownMenu.object;
 
             deletePopup.click = (e, object) => {
-                const chapterService = new ChapterService();
-                chapterService.deleteChapter(object.object.notebookId, object.object.id).then((message:Message) => {
+                this.chapterService.deleteChapter(object.object.notebookId, object.object.id).then((message:Message) => {
                     if(message.status === 200){
                         this.removeItem(object);
                         deletePopup.hide();
@@ -179,8 +186,7 @@ export default class ChaptersComponent extends TabMenu {
             chapter.name = value;
             chapter.notebookId = this.notebookId;
 
-            const notebookService = new ChapterService();
-            notebookService.postChapter(this.notebookId, chapter).then((message:Message) => {
+            this.chapterService.postChapter(this.notebookId, chapter).then((message:Message) => {
                 if(message.status === 200){
                     for(let i=0; i<message.info.length; i++){
                         if(message.info[i].id === "id"){

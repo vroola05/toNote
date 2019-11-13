@@ -1,4 +1,4 @@
-import { Chapter, Message } from '../../types';
+import { Chapter, Message, Notebook } from '../../types';
 import HttpClient from '../../components/http/httpClient';
 
 export class ChapterService extends HttpClient{
@@ -8,6 +8,10 @@ export class ChapterService extends HttpClient{
 
     public getChapters(id:number) : Promise<Array<Chapter>>{
         return this.get("notebooks/"+id+"/chapters");
+    }
+
+    public getMoveChapterList(notebookId:number, chapterId:number) : Promise<Array<Notebook>>{
+        return this.get("notebooks/" + notebookId + "/chapters/" + chapterId + "/move");
     }
 
     public putChapter(notebookId:number, chapterId:number, chapter:Chapter) : Promise<Message>{

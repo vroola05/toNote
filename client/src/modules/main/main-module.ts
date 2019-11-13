@@ -3,7 +3,7 @@ import { IWindow } from '../../components/controls/iwindow/iwindow';
 import { MainState } from '../../types';
 
 import HeaderComponent from './components/header/header-component';
-import ButtonComponent from '../../components/controls/button-icon/button-icon-component';
+import ButtonComponent from '../../components/controls/buttons/button-icon/button-icon-component';
 
 import NotebooksComponent from './components/notebooks/notebooks-component';
 import ChaptersComponent from './components/chapters/chapters-component';

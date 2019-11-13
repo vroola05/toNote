@@ -11,9 +11,9 @@ import Lang from '../../../../components/language/lang';
 import { Router } from '../../../../services/router/router-service';
 import { LoginService } from '../../../../services/http/login-service';
 
-import ButtonIconComponent from '../../../../components/controls/button-icon/button-icon-component';
-import ButtonToggleComponent from '../../../../components/controls/button-toggle/button-toggle-component';
-import ButtonDropdownComponent from '../../../../components/controls/button-dropdown/button-dropdown-component';
+import ButtonIconComponent from '../../../../components/controls/buttons/button-icon/button-icon-component';
+import ButtonToggleComponent from '../../../../components/controls/buttons/button-toggle/button-toggle-component';
+import ButtonDropdownComponent from '../../../../components/controls/buttons/button-dropdown/button-dropdown-component';
 import MenuItemComponent from '../../../../components/controls/menu-item/menu-item-component';
 
 import TitleComponent from './components/title/title-component';

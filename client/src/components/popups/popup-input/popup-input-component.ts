@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import PopupComponent from '../popup/popup-component';
 import InputComponent from '../../controls/input/input-component';
 import Lang from '../../language/lang';
-import ButtonComponent from '../../controls/button/button-component';
+import ButtonComponent from '../../controls/buttons/button/button-component';
 
 export default class PopupInputComponent extends PopupComponent {
     private input: InputComponent;
