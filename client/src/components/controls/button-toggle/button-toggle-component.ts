@@ -1,5 +1,5 @@
 
-import ButtonComponent from '../button-icon/button-icon-component';
+import ButtonComponent from '../buttons/button-icon/button-icon-component';
 
 export default class ButtonToggleComponent extends ButtonComponent {
     public isOpened: boolean = true;
