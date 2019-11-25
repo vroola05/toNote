@@ -19,8 +19,10 @@ export default class ButtonIconComponent  {
         }
 
         this.dom.onclick = (e) => {
-            this.onClick(e, this);
-            this.click(e, this);
+            if(!this.disable){
+                this.onClick(e, this);
+                this.click(e, this);
+            }
         }
     }
 
@@ -36,5 +38,24 @@ export default class ButtonIconComponent  {
 
     public click(event:Event, buttonComponent:ButtonIconComponent){
         console.error("Method not yet implemented!");
+    }
+
+    public set disable(disable:boolean){
+        if (disable) {
+            this.dom.classList.add("disabled");
+        } else {
+            this.dom.classList.remove("disabled");
+        }
+    }
+    public get disable(): boolean{
+        return this.dom.classList.contains("disabled");
+    }
+
+    public hide() {
+        this.dom.classList.add("hidden");
+    }
+
+    public show() {
+        this.dom.classList.remove("hidden");
     }
 }

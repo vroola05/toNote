@@ -1,16 +1,110 @@
+import ButtonIconComponent from "../../../../../../../../components/controls/buttons/button-icon/button-icon-component";
+import svgLeft from '../../../../../../../../assets/images/left.svg';
+import svgRight from '../../../../../../../../assets/images/right.svg';
+
 export default class ToolbarComponent {
-    public dom: HTMLDivElement;
+	public dom: HTMLDivElement;
+	private toolbarContainer: HTMLDivElement;
+
+	private btnLeft: ButtonIconComponent;
+	private btnRight: ButtonIconComponent;
 
 	constructor() {
-
+		
 		this.dom = document.createElement("div");
 		this.dom.classList.add("toolbar");
+		
+		this.btnLeft = new ButtonIconComponent(svgLeft,null,() => {
+			console.log("klik left");
+			this.scrollTo("left");
+		},"small btnToolbar");
+		this.dom.appendChild(this.btnLeft.dom);
+
+		this.toolbarContainer = document.createElement("div");
+		this.toolbarContainer.classList.add("toolbarContainer");
+		
+		this.dom.appendChild(this.toolbarContainer);
+
+		this.btnRight = new ButtonIconComponent(svgRight,null,
+		() => {
+			console.log("klik right");
+			this.scrollTo("right");
+		},"small btnToolbar");
+		this.dom.appendChild(this.btnRight.dom);
+
+		this.createToolbar();		
+		
+		this.onResize();
+		this.setToolbarScrollBtns();
+		
+	}
+
+	private isOverflown(element:HTMLDivElement) {
+		return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+	}
+
+	public setToolbarScrollBtns() {
+		if (this.isOverflown(this.toolbarContainer)) {
+			this.btnLeft.show();
+			this.btnRight.show();
+		} else {
+			this.btnLeft.hide();
+			this.btnRight.hide();
+		}
+		this.setScrollButtonState();
+	}
+
+	private setScrollButtonState() {
+		if(this.scrolledEdgeLeft()){
+			this.btnLeft.disable = true;
+		} else {
+			this.btnLeft.disable = false;
+		}
+		if(this.scrolledEdgeRight()){
+			this.btnRight.disable = true;
+		} else { 
+			this.btnRight.disable = false;
+		}
+	}
+
+	private onResize() {
+		window.addEventListener('resize', ()=>{
+			this.setToolbarScrollBtns();
+		});
+	}
+
+	private scrolledEdgeLeft() {
+		return this.toolbarContainer.scrollLeft <= 0;
+	}
+	private scrolledEdgeRight() {
+		return this.toolbarContainer.clientWidth -(this.toolbarContainer.scrollWidth-this.toolbarContainer.scrollLeft) >=0;
+	}
+
+	private scrollTo(direction:string) {
+		if(direction === "left"){
+			if(this.toolbarContainer.scrollLeft - this.toolbarContainer.clientWidth >= 0) {
+				this.toolbarContainer.scrollLeft -= this.toolbarContainer.clientWidth;
+			} else {
+				this.toolbarContainer.scrollLeft = 0;
+			}
+		} else {
+			if(this.toolbarContainer.scrollLeft + this.toolbarContainer.clientWidth <= this.toolbarContainer.scrollWidth){
+				this.toolbarContainer.scrollLeft += this.toolbarContainer.clientWidth;
+				
+			} else {
+				this.toolbarContainer.scrollLeft += this.toolbarContainer.clientWidth - (this.toolbarContainer.scrollWidth-this.toolbarContainer.scrollLeft);
+			}
+		}
+		this.setScrollButtonState();
+	}
+
+	private createToolbar() {
 		//////////////////////////////////////////////////
 		//
 		//////////////////////////////////////////////////
 		var domGroupSizeType = document.createElement("span");
 		domGroupSizeType.className = "ql-formats groupSizeType";
-		this.dom.appendChild(domGroupSizeType);
+		this.toolbarContainer.appendChild(domGroupSizeType);
 
 		var domToobarSize = document.createElement("select");
 		domToobarSize.className = "tb-btn ql-size";
@@ -27,7 +121,7 @@ export default class ToolbarComponent {
 		//////////////////////////////////////////////////
 		var domGroupDefault = document.createElement("span");
 		domGroupDefault.className = "ql-formats groupDefault";
-		this.dom.appendChild(domGroupDefault);
+		this.toolbarContainer.appendChild(domGroupDefault);
 
 		var domToobarBold = document.createElement("button");
 		domToobarBold.className = "tb-btn ql-bold";
@@ -49,7 +143,7 @@ export default class ToolbarComponent {
 		//////////////////////////////////////////////////
 		var domGroupStyle = document.createElement("span");
 		domGroupStyle.className = "ql-formats groupStyle";
-		this.dom.appendChild(domGroupStyle);
+		this.toolbarContainer.appendChild(domGroupStyle);
 
 		var domToobarH1 = document.createElement("button");
 		domToobarH1.className = "tb-btn ql-header";
@@ -73,7 +167,7 @@ export default class ToolbarComponent {
 		//////////////////////////////////////////////////
 		var domGroupLists = document.createElement("span");
 		domGroupLists.className = "ql-formats groupLists";
-		this.dom.appendChild(domGroupLists);
+		this.toolbarContainer.appendChild(domGroupLists);
 
 		var domToobarListOrdered = document.createElement("button");
 		domToobarListOrdered.className = "tb-btn ql-list";
@@ -104,7 +198,7 @@ export default class ToolbarComponent {
 		//////////////////////////////////////////////////
 		var domGroupColor = document.createElement("span");
 		domGroupColor.className = "ql-formats groupColor";
-		this.dom.appendChild(domGroupColor);
+		this.toolbarContainer.appendChild(domGroupColor);
 
 		var domToobarColor = document.createElement("select");
 		domToobarColor.className = "tb-btn ql-color";
@@ -115,7 +209,5 @@ export default class ToolbarComponent {
 		domToobarBackground.className = "tb-btn ql-background";
 		domToobarBackground.innerHTML = "BC";
 		domGroupColor.appendChild(domToobarBackground);
-
-
 	}
 }

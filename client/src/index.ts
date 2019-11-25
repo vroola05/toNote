@@ -16,6 +16,7 @@ import { LoginService } from './services/http/login-service';
 
 class Startup {
     public static main(): number {
+        
         ////////////////////////////////////////
         // 
         ////////////////////////////////////////

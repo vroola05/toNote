@@ -19,6 +19,8 @@ export default class NoteContentComponent {
     private editor : Quill;
     private hidden: boolean = true;
     private onanimationend: any;
+    private toolbar: ToolbarComponent;
+
     public event = new EventEmitter();
 
     private timeout: any = null;
@@ -37,8 +39,8 @@ export default class NoteContentComponent {
             }
         });
 
-        const toolbar = new ToolbarComponent();
-        this.dom.appendChild(toolbar.dom);
+        this.toolbar = new ToolbarComponent();
+        this.dom.appendChild(this.toolbar.dom);
         const noteHeaderContainer: HTMLDivElement = document.createElement('div');
         noteHeaderContainer.className = "noteHeaderContainer";
         this.dom.appendChild(noteHeaderContainer);
@@ -72,7 +74,7 @@ export default class NoteContentComponent {
         this.editor =  new Quill(note, { 
             theme: 'snow',
             modules: {
-                toolbar: toolbar.dom
+                toolbar: this.toolbar.dom
             }
         });
         this.editor.on("text-change", (delta, oldDelta, source: string) => {
@@ -133,7 +135,11 @@ export default class NoteContentComponent {
 
     public hide(onanimationend: any = undefined) : void {
         if( !this.hidden ){
-            this.onanimationend = onanimationend;
+            this.onanimationend = (e:any)=> { 
+                if(onanimationend) {
+                    onanimationend(e);
+                }
+            }
             this.hidden = true;
             this.dom.classList.remove("loaded");
             this.dom.classList.add("loading");
@@ -145,7 +151,12 @@ export default class NoteContentComponent {
 
     public show(onanimationend: any = undefined) : void {
         if( this.hidden ){
-            this.onanimationend = onanimationend;
+            this.onanimationend = (e:any)=>{
+                this.toolbar.setToolbarScrollBtns();
+                if(onanimationend){
+                    onanimationend(e);
+                }
+            };
             this.hidden = false;
             this.dom.classList.add("loading");
             this.dom.classList.remove("inactive");

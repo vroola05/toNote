@@ -150,8 +150,16 @@
                 }
 
                 .toolbar {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
                     &.ql-toolbar.ql-snow {
                         border: none;
+                    }
+                    .toolbarContainer {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        
                     }
                 }
 
