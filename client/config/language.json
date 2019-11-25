@@ -32,6 +32,7 @@
         "chapters_add": "Hoofdstuk",
         
         "notes_name": "Notities",
+        "note_name": "Notitie",
         "notes_add": "Notitie",
         
         "main_note_header_created": "Gemaakt",
@@ -110,6 +111,7 @@
         "chapters_add": "Chapter",
 
         "notes_name": "Notes",
+        "note_name": "Note",
         "notes_add": "Note",
 
         "main_note_header_created": "Created",

@@ -14,6 +14,10 @@ export class ChapterService extends HttpClient{
         return this.get("notebooks/" + notebookId + "/chapters/" + chapterId + "/move");
     }
 
+    public moveChapter(notebookId:number, chapterId:number, notebookIdNew:number) : Promise<Message>{
+        return this.get("notebooks/" + notebookId + "/chapters/" + chapterId + "/move/" + notebookIdNew);
+    }
+
     public putChapter(notebookId:number, chapterId:number, chapter:Chapter) : Promise<Message>{
         return this.put("notebooks/" + notebookId + "/chapters/" + chapterId, chapter);
     }

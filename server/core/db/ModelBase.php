@@ -10,7 +10,7 @@ use \core\Fault;
 class ModelBase {
 
     private $error; //Stores any sql error
-    private $messages; //Stores validation errors
+    private $messages = array(); //Stores validation errors
     private $mapping; //Stores the mapping to the database    
     
     private $in;
@@ -128,11 +128,10 @@ class ModelBase {
     }
 
     public function getMessages() {
-        if ($this->messages == null || count($this->messages) == 0) {
-            return false;
-        } else {
+        if (isset($this->messages) && count($this->messages) > 0) {
             return $this->messages;
         }
+        return array();
     }
 
     public function getTableName() {

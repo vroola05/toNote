@@ -1,7 +1,11 @@
+import { EventEmitter } from "events";
+
 export default class ListItemComponent  {
+    public event = new EventEmitter();
     public dom:HTMLElement = document.createElement("div");
     private value: string;
-    private object: any;
+    public object: any;
+    private _selected: boolean = false;
 
     constructor( value: string, object: any ){
         this.dom.className = "listItem";
@@ -13,9 +17,24 @@ export default class ListItemComponent  {
         listItemValueContainer.className = "listItemValueContainer";
         listItemValueContainer.innerHTML = value;
         this.dom.appendChild(listItemValueContainer);
+        this.dom.onclick = () => {
+            this.selected = !this.selected;
+            
+            this.event.emit("onSelected", this.object);
+        };
     }
 
-    public click(listItemComponent:ListItemComponent, e :Event){
-        console.error("Method not yet implemented!");
+    public set selected( selected: boolean) {
+        this._selected = selected;
+        if(selected) {
+            this.dom.classList.add("selected");
+        } else {
+            this.dom.classList.remove("selected");
+        }
+
+    }
+
+    public get selected(): boolean {
+        return this._selected;
     }
 }

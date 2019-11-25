@@ -3,7 +3,7 @@ import svgMove from '../../../../assets/images/move.svg';
 import svgDelete from '../../../../assets/images/delete.svg';
 
 import Lang from '../../../../components/language/lang';
-import { Note, MainState, Message } from '../../../../types';
+import { Note, MainState, Message, Chapter } from '../../../../types';
 import { Router } from '../../../../services/router/router-service';
 import { NoteService } from '../../../../services/http/note-service';
 import { TabMenu } from '../../../../components/controls/tabMenu/tab-menu';
@@ -11,6 +11,7 @@ import MenuItemComponent from '../../../../components/controls/menu-item/menu-it
 
 import PopupInputComponent from '../../../../components/popups/popup-input/popup-input-component';
 import PopupConfirmComponent from '../../../../components/popups/popup-confirm/popup-confirm-component';
+import PopupMoveComponent from '../../../../components/popups/popup-move/popup-move-component';
 
 export default class NotesComponent extends TabMenu {
     private notebookId : number;
@@ -27,9 +28,7 @@ export default class NotesComponent extends TabMenu {
         this.noteService = new NoteService();
 
         this.bindRenamePopup();
-        this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get("ctx_move"), (e:any) => {
-            //Do nothing
-        }));
+        this.bindMovePopup();
         this.bindDeletePopup();
     }
 
@@ -112,6 +111,41 @@ export default class NotesComponent extends TabMenu {
             };
             renamePopup.show();
         };
+    }
+
+    private bindMovePopup() : void {
+        this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get("ctx_move"), (e:any) => {
+            const movePopup = new PopupMoveComponent(Lang.get("popup_move_title"), Lang.get("note_name") + " - " + this.dropdownMenu.object.name);
+            movePopup.object = this.dropdownMenu.object;
+            
+            this.noteService.getMoveNotesList(this.notebookId, this.chapterId, this.dropdownMenu.object.identifier).then((chapters:Array<Chapter>) => {
+                
+                for(let chapter of chapters){
+                    movePopup.add(chapter.name, chapter);
+                }
+                movePopup.click = (e, object, value) => {
+                    
+                    this.noteService.moveNote(this.notebookId, object.object.sectionId, object.object.id, value.id).then((message: Message) => {
+                        if(message.status === 200){
+                            this.removeItem(object);
+                            movePopup.hide();
+                        } else {
+                            if(message.info){
+                                let error = "";
+                                for(let i=0; i<message.info.length; i++){
+                                    error += "<span>" + message.info[i].value + "</span>";
+                                    
+                                }
+                                movePopup.setError(error);
+                            }
+                        }
+                    });
+                };
+                movePopup.show();
+
+            });
+            
+        }));
     }
 
     private bindDeletePopup() : void {

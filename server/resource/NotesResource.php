@@ -52,6 +52,32 @@ class NotesResource {
         throw new \Exception('Not found!');
     }
 
+    public function getMoveNoteList( array $parameters ) {
+        if( $parameters!=null && count($parameters) == 3 ){
+            $connection = Database::getInstance();
+            $connection->dbConnect();
+
+            return Dao::getChaptersWhereNotChapterId( $connection, $parameters[1], Security::getUserId());
+        }
+    }
+
+    public function moveNote( array $parameters ) : Message{
+        if( $parameters!=null && count($parameters) == 4 ){
+
+            $connection = Database::getInstance();
+            $connection->dbConnect();
+            
+            $now = (new \DateTime())->format("Y-m-d H:i:s");
+
+            if($connection->dbPreparedStatement("update notes set sectionId = ?, modifyDate=? where userid = ? and sectionId = ? and id = ?", array($parameters[3], $now, Security::getUserId(), $parameters[1], $parameters[2]))) {
+                $message = new \Core\Message(200, Lang::get("note_put_saved"));
+                $message->addExtraInfo("modifyDate", $now);
+                return $message;
+            }
+        }
+        return $this->getFaultMessage(null);
+    }
+
     public function putNoteContent($parameters, $content) : Message{
         if( $parameters!=null && count($parameters) == 3 ){
 
@@ -94,7 +120,9 @@ class NotesResource {
     }
 
     public function postNote($parameters, $note){
+        
         $input = new Note();
+        
         if( $parameters!=null && count($parameters) == 2 ) {
             $input->setUserId(Security::getUserId());
             
@@ -105,7 +133,7 @@ class NotesResource {
             
             $input->setCreationDate($now);
             $input->setModifyDate($now);
-            $input->setNote("");
+            
             $input->setHash("");
             
             $connection = Database::getInstance();
@@ -118,6 +146,7 @@ class NotesResource {
                 return $message;
             }
         }
+
         return $this->getFaultMessage($input->getMessages());
     }
 

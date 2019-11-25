@@ -54,6 +54,23 @@ class ChapterResource {
         }
     }
 
+    public function moveChapter( array $parameters ) : Message{
+        if( $parameters!=null && count($parameters) == 3 ){
+
+            $connection = Database::getInstance();
+            $connection->dbConnect();
+            
+            $now = (new \DateTime())->format("Y-m-d H:i:s");
+
+            if($connection->dbPreparedStatement("update chapters set notebookId = ?, modifyDate=? where userid = ? and notebookId = ? and id = ?", array($parameters[2], $now, Security::getUserId(), $parameters[0], $parameters[1]))) {
+                $message = new \Core\Message(200, Lang::get("chapter_put_saved"));
+                $message->addExtraInfo("modifyDate", $now);
+                return $message;
+            }
+        }
+        return $this->getFaultMessage(null);
+    }
+
     public function putChapter($parameters, $chapter) : Message{
         $input = new Chapter();
         if( $parameters!=null && count($parameters) == 2 && $chapter->notebookId == $parameters[0] && $chapter->id == $parameters[1]) {

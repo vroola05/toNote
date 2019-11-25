@@ -1,3 +1,43 @@
+
+%default-button {
+    padding: $default-padding;
+    border: $color-border solid 1px;
+    background : $color-shade-light;
+
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+        border-color : darken($color-border, 10%);
+        background : darken($color-shade-light, 10%);
+    }
+    &:disabled {
+        border-color : lighten($color-border, 10%);
+        background : lighten($color-shade-light, 10%);
+        color: $default-font-color-disabled;
+    }
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .listItem {
+        padding: $default-padding;
+        border-bottom: $color-border solid 1px;
+        background: $color-shade;
+        cursor: pointer;
+        &:hover {
+            background: lighten($color-shade, 10%);
+        }
+        &.selected {
+            font-weight: bold;
+            background: lighten($color-shade, 5%);
+            
+        }
+    }
+}
+
 .menuItem {
     display: flex;
     align-items: center;
@@ -21,14 +61,7 @@
 
 
 .btn {
-    padding: $default-padding;
-    
-    border: $color-border solid 1px;
-    background : $color-shade-light;
-    
-    font-weight: bold;
-    cursor: pointer;
-    
+    @extend %default-button;
 }
 
 .btnIcon {
@@ -37,7 +70,7 @@
     justify-content: center;
     
     width: $header-height;
-    height: calc(#{$header-height} - 1px);
+    height: $header-height;
 
     border-right: $color-shade-dark solid 1px;
     background : $color-primary;
@@ -53,6 +86,9 @@
         width: calc(100% - #{$default-padding*2});
         height: calc(100% - #{$default-padding*2});
         padding: $default-padding;
+    }
+    &:hover {
+        background: lighten($color-primary, 10%);
     }
 }
 
@@ -116,7 +152,17 @@
     .popupContainer {
         background: #ededed;
         box-shadow: $default-shadow;
-        
+
+        &.popupInput {
+            width: 400px;
+        }
+        &.popupConfirm {
+            width: 400px;
+        }
+        &.popupMove {
+            width: 500px;
+        }
+
         .popupHeader {
             display: flex;
             align-items: center;
@@ -131,6 +177,7 @@
                 padding: $default-padding/2;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                white-space: nowrap;
             }
             .btnRightContainer {
                 flex:  auto;
@@ -141,18 +188,17 @@
         }
 
         .popupInputContainer {
-            width: 400px;
-
             .popupInputInnerContainer {
                 margin: $default-margin*2 $default-margin $default-margin/2 $default-margin;
             }
         }
 
         .popupMoveContainer {
-            width: 500px;
-
+            
             .popupMoveInnerContainer {
                 margin: $default-margin*2 $default-margin $default-margin/2 $default-margin;
+
+                
             }
         }
 

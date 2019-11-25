@@ -17,6 +17,14 @@ export class NoteService extends HttpClient{
     public getNoteContent(noteboookId:number, chapterId:number, noteId:number) : Promise<any>{
         return this.get("notebooks/"+noteboookId+"/chapters/"+chapterId+"/notes/"+noteId+"/content");
     }
+
+    public getMoveNotesList(noteboookId:number, chapterId:number, noteId:number) : Promise<any>{
+        return this.get("notebooks/"+noteboookId+"/chapters/"+chapterId+"/notes/"+noteId+"/move");
+    }
+    
+    public moveNote(noteboookId:number, chapterId:number, noteId:number, newChapterId:number) : Promise<any>{
+        return this.get("notebooks/"+noteboookId+"/chapters/"+chapterId+"/notes/"+noteId+"/move/"+newChapterId);
+    }
  
     public postNote(notebookId:number, chapterId:number, note:Note) : Promise<Message>{
         return this.post("notebooks/" + notebookId + "/chapters/" + chapterId + "/notes", note);

@@ -10,7 +10,7 @@ export default class PopupMoveComponent extends PopupComponent {
     private listComponent: ListComponent;
 
     constructor(title: string, value: string) {
-        super(title + value);
+        super(title + value, "popupMove");
 
         const popupMoveContainer = document.createElement("div");
         popupMoveContainer.className = "popupMoveContainer";
@@ -18,7 +18,13 @@ export default class PopupMoveComponent extends PopupComponent {
 
         this.listComponent = new ListComponent();
         popupMoveContainer.appendChild(this.listComponent.dom);
-
+        this.listComponent.event.on("onSelected", (object) => {
+            if (object) {
+                send.disabled = false;
+            } else {
+                send.disabled = true;
+            }
+        });
         const popupErrorContainer = document.createElement("div");
         popupErrorContainer.className = "popupErrorContainer";
 
@@ -36,8 +42,9 @@ export default class PopupMoveComponent extends PopupComponent {
         popupInputBtnContainer.appendChild(cancel.dom);
         
         const send = new ButtonComponent(Lang.get("popup_btn_ok"), (e:any)=>{
-            this.click(e, this.object);
+            this.click(e, this.object, this.listComponent.getValue());
         });
+        send.disabled = true;
         popupInputBtnContainer.appendChild(send.dom);
         this.append(popupInputBtnContainer);
     }
@@ -50,7 +57,8 @@ export default class PopupMoveComponent extends PopupComponent {
         this.listComponent.add(value, object);
     }
 
-    public click(e: any, object: any): void {
+    public click(e: any, object: any, value: any): void {
+        
         alert("Not yet implemented!");
     }
     public setError(message: string): void {

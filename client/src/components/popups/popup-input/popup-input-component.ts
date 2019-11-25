@@ -9,7 +9,7 @@ export default class PopupInputComponent extends PopupComponent {
     private popupError: HTMLDivElement;
     
     constructor(title: string, description: string, value: string, submit: any = null) {
-        super(title);
+        super(title, "popupInput");
 
 
         const popupInputContainer = document.createElement("div");

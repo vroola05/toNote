@@ -8,7 +8,7 @@ export default class PopupConfirmComponent extends PopupComponent {
     private popupError: HTMLDivElement;
     
     constructor(title: string, value: string, submit: any = null) {
-        super(title);
+        super(title, "popupConfirm");
 
         const popupInputContainer = document.createElement("div");
         popupInputContainer.className = "popupInputContainer";

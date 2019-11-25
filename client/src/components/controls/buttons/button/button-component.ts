@@ -4,6 +4,7 @@ export default class ButtonComponent  {
     constructor( name: string, click: any = undefined ){
         this.dom.type = "button";
         this.dom.className = "btn";
+        this.dom.disabled = false;
 
         if(name!==undefined){
             this.dom.value = name;
@@ -15,6 +16,14 @@ export default class ButtonComponent  {
         this.dom.onclick = (e) => {
             this.click(this);
         }
+    }
+
+    public set disabled(disabled: boolean) {
+        this.dom.disabled = disabled;
+    }
+
+    public get disabled(): boolean {
+        return this.dom.disabled;
     }
 
     public click(buttonComponent:ButtonComponent){

@@ -34,20 +34,7 @@ export default class ChaptersComponent extends TabMenu {
         this.chapterService = new ChapterService();
 
         this.bindRenamePopup();
-
-        this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get("ctx_move"), (e:any) => {
-            console.log(this.dropdownMenu.object.identifier);
-            this.chapterService.getMoveChapterList(this.notebookId, this.dropdownMenu.object.identifier).then((notebooks:Array<Notebook>) => {
-                const movePopup = new PopupMoveComponent(Lang.get("popup_move_title"), Lang.get("notebooks_name"));
-                for(let i in notebooks){
-                    movePopup.add(notebooks[i].name, notebooks[i]);
-                }
-                movePopup.show();
-
-            });
-            
-        }));
-        
+        this.bindMovePopup();
         this.bindDeletePopup();
 
         this.dropdownMenu.addItem(new MenuItemComponent(svgColors, Lang.get("ctx_color"), (e:any) => {
@@ -140,6 +127,41 @@ export default class ChaptersComponent extends TabMenu {
         };
     }
 
+    private bindMovePopup() : void {
+        this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get("ctx_move"), (e:any) => {
+            const movePopup = new PopupMoveComponent(Lang.get("popup_move_title"), Lang.get("chapters_name") + " - " + this.dropdownMenu.object.name);
+            movePopup.object = this.dropdownMenu.object;
+            
+            this.chapterService.getMoveChapterList(this.notebookId, this.dropdownMenu.object.identifier).then((notebooks:Array<Notebook>) => {
+                
+                for(let i in notebooks){
+                    movePopup.add(notebooks[i].name, notebooks[i]);
+                }
+                movePopup.click = (e, object, value) => {
+                    
+                    this.chapterService.moveChapter(object.object.notebookId, object.object.id, value.id).then((message: Message) => {
+                        if(message.status === 200){
+                            this.removeItem(object);
+                            movePopup.hide();
+                        } else {
+                            if(message.info){
+                                let error = "";
+                                for(let i=0; i<message.info.length; i++){
+                                    error += "<span>" + message.info[i].value + "</span>";
+                                    
+                                }
+                                movePopup.setError(error);
+                            }
+                        }
+                    });
+                };
+                movePopup.show();
+
+            });
+            
+        }));
+    }
+    
     private bindDeletePopup() : void {
         
         const menuItem = new MenuItemComponent(svgDelete, Lang.get("ctx_remove"));

@@ -10,11 +10,11 @@ export default class PopupComponent  {
 
     public event = new EventEmitter();
 
-    constructor(title:string) {
+    constructor(title:string, className: string) {
         this.domBackdrop.className = "backdrop";
         
         this.dom.className = "popup";
-        this.domContainer.className = "popupContainer";
+        this.domContainer.className = "popupContainer" + (className?" "+className:"");
         
         
         this.header = new PopupHeaderComponent(title, () => { 

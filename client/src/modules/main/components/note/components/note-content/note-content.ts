@@ -1,6 +1,6 @@
 require('quill/dist/quill.snow.css');
 import Quill from 'quill';
-import DateFormat from '../../../../../../components/date/date';
+import DateFormat from '../../../../../../components/date-format/date-format';
 import ConfigService from '../../../../../../services/config/configService';
 import TitlebarComponent from './components/titlebar/titlebar-component';
 import DatebarComponent from './components/datebar/datebar-component';

@@ -18,6 +18,7 @@
 
     &.color {
       border-left:$color-secondary solid 2px;
+      padding-left:4px;
     }
     &.color:before {
       border-left: 4px solid $color-shade-dark;
@@ -37,7 +38,7 @@
      display : flex; 
      flex-direction : column; 
      height : 100%; 
-
+     background-color: inherit;
     .menuName { 
       font-size : $font-size-big;
       padding : $default-padding;
@@ -45,14 +46,14 @@
    
     .itemList {
       max-height : calc(100% - 108px);
-      padding : $default-padding;
       overflow-y : auto;
+      background-color: inherit;
 
       .item { 
         display: flex;
         flex-direction: row;
         align-items: center;
-
+        background-color: inherit;
         padding : $default-padding/2 $default-padding $default-padding/2 $default-padding;
         font-size : 12px;
         line-height : 18px; 
@@ -60,7 +61,8 @@
 
         cursor : pointer;
         &.active{
-          color : $color-secondary;
+          font-weight: bold;
+          font-style: italic;
         }
         .color {
           min-width: $default-menu-icon-width/2;
@@ -77,9 +79,10 @@
         }
         .name {
           font-size : 12px;
-          &:hover {
-            color : darken($color-secondary, 25%);
-          }
+        }
+        &:hover {
+          color : darken($color-secondary, 25%);
+          filter: brightness(95%);
         }
       }
     }
