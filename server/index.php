@@ -1,8 +1,9 @@
 <?php
+
+require_once 'core/functionStore.php';
 require_once 'core/Validator.php';
+
 require_once 'core/db/Database.php';
-require_once 'core/db/CollectionParams.php';
-require_once 'core/db/Collection.php';
 require_once 'core/db/Mapping.php';
 require_once 'core/db/ModelBase.php';
 
@@ -13,9 +14,9 @@ require_once 'core/Message.php';
 require_once 'core/Store.php';
 require_once 'core/Http.php';
 require_once 'core/GUID.php';
+
 require_once 'core/Security.php';
 require_once 'core/Router.php';
-
 require_once 'dao/Dao.php';
 
 require 'resource/LoginResource.php';
@@ -34,7 +35,8 @@ use \core\Store;
 try{
 	Lang::read();
 	Conf::read();
-
+	
+	new Security();	
 	if(Security::cors()){
 		exit(0);
 	}

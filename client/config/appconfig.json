@@ -1,8 +1,0 @@
-{
-    "api": {
-        "url": "http://localhost"
-    },
-    "content": {
-        "delay": 300
-    }
-}

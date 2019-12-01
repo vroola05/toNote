@@ -23,7 +23,7 @@ abstract class Http {
 
     public static function getHeader(string $name){
         foreach (getallheaders() as $key => $value) {
-            if($name==$key) return $value;
+            if(strtoupper($name)==strtoupper($key)) return $value;
         }
     }
 

@@ -5,7 +5,8 @@
   "main": "./client/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cd client && npm start"
+    "dev": "cd client && npm start",
+    "build": "cd client && npm run build"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
     "webpack-dev-server": "^3.8.2"
   },
   "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.0.4",
     "css-loader": "^3.2.0",
     "html-webpack-plugin": "^3.2.0",
@@ -39,6 +41,7 @@
     "style-loader": "^1.0.0",
     "ts-loader": "^6.2.0",
     "url-loader": "^1.1.2",
-    "webpack-cli": "^3.3.9"
+    "webpack-cli": "^3.3.9",
+    "webpack-merge": "^4.2.2"
   }
 }
