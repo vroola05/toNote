@@ -17,16 +17,15 @@ class Database {
 
     private function __construct($conf=null) {
         try{
-            $this->dbHost = Conf::get("db.host");
-            $this->dbUser = Conf::get("db.username");
-            $this->dbPass = Conf::get("db.password");
-            $this->dbName = Conf::get("db.database");
+            $this->dbHost = Conf::get("dbHost");
+            $this->dbUser = Conf::get("dbUsername");
+            $this->dbPass = Conf::get("dbPassword");
+            $this->dbName = Conf::get("dbDatabase");
         } catch(Exception $e){
             throw new \Exception("Unable to read config file!");
         }
     }
 
-    // Een public methode om de instantce te verkrijgen
     public static function getInstance() {
         if (self::$instantce == null) {
             self::$instantce = new Database();

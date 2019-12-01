@@ -6,7 +6,8 @@
 	"scripts": {
 		"start": "npm-run-all compile:development",
 		"clean": "rimraf ./dist",
-		"compile:development": "webpack-dev-server --display-error-details"
+		"compile:development": "webpack-dev-server --display-error-details",
+		"build": "webpack"
 	},
 	"devDependencies": {
 		"@types/node": "^10.14.21",

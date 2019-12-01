@@ -2,9 +2,12 @@
 namespace Resource;
 
 require 'model/Notebook.php';
+require 'model/Notebooks.php';
 
 use \core\Message;
+use \core\db\Collection;
 use \core\db\Database;
+use \core\db\CollectionParams;
 use \core\Security;
 use \core\Http;
 use \core\Lang;
@@ -13,6 +16,8 @@ use \core\Formatter;
 use \dao\Dao;
 
 use \model\Notebook;
+use \model\Notebooks;
+
 
 class NotebookResource {
     function __construct(){

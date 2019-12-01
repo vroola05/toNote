@@ -6,16 +6,18 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const devMode = process.env.NODE_ENV !== 'production'
 const APP_ROOT_URL = '/'
+//const APP_ROOT_URL = '/workspace/tonote/'
 
 module.exports = {
+  mode: 'production',
   mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, '../dist'),
     compress: true,
     port: 9000
   },
-  watch:true,
+  watch: true,/**/
   module: {
     rules: [
       {
@@ -47,7 +49,7 @@ module.exports = {
   },
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, '../dist')
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -64,9 +66,8 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       { from: './config/appconfig.json', to: 'config' },
-    ]),
-    new CopyWebpackPlugin([
       { from: './config/language.json', to: 'config' },
-		])
+      { from: '../server/', to: '../dist/api/' },
+    ]),
   ]
 };

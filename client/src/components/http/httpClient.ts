@@ -1,5 +1,5 @@
 import { Entity, Method } from '../../types';
-import combineUrl from './combineUrl'
+//import combineUrl from './combineUrl'
 import ConfigService from '../../services/config/configService';
 import { AuthenticationService } from '../../services/authentication/authentication-service';
 import { Router } from '../../services/router/router-service';
@@ -49,7 +49,7 @@ export default class HttpClient{
             headers.append("Content-Type", "application/json");   
         }
 
-        return fetch(combineUrl([this.apiUrl, endpoint], false), requestOptions).then(function(response) {
+        return fetch(this.apiUrl + endpoint, requestOptions).then(function(response) {
             if(response.status===401 && (!Router.getCurrentState() || Router.getCurrentState().key !== "login") ){
                 
                 Router.set({ "key" : "login", "value" : null}, Lang.get("state_title_login"),"login");

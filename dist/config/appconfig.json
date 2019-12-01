@@ -1,6 +1,6 @@
 {
     "api": {
-        "url": "http://localhost/api/"
+        "url": "https://vrooland.net/workspace/tonote/api"
     },
     "content": {
         "delay": 300

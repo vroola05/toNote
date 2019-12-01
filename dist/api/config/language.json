@@ -1,0 +1,73 @@
+{
+    "nl": {
+        "generic_status_400": "Er is iets fout gegegaan!",
+        "generic_status_401": "Niet geautoriseerd!",
+        "generic_status_404": "Niets gevonden!",
+        
+        "db_valid_string": "Het veld bevat geen tekstuele waarde!",
+        "db_valid_bool": "Het veld mag alleen de waarde waar of onwaar bevatten!",
+        "db_valid_int": "Het veld mag alleen een getal bevatten!",
+        "db_valid_double": "Het veld mag alleen een getal bevatten!",
+        "db_valid_date_format": "De datum %s staat niet in de goede volgorde. Het juiste formaat is: yyyy-mm-dd!",
+        "db_valid_datetime_format": "De datum %s staat niet in de goede volgorde. Het juiste formaat is: yyyy-mm-dd hh:mm:ss!",
+        "db_valid_email": "Er zit een fout in het mailadres!",
+        "db_valid_phone": "Er zit een fout in het telefoonnummer!",
+        "db_valid_postal": "Er zit een fout in de postcode!",
+        "db_valid_password_strength": "Het wachtwoord is niet sterk genoeg!",
+        "db_valid_strlen": "Het veld mag maximaal %s tekens bevatten!",
+
+        "login_success": "Het inloggen is gelukt!",
+        "login_login_failed": "De gebruikersnaam of wachtwoord is verkeerd!",
+        "login_valid": "Het token is nog geldig!",
+        "login_signed_out": "U bent nu uitgelogd!",
+
+        "notebook_post_saved": "Het nieuwe notitieblok is opgeslagen!",
+        "notebook_put_saved": "De wijzigingen in het notiteblok zijn opgeslagen!",
+        "notebook_delete": "Het notitieblok is verwijderd!",
+
+        "chapter_post_saved": "Het nieuwe hoofdstuk is opgeslagen!",
+        "chapter_put_saved": "De wijzigingen in het hoofdstuk zijn opgeslagen!",
+        "chapter_delete": "Het hoofdstuk is verwijderd!",
+
+        "note_post_saved": "De nieuwe notitie is opgeslagen!",
+        "note_put_saved": "De wijzigingen in de notitie zijn opgeslagen!",
+        "note_delete": "De notitie is verwijderd!"
+
+        
+    },
+    "en": {
+        
+        "generic_status_400": "Something went wrong!",
+        "generic_status_401": "Not authorized!",
+        "generic_status_404": "Nothing found!",
+
+        "db_valid_string": "This field can only contain text!",
+        "db_valid_bool": "This field can only be true or not true!",
+        "db_valid_int": "This field can only be a number!",
+        "db_valid_double": "This field can only be a number!",
+        "db_valid_date_format": "There is something wrong with the date format of %s. The correct format is: yyyy-mm-dd!",
+        "db_valid_datetime_format": "There is something wrong with the date format of %s. The correct format is: yyyy-mm-dd hh:mm:ss!",
+        "db_valid_email": "There is something wrong with the email!",
+        "db_valid_phone": "There is something wrong with the phonenumber!",
+        "db_valid_postal": "There is something wrong with the zipcode!",
+        "db_valid_password_strength": "This password isn't strong enough!",
+        "db_valid_strlen": "There is a maximum of %s characters!",
+
+        "login_success": "Login succeded!",
+        "login_login_failed": "Username or password is wrong!",
+        "login_valid": "Token is still valid!",
+        "login_signed_out": "You have been signed out!",
+
+        "notebook_post_saved": "The new notebook has been saved!",
+        "notebook_put_saved": "The changes in this notebook have been saved!",
+        "notebook_delete": "Notebook has been deleted!",
+
+        "chapter_post_saved": "The new chapter has been saved!",
+        "chapter_put_saved": "The changes in this chapter have been saved!",
+        "chapter_delete": "Chapter has been deleted!",
+
+        "note_post_saved": "The new note has been saved!",
+        "note_put_saved": "The changes in the note are saved!",
+        "note_delete": "Note has been deleted!"
+    }
+}
