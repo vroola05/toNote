@@ -4,10 +4,9 @@
 	"description": "The user interface for the tonote application",
 	"main": "./src/index.ts",
 	"scripts": {
-		"start": "npm-run-all compile:development",
+		"start": "webpack-dev-server --display-error-details --open --config webpack.dev.js",
 		"clean": "rimraf ./dist",
-		"compile:development": "webpack-dev-server --display-error-details",
-		"build": "webpack"
+		"build": "webpack --config webpack.prod.js"
 	},
 	"devDependencies": {
 		"@types/node": "^10.14.21",

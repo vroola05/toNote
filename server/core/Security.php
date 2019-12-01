@@ -7,7 +7,7 @@ use \core\Conf;
 
 class Security {
     private static $SESSION_EXPIRATION_TIME;
-    private static $APIKEY;
+    public static $APIKEY;
     
     private static $ALLOWED_HOST;
     private static $ALLOWED_HEADERS;
@@ -119,7 +119,7 @@ class Security {
     }
 
     public static function removeSession(){
-        $apikey = filter_var(Http::getHeader(Security::APIKEY), FILTER_SANITIZE_STRING);
+        $apikey = filter_var(Http::getHeader(self::$APIKEY), FILTER_SANITIZE_STRING);
         if($apikey !== false){
             $connection = Database::getInstance();
             $connection->dbConnect();

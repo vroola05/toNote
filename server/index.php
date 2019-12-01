@@ -1,4 +1,5 @@
 <?php
+
 require_once 'core/functionStore.php';
 require_once 'core/Validator.php';
 
@@ -35,8 +36,7 @@ try{
 	Lang::read();
 	Conf::read();
 	
-	new Security();
-	
+	new Security();	
 	if(Security::cors()){
 		exit(0);
 	}

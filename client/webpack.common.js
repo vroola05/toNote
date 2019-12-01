@@ -1,23 +1,11 @@
 const path = require('path');
-const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const devMode = process.env.NODE_ENV !== 'production'
-const APP_ROOT_URL = '/'
-//const APP_ROOT_URL = '/workspace/tonote/'
 
 module.exports = {
-  mode: 'production',
-  mode: 'development',
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: path.join(__dirname, '../dist'),
-    compress: true,
-    port: 9000
-  },
-  watch: true,/**/
   module: {
     rules: [
       {
@@ -28,7 +16,6 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
-          ////devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           MiniCssExtractPlugin.loader,
           'css-loader',
           "sass-loader"
@@ -52,22 +39,19 @@ module.exports = {
     path: path.resolve(__dirname, '../dist')
   },
   plugins: [
-    new webpack.DefinePlugin({
-			'process.env': {
-        "APP_ROOT_URL": JSON.stringify(APP_ROOT_URL)
-      },
-		}),
-    new HtmlWebpackPlugin(),
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      'title': 'ToNote',
+      'meta': {
+        'viewport': 'width=device-width, initial-scale=1.0',
+        'theme-color': '#6ac6e6'
+      }
+    }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename: devMode ? '[name].css' : '[name].[hash].css',
       chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
     }),
-    new CopyWebpackPlugin([
-      { from: './config/appconfig.json', to: 'config' },
-      { from: './config/language.json', to: 'config' },
-      { from: '../server/', to: '../dist/api/' },
-    ]),
   ]
 };
