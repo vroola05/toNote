@@ -17,12 +17,19 @@ class LoginResource {
 
     public function login( $user ) : bool {
         $message = new Message();
-
+        
+        if( $_SERVER['REQUEST_METHOD'] != Http::HTTP_METHOD_POST ){
+            Http::setStatus(401);
+            Http::remand(new \Core\Message(401, Lang::get("generic_status_401")),Http::CONTENT_TYPE_JSON);
+            return false;
+        }
+        
         if( $user==null || !array_key_exists("username", $user) || $user->username == "" ){
             Http::setStatus(401);
             Http::remand(new \Core\Message(401, Lang::get("generic_status_401")),Http::CONTENT_TYPE_JSON);
             return false;
         }
+        
         if( !array_key_exists("password", $user) || $user->password == "" ){
             Http::setStatus(401);
             Http::remand(new \Core\Message(401, Lang::get("generic_status_401")),Http::CONTENT_TYPE_JSON);
@@ -31,18 +38,18 @@ class LoginResource {
         
         $connection = Database::getInstance();
         $connection->dbConnect();
+        
         $u = $connection->getSingleItem(new User(), "select * from users where username = ? and active = 1", array($user->username));
-
         if ($u !== false) {
             if ($u->userId !== null && $u->password != null && $u->password != "") {
                 if (password_verify($user->password, $u->password) === true) {
                     //If the password algorithm has changed update the password
                     $this->checkPasswordAlgorithm((int)$u->userId, $u->password, $connection);        
-
                     $apikey = Security::createSession($u->userId, "DeviceName");
                     if($apikey !== false){
                         $message  = new \Core\Message(200, Lang::get("login_success"));
-                        $message->addExtraInfo(Security::APIKEY, $apikey);
+                        
+                        $message->addExtraInfo(Security::$APIKEY, $apikey);
                         Http::setStatus(200);
                         Http::remand($message,Http::CONTENT_TYPE_JSON);
                         return true;
@@ -50,6 +57,7 @@ class LoginResource {
                 }
             } 
         }
+        
         Http::setStatus(401);
         Http::remand(new \Core\Message(401, Lang::get("login_login_failed")),Http::CONTENT_TYPE_JSON);
         return false;

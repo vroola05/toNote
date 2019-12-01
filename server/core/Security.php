@@ -3,12 +3,14 @@ namespace core;
 
 use \core\db\Database;
 use \core\db\Store;
+use \core\Conf;
 
-abstract class Security {
-    const SESSION_EXPIRATION_TIME = 30;
-    const APIKEY = "apikey";
-    const ALLOWED_HOST = "http://localhost:9000";
-    const ALLOWED_HEADERS =  "Content-Type, ". Security::APIKEY;
+class Security {
+    private static $SESSION_EXPIRATION_TIME;
+    public static $APIKEY;
+    
+    private static $ALLOWED_HOST;
+    private static $ALLOWED_HEADERS;
 
     private static $userId = null;
 
@@ -16,6 +18,10 @@ abstract class Security {
      * 
      */
 	function  __construct(){
+        self::$SESSION_EXPIRATION_TIME = Conf::get("sec.expiration.time");
+        self::$APIKEY = Conf::get("sec.apikey");
+        self::$ALLOWED_HOST = Conf::get("sec.cors.allowed.host");
+        self::$ALLOWED_HEADERS = "Content-Type, ". self::$APIKEY;
     }
 
     public static function setUserId($userId){
@@ -26,16 +32,16 @@ abstract class Security {
     }
 
     public static function defaultHeaders(){
-        header("Access-Control-Allow-Origin: " . Security::ALLOWED_HOST);
+        header("Access-Control-Allow-Origin: " . self::$ALLOWED_HOST);
     }
 
     public static function cors(){
         if($_SERVER['REQUEST_METHOD'] == "OPTIONS"){
-            if($_SERVER['HTTP_ORIGIN'] == Security::ALLOWED_HOST) {
+            if($_SERVER['HTTP_ORIGIN'] == self::$ALLOWED_HOST) {
                 Security::defaultHeaders();
                 
                 header("Access-Control-Allow-Methods: PUT, DELETE, POST, GET, OPTIONS");
-                header("Access-Control-Allow-Headers: ".Security::ALLOWED_HEADERS);
+                header("Access-Control-Allow-Headers: ".self::$ALLOWED_HEADERS);
                 header("Access-Control-Max-Age: 1728000");
                 header("Content-Length: 0");
                 header("Content-Type: text/plain");
@@ -50,8 +56,8 @@ abstract class Security {
     }
 
     public static function hasAccess(){
-        $apikey = filter_var(Http::getHeader(Security::APIKEY), FILTER_SANITIZE_STRING);
-        if($apikey !== false){
+        $apikey = filter_var(Http::getHeader(self::$APIKEY), FILTER_SANITIZE_STRING);
+        if($apikey !== false && $apikey != ""){
             $connection = Database::getInstance();
             $connection->dbConnect();
             if($connection->dbPreparedStatement("select userId from sessions where expirationDate >= ? and apikey = ?", array( (new \DateTime("NOW"))->format('Y-m-d H:i:s'), $apikey ))){
@@ -71,7 +77,7 @@ abstract class Security {
 
         $lastAccessDate = new \DateTime("NOW");
         $expirationDate = new \DateTime("NOW");
-        $expirationDate->add(new \DateInterval('PT' . (Security::SESSION_EXPIRATION_TIME) . 'M'));
+        $expirationDate->add(new \DateInterval('PT' . (self::$SESSION_EXPIRATION_TIME) . 'M'));
 
         $connection = Database::getInstance();
         $connection->dbConnect();
@@ -93,7 +99,7 @@ abstract class Security {
     public static function updateSession( $description, $apikey ){
         $lastAccessDate = new \DateTime("NOW");
         $expirationDate = new \DateTime("NOW");
-        $expirationDate->add(new \DateInterval('PT' . (Security::SESSION_EXPIRATION_TIME) . 'M'));
+        $expirationDate->add(new \DateInterval('PT' . (self::$SESSION_EXPIRATION_TIME) . 'M'));
 
         $connection = Database::getInstance();
         $connection->dbConnect();
@@ -113,7 +119,7 @@ abstract class Security {
     }
 
     public static function removeSession(){
-        $apikey = filter_var(Http::getHeader(Security::APIKEY), FILTER_SANITIZE_STRING);
+        $apikey = filter_var(Http::getHeader(self::$APIKEY), FILTER_SANITIZE_STRING);
         if($apikey !== false){
             $connection = Database::getInstance();
             $connection->dbConnect();
