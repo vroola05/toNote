@@ -1,85 +1,12 @@
 @import "./assets/scss/global.scss";
 @import "./assets/scss/animations.scss";
-
 @import "./assets/scss/global-components.scss";
-@import "./assets/scss/login.scss";
 
+@import "./assets/scss/login.scss";
+@import "./assets/scss/main.scss";
+
+@import "./assets/scss/header.scss";
+
+@import "./assets/scss/tab.scss";
 @import "./assets/scss/tab-menu.scss";
 @import "./assets/scss/tab-note.scss";
-
-.main {
-    display: flex; 
-    flex-direction: column; 
-    height: 100%;
-    
-    .header {
-        display: flex; 
-        flex-direction: row;
-        height : $header-height; 
-        background: $color-primary; 
-    
-        .btnLeftContainer {
-            display: flex; 
-            flex-direction: row;
-        }
-    
-        .titleContainer {
-            flex: auto;
-            .title {
-                position: relative;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 100%;
-
-                .mainTitle {
-                    position: absolute;
-                    top:6px;
-                    max-width: calc(100% - #{$default-padding*2});
-                    padding-left: $default-padding;
-                    padding-right: $default-padding;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-
-                    font-size: $font-size-big;
-                    font-weight: bold;
-                    color: $color-shade-dark;
-
-                }
-
-                .subTitle {
-                    position: absolute;
-                    top:34px;
-                    max-width: calc(100% - #{$default-padding*2});
-                    padding-left: $default-padding;
-                    padding-right: $default-padding;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-
-                    font-weight: bold;
-                    color: $color-dark-grey;
-
-                }
-            }
-        }
-        .btnRightContainer {
-            display: flex; 
-            flex-direction: row;
-        }
-    }
-
-    .tabs { 
-        display: flex; 
-        flex-direction: row; 
-        height: calc(100% - #{$header-height}); 
-
-        .tab.chapter {
-            background : $color-shade;
-        }
-        .tab.notes {
-            background : $color-shade-light;
-        }        
-    }
-}

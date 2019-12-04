@@ -1,0 +1,12 @@
+.tabs { 
+    display: flex; 
+    flex-direction: row; 
+    height: calc(100% - #{$header-height}); 
+
+    .tab.chapter {
+        background : $color-shade;
+    }
+    .tab.notes {
+        background : $color-shade-light;
+    }        
+}

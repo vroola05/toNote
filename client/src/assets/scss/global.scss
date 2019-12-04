@@ -1,12 +1,12 @@
 $default-width-mobile: 768px;
 $default-width-tablet: 1024px;
-$default-width-desktop: 1280px;
+$default-width-desktop: 1180px;
 $default-width-retina: 1280px;
 
 $default-animation-length: .3s;
 
 $color-primary : #6ac6e6;
-$color-secondary : #af7500;
+$color-secondary : #f9f9f9;
 
 $color-shade-dark : #e0e0e0;
 $color-shade : #f1f1f1;
@@ -15,7 +15,7 @@ $color-shade-light : #fdfdfd;
 $color-dark: #030303;
 $color-dark-grey: #4d4d4d;
 
-$color-border: #97c2ff;
+$color-border: #dadada;
 
 $color-error-msg: #ff0000;
 
@@ -24,6 +24,7 @@ $default-padding:8px;
 
 $header-height:60px;
 
+$default-shadow-input: #d5d5d5 0px 0px 4px 0px;
 $default-shadow: #2e2e2e 0px 0px 6px 0px;
 $default-shadow-vague: $color-shade-dark 0px 0px 16px 0px;
 
@@ -55,3 +56,12 @@ body { height: 100%; margin : 0px; padding : 0px; font-family: $default-font; fo
 h1 {}
 h2 {}
 h3 {}
+
+
+$mobile-margin:16px;
+$mobile-padding:16px;
+
+$mobile-font-size: 16px;
+$mobile-font-size-big: 24px;
+
+

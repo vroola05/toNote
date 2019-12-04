@@ -7,6 +7,8 @@
     font-weight: bold;
     cursor: pointer;
 
+    box-shadow: $default-shadow-input;
+
     &:hover {
         border-color : darken($color-border, 10%);
         background : darken($color-shade-light, 10%);
@@ -118,19 +120,22 @@
 .inputContainer {
     width: calc(100% - #{$default-margin*2} - 2px);
     margin: $default-margin;
+    font-size: $default-font-size;
 
-    label {
+    .label {
+        margin-bottom: $default-margin/2;
         display: block;
-        font-size: 14px;
         font-style: italic;
     }
     
     input {
-        width: calc(100% - 18px);
-        padding: 4px 8px;
+        font-size: $default-font-size;
+        width: calc(100% - (#{$default-padding*2+2}));
+        padding: $default-padding/2 $default-padding;
         
         border: $color-border solid 1px;
-        background : lighten($color-secondary,60%);//$color-shade-light;
+        background : lighten($color-secondary,60%);
+        box-shadow: $default-shadow-input;
     }
 
     input:-webkit-autofill, input:-moz-autofill {
@@ -244,20 +249,39 @@
 }
 
 @media (min-width: 0px) and (max-width: $default-width-mobile) {
+    .btn {
+        padding: $mobile-padding;
+    }
+    .inputContainer {
+        width: calc(100% - #{$mobile-margin*2} - 2px);
+        margin: $mobile-margin;
+        font-size: $mobile-font-size;
+
+        .label {
+            margin-bottom: $mobile-margin/2;
+        }
+        input {
+            font-size: $mobile-font-size;
+            width: calc(100% - (#{$mobile-padding*2+2}));
+            padding: $mobile-padding/2 $mobile-padding;
+        }
+    
+    }
+    
     .dropdown {
         top: 0px;
         left: unset !important;
         right: unset !important;
         min-width: unset;
         min-height: unset;
-        width: calc(100% - #{$default-padding*2});
+        width: calc(100% - #{$mobile-margin*2});
         max-height: calc(100% - #{$default-padding});
         margin-top: unset;
-        margin: $default-margin;
+        margin: $mobile-margin;
         
         .menuItem {
             height: $default-menu-item-mobile-height;
-            
+            margin: $mobile-margin;
             .iconContainer {
                 width:$default-menu-icon-mobile-width;
             }

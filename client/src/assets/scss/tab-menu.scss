@@ -1,6 +1,7 @@
 .tab.tabMenu { 
     position : relative; 
-    width : 0px; min-width : 0px; 
+    width : 0px; 
+    min-width : 0px; 
     height : 100%; 
     background : $color-primary; 
     box-shadow : 2px 4px 4px $color-shade-dark; 
@@ -18,7 +19,7 @@
 
     &.color {
       border-left:$color-secondary solid 2px;
-      padding-left:4px;
+      padding-left:$default-padding/2;
     }
     &.color:before {
       border-left: 4px solid $color-shade-dark;
@@ -55,8 +56,6 @@
         align-items: center;
         background-color: inherit;
         padding : $default-padding/2 $default-padding $default-padding/2 $default-padding;
-        font-size : 12px;
-        line-height : 18px; 
         color : #585858;  
 
         cursor : pointer;
@@ -78,10 +77,9 @@
           }
         }
         .name {
-          font-size : 12px;
         }
         &:hover {
-          color : darken($color-secondary, 25%);
+          color : darken($color-secondary, 50%);
           filter: brightness(95%);
         }
       }
@@ -105,7 +103,6 @@
         float : left;
   
         padding-left : $default-padding;
-        font-size : 12px;
       }
     }
   }
@@ -113,7 +110,23 @@
 
 
 @media (min-width: 0px) and (max-width: $default-width-mobile) {
-  .tabMenu { width:0px;min-width:0px; height:100%; padding:0; }
+  .tab.tabMenu { 
+    width:0px;min-width:0px; height:100%;
+
+    .itemContainer {
+     .menuName { 
+       font-size : $mobile-font-size-big;
+       padding : $mobile-padding;
+     }
+
+      .itemList {
+        .item {
+          padding : $mobile-padding $mobile-padding*2;
+        }
+      }
+    }
+  }
+
   .tabMenu.active { width:100%!important;;}
   .tabMenu.stack:not(.active) {min-width:0px!important}
 }

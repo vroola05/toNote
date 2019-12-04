@@ -9,6 +9,7 @@ export default class InputComponent  {
         if(label!==undefined){
             this.domLabel = document.createElement("label");
             this.domLabel.innerHTML = label;
+            this.domLabel.classList.add("label");
             this.dom.appendChild(this.domLabel);
         }
 
@@ -17,6 +18,7 @@ export default class InputComponent  {
         this.dom.className = "inputContainer";
 
         this.domInput.type = type;
+        this.domInput.classList.add("input");
         
         
     }

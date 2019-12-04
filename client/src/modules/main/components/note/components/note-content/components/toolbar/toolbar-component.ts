@@ -9,6 +9,7 @@ export default class ToolbarComponent {
 	private btnLeft: ButtonIconComponent;
 	private btnRight: ButtonIconComponent;
 
+	private toolbarGroups: Array<HTMLSpanElement>;
 	constructor() {
 		
 		this.dom = document.createElement("div");
@@ -81,30 +82,18 @@ export default class ToolbarComponent {
 	}
 
 	private scrollTo(direction:string) {
-		if(direction === "left"){
-			if(this.toolbarContainer.scrollLeft - this.toolbarContainer.clientWidth >= 0) {
-				this.toolbarContainer.scrollLeft -= this.toolbarContainer.clientWidth;
-			} else {
-				this.toolbarContainer.scrollLeft = 0;
-			}
-		} else {
-			if(this.toolbarContainer.scrollLeft + this.toolbarContainer.clientWidth <= this.toolbarContainer.scrollWidth){
-				this.toolbarContainer.scrollLeft += this.toolbarContainer.clientWidth;
-				
-			} else {
-				this.toolbarContainer.scrollLeft += this.toolbarContainer.clientWidth - (this.toolbarContainer.scrollWidth-this.toolbarContainer.scrollLeft);
-			}
-		}
-		this.setScrollButtonState();
+		
 	}
 
 	private createToolbar() {
+		this.toolbarGroups = new Array<HTMLSpanElement>();
 		//////////////////////////////////////////////////
 		//
 		//////////////////////////////////////////////////
 		var domGroupSizeType = document.createElement("span");
 		domGroupSizeType.className = "ql-formats groupSizeType";
 		this.toolbarContainer.appendChild(domGroupSizeType);
+		this.toolbarGroups.push(domGroupSizeType);
 
 		var domToobarSize = document.createElement("select");
 		domToobarSize.className = "tb-btn ql-size";
@@ -122,6 +111,7 @@ export default class ToolbarComponent {
 		var domGroupDefault = document.createElement("span");
 		domGroupDefault.className = "ql-formats groupDefault";
 		this.toolbarContainer.appendChild(domGroupDefault);
+		this.toolbarGroups.push(domGroupDefault);
 
 		var domToobarBold = document.createElement("button");
 		domToobarBold.className = "tb-btn ql-bold";
@@ -144,6 +134,7 @@ export default class ToolbarComponent {
 		var domGroupStyle = document.createElement("span");
 		domGroupStyle.className = "ql-formats groupStyle";
 		this.toolbarContainer.appendChild(domGroupStyle);
+		this.toolbarGroups.push(domGroupStyle);
 
 		var domToobarH1 = document.createElement("button");
 		domToobarH1.className = "tb-btn ql-header";
@@ -168,6 +159,7 @@ export default class ToolbarComponent {
 		var domGroupLists = document.createElement("span");
 		domGroupLists.className = "ql-formats groupLists";
 		this.toolbarContainer.appendChild(domGroupLists);
+		this.toolbarGroups.push(domGroupLists);
 
 		var domToobarListOrdered = document.createElement("button");
 		domToobarListOrdered.className = "tb-btn ql-list";
@@ -199,6 +191,7 @@ export default class ToolbarComponent {
 		var domGroupColor = document.createElement("span");
 		domGroupColor.className = "ql-formats groupColor";
 		this.toolbarContainer.appendChild(domGroupColor);
+		this.toolbarGroups.push(domGroupColor);
 
 		var domToobarColor = document.createElement("select");
 		domToobarColor.className = "tb-btn ql-color";

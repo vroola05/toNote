@@ -1,0 +1,13 @@
+.main {
+    display: flex; 
+    flex-direction: column; 
+    height: 100%;
+    font-size: $default-font-size;
+    font-weight: 300;
+}
+
+@media (min-width: 0px) and (max-width: $default-width-mobile) {
+    .main {
+        font-size: $mobile-font-size;
+    }   
+}
