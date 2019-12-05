@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 import PopupComponent from '../popup/popup-component';
 import Lang from '../../language/lang';
 import ButtonContainedComponent from '../../controls/buttons/button-contained/button-contained-component';
+import ButtonOutlinedComponent from '../../controls/buttons/button-outlined/button-outlined-component';
 import ListComponent from '../../controls/lists/list/list-component';
 
 export default class PopupMoveComponent extends PopupComponent {
@@ -35,7 +36,7 @@ export default class PopupMoveComponent extends PopupComponent {
 
         const popupInputBtnContainer = document.createElement("div");
         popupInputBtnContainer.className = "popupInputBtnContainer";
-        const cancel = new ButtonContainedComponent(Lang.get("popup_btn_cancel"), ()=>{
+        const cancel = new ButtonOutlinedComponent(Lang.get("popup_btn_cancel"), ()=>{
             this.hide();
         });
         popupInputBtnContainer.appendChild(cancel.dom);

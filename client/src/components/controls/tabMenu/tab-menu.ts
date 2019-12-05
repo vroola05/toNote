@@ -7,6 +7,7 @@ import { TabMenuItem } from './components/tab-menu-item';
 import { Tab } from './tab';
 
 import MenuItemComponent from '../menu-item/menu-item-component';
+import ButtonFloatComponent from '../buttons/button-float/button-float-component';
 
 export class TabMenu extends Tab {
 	public static COLOR_TYPE_NONE = 1;
@@ -49,10 +50,13 @@ export class TabMenu extends Tab {
 		this.domItemList = document.createElement("div");
 		this.domItemList.classList.add("itemList");
 		
-		const addMenuItem = new MenuItemComponent(svgAdd, this.labels.get("add"));
+		const addMenuItem = new ButtonFloatComponent(svgAdd, (e:any) => {
+			this.clickNewItem(e);
+		})
+		/*new MenuItemComponent(svgAdd, this.labels.get("add"));
 		addMenuItem.click = (menuItem, e) => {
 			this.clickNewItem(e);
-		};
+		};*/
 
 		this.itemContainer.appendChild(domName);
 		this.itemContainer.appendChild(this.domItemList);

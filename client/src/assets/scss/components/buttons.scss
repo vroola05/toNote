@@ -10,33 +10,66 @@
 
   border-radius: 4px;
   border: none;
+}
 
+%default-hover-button {
   &:hover {
-      border-color : darken($color-border, 10%);
-      background : darken($color-shade-light, 10%);
+    color: $color-dark;
+    border-color : darken($color-border, 10%);
+    background : darken($color-shade-light, 20%);
   }
+}
+
+%default-disabled-button {
   &:disabled {
-      border-color : lighten($color-border, 10%);
-      background : lighten($color-shade-light, 10%);
-      color: $default-font-color-disabled;
-  }
+    border-color : lighten($color-border, 10%);
+    background : lighten($color-shade-light, 10%);
+    color: $default-font-color-disabled;
+    box-shadow: none;
+}
 }
 
 .btn {
   @extend %default-button;
-
+  
   &.btn-text {
     padding: $default-padding + 2px;
+    @extend %default-hover-button;
+    @extend %default-disabled-button;
   }
 
   &.btn-contained {
     border: $color-border solid 1px;
     box-shadow: $default-shadow-input;
     background : $color-shade-light;
+    
+    @extend %default-hover-button;
+    @extend %default-disabled-button;
   }
 
   &.btn-outlined {
-    border: $color-border solid 1px;
+    border: $color-border solid 2px;
+    padding: $default-padding - 2px;
+    color: $color-dark-grey;
+    @extend %default-hover-button;
+    @extend %default-disabled-button;
+  }
+
+  &.btn-float {
+    position: absolute;
+    height: 56px;
+    width: 56px;
+    border-radius: 50%;
+
+    background: $color-shade-light;
+    box-shadow: $default-shadow;
+
+    &.btn-loc-right {
+      right: 0px;
+    }
+    &.btn-loc-bottom {
+      bottom: 0px;
+    }
   }
 }
 
@@ -93,5 +126,17 @@
 @media (min-width: 0px) and (max-width: $default-width-mobile) {
   .btn {
       padding: $mobile-padding;
+
+      &.btn-text {
+        padding: $mobile-padding + 2px;
+      }
+
+      &.btn-outlined {
+        padding: $mobile-padding - 2px;
+      }
+
+      &.btn-float {
+        margin: $mobile-margin;
+      }
   }
 }

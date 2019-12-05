@@ -4,7 +4,7 @@
 	"description": "The user interface for the tonote application",
 	"main": "./src/index.ts",
 	"scripts": {
-		"start": "webpack-dev-server --display-error-details --open --config webpack.dev.js",
+		"start": "webpack-dev-server --display-error-details --config webpack.dev.js",
 		"clean": "rimraf ./dist",
 		"build": "webpack --config webpack.prod.js"
 	},

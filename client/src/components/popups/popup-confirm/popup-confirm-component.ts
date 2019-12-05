@@ -3,6 +3,7 @@ import PopupComponent from '../popup/popup-component';
 import InputComponent from '../../controls/input/input-component';
 import Lang from '../../language/lang';
 import ButtonContainedComponent from '../../controls/buttons/button-contained/button-contained-component';
+import ButtonOutlinedComponent from '../../controls/buttons/button-outlined/button-outlined-component';
 
 export default class PopupConfirmComponent extends PopupComponent {
     private popupError: HTMLDivElement;
@@ -30,7 +31,7 @@ export default class PopupConfirmComponent extends PopupComponent {
 
         const popupInputBtnContainer = document.createElement("div");
         popupInputBtnContainer.className = "popupInputBtnContainer";
-        const cancel = new ButtonContainedComponent(Lang.get("popup_confirm_btn_no"), ()=>{
+        const cancel = new ButtonOutlinedComponent(Lang.get("popup_confirm_btn_no"), ()=>{
             this.hide();
         });
         popupInputBtnContainer.appendChild(cancel.dom);
