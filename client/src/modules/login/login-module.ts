@@ -8,8 +8,10 @@ import { Router } from '../../services/router/router-service';
 import { LoginService } from '../../services/http/login-service';
 import { AuthenticationService } from '../../services/authentication/authentication-service';
 import { IWindow } from '../../components/controls/iwindow/iwindow';
-import ButtonComponent from '../../components/controls/buttons/button/button-component';
 import InputComponent from '../../components/controls/input/input-component';
+import ButtonContainedComponent from '../../components/controls/buttons/button-contained/button-contained-component';
+import ButtonOutlinedComponent from '../../components/controls/buttons/button-outlined/button-outlined-component';
+import ButtonTextComponent from '../../components/controls/buttons/button-text/button-text-component';
 
 export default class LoginModule extends IWindow{
     private loginContainer: HTMLElement = document.createElement("div");
@@ -48,7 +50,7 @@ export default class LoginModule extends IWindow{
         loginErrorContainer.appendChild(this.loginError);
         this.loginContainer.appendChild(loginErrorContainer);
 
-        const btnLogin = new ButtonComponent(Lang.get("login_send"), () => {
+        const btnLogin = new ButtonContainedComponent(Lang.get("login_send"), () => {
             this.submit();
         });
         this.loginContainer.appendChild(btnLogin.dom);

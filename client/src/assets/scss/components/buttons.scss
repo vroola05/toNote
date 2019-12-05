@@ -1,0 +1,97 @@
+
+%default-button {
+  padding: $default-padding;
+  margin: $default-margin/2;
+
+  font-weight: bold;
+  cursor: pointer;
+
+  background: none;
+
+  border-radius: 4px;
+  border: none;
+
+  &:hover {
+      border-color : darken($color-border, 10%);
+      background : darken($color-shade-light, 10%);
+  }
+  &:disabled {
+      border-color : lighten($color-border, 10%);
+      background : lighten($color-shade-light, 10%);
+      color: $default-font-color-disabled;
+  }
+}
+
+.btn {
+  @extend %default-button;
+
+  &.btn-text {
+    padding: $default-padding + 2px;
+  }
+
+  &.btn-contained {
+    border: $color-border solid 1px;
+    box-shadow: $default-shadow-input;
+    background : $color-shade-light;
+  }
+
+  &.btn-outlined {
+    border: $color-border solid 1px;
+  }
+}
+
+.btnIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  width: $header-height;
+  height: $header-height;
+
+  border-right: $color-shade-dark solid 1px;
+  background : inherit;
+
+  cursor: pointer;
+  
+  .icon {
+      width: calc(100% - #{$default-padding*2});
+      height: calc(100% - #{$default-padding*2});
+      padding: $default-padding;
+  }
+
+  &.hidden {
+      display: none;
+  }
+
+  &.small {
+      width: $header-height/2;
+      height: calc(#{$header-height/2} - 1px);
+      border-right: none;
+      
+      &.btnToolbar {
+          min-width: 36px;
+          width: 36px;
+          .icon {
+              width: 100%;
+              height: 100%;
+          }
+      }
+  }
+  &.disabled {
+      border: $color-shade-light solid 1px;
+      cursor: not-allowed;
+      .icon {
+          opacity: 0.2;
+      }
+  }
+  
+  &:hover {
+      background: lighten($color-primary, 10%);
+  }
+}
+
+@media (min-width: 0px) and (max-width: $default-width-mobile) {
+  .btn {
+      padding: $mobile-padding;
+  }
+}

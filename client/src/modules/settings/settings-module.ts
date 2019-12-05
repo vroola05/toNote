@@ -5,7 +5,7 @@ import { User, Info, Message } from '../../types';
 import { Router } from '../../services/router/router-service';
 
 import { IWindow } from '../../components/controls/iwindow/iwindow';
-import ButtonComponent from '../../components/controls/buttons/button/button-component';
+import ButtonContainedComponent from '../../components/controls/buttons/button-contained/button-contained-component';
 
 export default class LoginModule extends IWindow{
     private settingsContainer:HTMLElement = document.createElement("div");
@@ -26,12 +26,12 @@ export default class LoginModule extends IWindow{
         this.settingsElement.appendChild(title);
         
 
-        const btnCancel = new ButtonComponent(Lang.get("settings_cancel"), () => {
+        const btnCancel = new ButtonContainedComponent(Lang.get("settings_cancel"), () => {
             Router.set({key : "main", value: this.state.value}, Lang.get("state_title_notebooks"),"main");
         });
         this.settingsElement.appendChild(btnCancel.dom);
         
-        const btnSave = new ButtonComponent(Lang.get("settings_save"), () => {
+        const btnSave = new ButtonContainedComponent(Lang.get("settings_save"), () => {
             Router.set({key : "main", value: this.state.value}, Lang.get("state_title_notebooks"),"main");
         });
         this.settingsElement.appendChild(btnSave.dom);

@@ -30,20 +30,8 @@
             margin-top: 0px;
         }
 
-        input[type=button] {
-            margin: $default-margin;
-
-            font-size: $default-font-size;
-            color: #fff;
-            width: calc(100% - (#{$default-padding*2}));
-            padding: $default-padding;
-            
-            background : $color-primary;
-            box-shadow: $default-shadow-input;
-        }
-
         .loginErrorContainer {
-            min-height: $default-margin*8;
+            min-height: $default-margin*4;
             color: $color-error-msg;
             font-style: italic;
         }
@@ -66,11 +54,11 @@
                 margin: $default-margin*4 auto;
             }
     
-            input[type=button] {
+            /*input[type=button] {
                 font-size: $mobile-font-size;
                 width: calc(100% - (#{$mobile-padding*2+2}));
                 padding: $mobile-padding;
-            }
+            }*/
         }
     }   
 }

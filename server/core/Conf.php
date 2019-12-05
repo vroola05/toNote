@@ -22,11 +22,11 @@ abstract class Conf {
     public static function read(){
         if(Conf::$CONFIG == null){
             try{
-            $ini = parse_ini_file("config/conf.ini");
-            if($ini===false){ 
-                throw new \Exception("No config file!");
-            }
-            Conf::$CONFIG = $ini;
+                $ini = parse_ini_file("config/conf.ini");
+                if($ini===false){ 
+                    throw new \Exception("No config file!");
+                }
+                Conf::$CONFIG = $ini;
             }catch(\Exception $e){
                 throw new \Exception("No config file!");
             }
