@@ -26,6 +26,10 @@ export default class ButtonAbstract  {
         return this.dom.disabled;
     }
 
+    public addClass(value: string): void {
+        this.dom.classList.add(value);
+    }
+
     public click(buttonComponent: ButtonAbstract){
         console.error("Method not yet implemented!");
     }

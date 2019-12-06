@@ -50,10 +50,14 @@ export default class LoginModule extends IWindow{
         loginErrorContainer.appendChild(this.loginError);
         this.loginContainer.appendChild(loginErrorContainer);
 
+        const loginSubmitContainer = document.createElement("div");
+        loginSubmitContainer.className = "loginSubmitContainer";
+        this.loginContainer.appendChild(loginSubmitContainer);
         const btnLogin = new ButtonContainedComponent(Lang.get("login_send"), () => {
             this.submit();
         });
-        this.loginContainer.appendChild(btnLogin.dom);
+        btnLogin.addClass("loginSubmit");
+        loginSubmitContainer.appendChild(btnLogin.dom);
     }
 
     private submit() {

@@ -27,7 +27,7 @@
     cursor: pointer;
     
     .iconContainer {
-        width:$default-menu-icon-width;
+        width: $default-menu-icon-size;
         .icon {
             width: calc(100% - #{$default-padding*2});
             height: calc(100% - #{$default-padding*2});
@@ -200,10 +200,10 @@
         margin: $mobile-margin;
         
         .menuItem {
-            height: $default-menu-item-mobile-height;
+            height: $mobile-menu-icon-size;
             margin: $mobile-margin;
             .iconContainer {
-                width:$default-menu-icon-mobile-width;
+                width: $mobile-menu-icon-size;
             }
         }
     }

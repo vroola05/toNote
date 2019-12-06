@@ -20,7 +20,7 @@
         padding: $default-padding*2;
         background: $color-shade; 
 
-        border: $color-shade-dark solid 1px;
+        border: $color-border solid 1px;
         box-shadow: $default-shadow-vague;
 
         .logo {
@@ -34,6 +34,15 @@
             min-height: $default-margin*4;
             color: $color-error-msg;
             font-style: italic;
+        }
+
+        .loginSubmitContainer {
+            width: calc(100% - #{$default-margin});
+            margin: $default-margin;
+
+            .loginSubmit {
+                width: calc(100% - #{$default-margin});
+            }
         }
     }
 }
@@ -54,11 +63,11 @@
                 margin: $default-margin*4 auto;
             }
     
-            /*input[type=button] {
-                font-size: $mobile-font-size;
-                width: calc(100% - (#{$mobile-padding*2+2}));
-                padding: $mobile-padding;
-            }*/
+            .loginSubmitContainer {
+                width: calc(100% - #{$mobile-margin});
+                margin: $mobile-margin;
+    
+            }
         }
     }   
 }

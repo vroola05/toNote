@@ -34,14 +34,14 @@ export default class DropdownMenuComponent {
     public setPosition(pageX: number, pageY: number) {
         const rect = this.dom.getBoundingClientRect();
         
-        if( pageX+rect.width > document.documentElement.clientWidth ){
+        if( pageX+rect.width > document.documentElement.clientWidth ) {
             pageX = pageX - (pageX+rect.width-document.documentElement.clientWidth);
         }
-        if( pageY+rect.height > document.documentElement.clientHeight ){
+        if( pageY+rect.height > document.documentElement.clientHeight ) {
             pageY = pageY - (pageY+rect.height-document.documentElement.clientHeight);
         }
-        this.dom.style.top = pageY+"px";
-        this.dom.style.left = pageX+"px";
+        this.dom.style.top = pageY + "px";
+        this.dom.style.left = pageX + "px";
     }
 
     public hide(): void {

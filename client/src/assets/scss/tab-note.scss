@@ -12,7 +12,7 @@
         align-items: center;
         height: 100%;
 
-        background: $color-shade-dark;
+        background: $color-shade;
         
 
         &.loading.active {
@@ -38,7 +38,7 @@
             text-align: center;
             border: $color-border dashed 2px;
             padding: $default-padding*3 $default-padding*6;
-            color: $color-dark-grey;
+            color: $default-font-color;
             font-style: italic;
         }
     }
@@ -101,7 +101,7 @@
                 
                     font-size: $default-font-size;
                     font-style: italic;
-                    color: $color-dark-grey;
+                    color: $default-font-color;
                     
                     cursor: default;
                 }

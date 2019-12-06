@@ -39,18 +39,13 @@ export class TabMenuItem {
     public getIcon( color:string ){
         const ns = "http://www.w3.org/2000/svg";
         const colorIcon: SVGElement = document.createElementNS(ns, "svg");
-        colorIcon.setAttribute("width", "15px");
-        colorIcon.setAttribute("height", "15px");
-        /*const rect = document.createElementNS(ns, "rect");
-        rect.classList.add("colorRect");
-        rect.style.fill = color;
-        colorIcon.appendChild(rect);*/
+        colorIcon.setAttribute("viewBox","0 0 21 21");
         const circle = document.createElementNS(ns, "circle");
         circle.classList.add("colorRect");
         circle.style.fill = color;
-        circle.setAttribute("cx","7.5px");
-        circle.setAttribute("cy","7.5px");
-        circle.setAttribute("r","7px");
+        circle.setAttribute("cx","10.5px");
+        circle.setAttribute("cy","10.5px");
+        circle.setAttribute("r","10px");
         colorIcon.appendChild(circle);
         return colorIcon;
     }

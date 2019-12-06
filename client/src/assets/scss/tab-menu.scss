@@ -1,28 +1,38 @@
-.tab.tabMenu { 
-    position : relative; 
-    width : 0px; 
-    min-width : 0px; 
-    height : 100%; 
-    background : $color-primary; 
-    box-shadow : 2px 4px 4px $color-shade-dark; 
-    font-family : $default-font; color : $color-dark-grey; overflow : hidden; 
+.tab.tabMenu {
+  position: relative;
+  width: 0px;
+  min-width: 0px;
+  height: 100%;
+  background: $color-primary;
+  font-family: $default-font;
+  color: $default-font-color;
+  overflow: hidden;
 
-   -webkit-touch-callout : none; -webkit-user-select : none; -khtml-user-select : none; -moz-user-select : none; -ms-user-select : none; user-select : none;
-   -webkit-transition : min-width $default-animation-length, width $default-animation-length; transition : min-width $default-animation-length, width $default-animation-length;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: min-width $default-animation-length, width $default-animation-length;
+  transition: min-width $default-animation-length, width $default-animation-length;
 
-   &.stack {
-    flex : initial; -webkit-flex-direction : row; flex-direction : row; 
-    min-width : $default-menu-width; 
-    &.hide { 
-      width: 0px; min-width: 0px; 
+  &.stack {
+    flex: initial;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    min-width: $default-menu-width;
+    &.hide {
+      width: 0px;
+      min-width: 0px;
     }
 
     &.color {
-      border-left:$color-secondary solid 2px;
-      padding-left:$default-padding/2;
+      border-left: $color-secondary solid 2px;
+      padding-left: $default-padding/2;
     }
     &.color:before {
-      border-left: 4px solid $color-shade-dark;
+      border-left: 4px solid $color-border;
       content: "";
       display: block;
       position: absolute;
@@ -32,54 +42,54 @@
       bottom: 0px;
       pointer-events: none;
     }
-   }
+  }
 
-   .itemContainer {
-     //float : left; 
-     display : flex; 
-     flex-direction : column; 
-     height : 100%; 
-     background-color: inherit;
-    .menuName { 
-      font-size : $font-size-big;
-      padding : $default-padding;
+  .itemContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: inherit;
+
+    .menuName {
+      font-size: $font-size-big;
+      padding: $default-padding;
     }
-   
+
     .itemList {
-      max-height : calc(100% - 108px);
-      overflow-y : auto;
+      max-height: calc(100% - 108px);
+      overflow-y: auto;
       background-color: inherit;
 
-      .item { 
+      .item {
         display: flex;
         flex-direction: row;
         align-items: center;
         background-color: inherit;
-        padding : $default-padding/2 $default-padding $default-padding/2 $default-padding;
-        color : #585858;  
+        padding: $default-padding/2 $default-padding $default-padding/2 $default-padding;
 
-        cursor : pointer;
-        &.active{
-          font-weight: bold;
-          font-style: italic;
+        cursor: pointer;
+        &.active {
+          color: $color-secondary;
+          font-weight: 500;
+          filter: brightness(90%);
         }
         .color {
-          min-width: $default-menu-icon-width/2;
-          min-height: $default-menu-icon-width/2;
+          min-width: $default-menu-icon-size/2;
+          min-height: $default-menu-icon-size/2;
           padding-right: $default-padding;
           svg {
             vertical-align: middle;
             .colorRect {
-              stroke: $color-dark-grey;
-              width: 15px;
-              height: 15px;
+              stroke: $default-font-color;
+              width: $default-menu-icon-size/2;
+              height: $default-menu-icon-size/2;
             }
           }
         }
         .name {
         }
         &:hover {
-          color : darken($color-secondary, 50%);
+          color: darken($color-secondary, 50%);
           filter: brightness(95%);
         }
       }
@@ -88,53 +98,54 @@
     .options {
       display: flex;
       flex-direction: row;
-      width : 100%;
-      font-weight : bold;
-      background-color : inherit;
-      cursor : pointer;
+      width: 100%;
+      font-weight: bold;
+      background-color: inherit;
+      cursor: pointer;
       align-items: center;
-  
-      .icon{
-        float : left;
-        padding : $default-padding;
-        font-size : 20px;
+
+      .icon {
+        float: left;
+        padding: $default-padding;
+        font-size: 20px;
       }
-      .text{
-        float : left;
-  
-        padding-left : $default-padding;
+      .text {
+        float: left;
+        padding-left: $default-padding;
       }
     }
   }
 }
 
-
 @media (min-width: 0px) and (max-width: $default-width-mobile) {
-  .tab.tabMenu { 
-    width:0px;min-width:0px; height:100%;
+  .tab.tabMenu {
+    width: 0px;
+    min-width: 0px;
+    height: 100%;
 
     .itemContainer {
-     .menuName { 
-       font-size : $mobile-font-size-big;
-       padding : $mobile-padding;
-     }
-
+      .menuName {
+        font-size: $mobile-font-size-big;
+        padding: $mobile-padding;
+      }
       .itemList {
+        max-height: 100%;
         .item {
-          padding : $mobile-padding $mobile-padding*2;
+          padding: $mobile-padding $mobile-padding * 2;
         }
       }
     }
   }
 
-  .tabMenu.active { width:100%!important;;}
-  .tabMenu.stack:not(.active) {min-width:0px!important}
+  .tabMenu.active {
+    width: 100% !important;
+  }
+  .tabMenu.stack:not(.active) {
+    min-width: 0px !important;
+  }
 }
 
 @media (max-width: $default-width-tablet) {
-
 }
 @media (max-width: $default-width-desktop) {
-  
 }
-

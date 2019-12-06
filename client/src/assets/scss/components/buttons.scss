@@ -14,17 +14,16 @@
 
 %default-hover-button {
   &:hover {
-    color: $color-dark;
     border-color : darken($color-border, 10%);
-    background : darken($color-shade-light, 20%);
+    background : darken($color-primary, 10%);
   }
 }
 
 %default-disabled-button {
   &:disabled {
-    border-color : lighten($color-border, 10%);
+    border-color : $color-border;
     background : lighten($color-shade-light, 10%);
-    color: $default-font-color-disabled;
+    color: $font-color-disabled;
     box-shadow: none;
 }
 }
@@ -33,7 +32,7 @@
   @extend %default-button;
   
   &.btn-text {
-    padding: $default-padding + 2px;
+    padding: $default-padding;
     @extend %default-hover-button;
     @extend %default-disabled-button;
   }
@@ -41,24 +40,27 @@
   &.btn-contained {
     border: $color-border solid 1px;
     box-shadow: $default-shadow-input;
-    background : $color-shade-light;
-    
+    background : $color-primary;
+    color: $font-color-contrast;
+
     @extend %default-hover-button;
     @extend %default-disabled-button;
   }
 
   &.btn-outlined {
-    border: $color-border solid 2px;
+    border: $color-primary solid 1px;
     padding: $default-padding - 2px;
-    color: $color-dark-grey;
+    color: $default-font-color;
     @extend %default-hover-button;
     @extend %default-disabled-button;
   }
 
   &.btn-float {
     position: absolute;
-    height: 56px;
-    width: 56px;
+    height: 40px;
+    width: 40px;
+    margin: $default-margin;
+    padding: $default-padding*1.5;
     border-radius: 50%;
 
     background: $color-shade-light;
@@ -81,11 +83,11 @@
   width: $header-height;
   height: $header-height;
 
-  border-right: $color-shade-dark solid 1px;
+  border-right: $color-border solid 1px;
   background : inherit;
 
   cursor: pointer;
-  
+
   .icon {
       width: calc(100% - #{$default-padding*2});
       height: calc(100% - #{$default-padding*2});
@@ -136,7 +138,10 @@
       }
 
       &.btn-float {
+        height: 56px;
+        width: 56px;
         margin: $mobile-margin;
+        padding: $mobile-padding*1.2;
       }
   }
 }

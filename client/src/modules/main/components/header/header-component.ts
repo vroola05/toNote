@@ -70,7 +70,7 @@ export default class HeaderComponent  {
         //////////////////////////////////////////////////////////////////
         //
 
-        const btnMenu= new ButtonDropdownComponent(svgMenu, Lang.get("header_icon_menu"), (e:Event, item:any) => {
+        const btnMenu = new ButtonDropdownComponent(svgMenu, Lang.get("header_icon_menu"), (e:Event, item:any) => {
             console.log(item.isOpened);
         });
         this.addAltMenuItem(btnMenu);
