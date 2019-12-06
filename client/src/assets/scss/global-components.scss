@@ -6,14 +6,14 @@
     .listItem {
         padding: $default-padding;
         border-bottom: $color-border solid 1px;
-        background: $color-shade;
+        background: $color-shade-light;
         cursor: pointer;
         &:hover {
             background: lighten($color-shade, 10%);
         }
         &.selected {
-            font-weight: bold;
-            background: lighten($color-shade, 5%);
+            font-weight: $font-weight-bold;
+            background: $color-shade;
             
         }
     }
@@ -102,6 +102,8 @@
     .popupContainer {
         background: #ededed;
         box-shadow: $default-shadow;
+        border-radius: 4px;
+        overflow: hidden;
 
         &.popupInput {
             width: 400px;
@@ -121,10 +123,11 @@
             height: $header-height/2;
             background: $color-primary;
             color: $color-shade;
+            font-weight: $font-weight-bold;
 
             .titleContainer {
                 flex:  auto;
-                padding: $default-padding/2;
+                padding: $default-padding;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
@@ -144,12 +147,9 @@
         }
 
         .popupMoveContainer {
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
             
-            .popupMoveInnerContainer {
-                margin: $default-margin*2 $default-margin $default-margin/2 $default-margin;
-
-                
-            }
         }
 
         .popupErrorContainer {

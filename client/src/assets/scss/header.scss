@@ -29,7 +29,7 @@
                 overflow: hidden;
 
                 font-size: $font-size-big;
-                font-weight: bold;
+                font-weight: $font-weight-bold;
                 color: $color-border;
 
             }
@@ -44,7 +44,7 @@
                 text-overflow: ellipsis;
                 overflow: hidden;
 
-                font-weight: bold;
+                font-weight: $font-weight-bold;
                 color: $default-font-color;
 
             }
