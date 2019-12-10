@@ -175,6 +175,35 @@
 }
 
 @media (min-width: 0px) and (max-width: $default-width-mobile) {
+    .backdrop {
+        opacity: .0;
+    }
+    .popup {
+        .popupContainer {
+            width: 100%;
+            height: calc(100% - #{$header-height});
+            margin-top: $header-height;
+            box-shadow: none;
+            border-radius: 0px;
+            overflow: hidden;
+    
+            &.popupInput {
+                width: 100%;
+            }
+            &.popupConfirm {
+                width: 100%;
+            }
+            &.popupMove {
+                width: 100%;
+            }
+    
+            .popupHeader {
+            }
+        }
+    }
+    
+
+
     .inputContainer {
         width: calc(100% - #{$mobile-margin*2} - 2px);
         margin: $mobile-margin;
