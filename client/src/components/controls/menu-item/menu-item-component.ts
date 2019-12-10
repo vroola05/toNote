@@ -1,14 +1,14 @@
 import { EventEmitter } from 'events';
 
 
-export default class MenuItemComponent  {
+export default class MenuItemComponent {
     public event = new EventEmitter();
 
     public dom:HTMLElement = document.createElement("div");
     
     constructor( icon : any, name: string, click: any = undefined ){
         this.dom.className = "menuItem";
-    
+
         const iconContainer = document.createElement("span");
         iconContainer.className = "iconContainer";
         this.dom.appendChild(iconContainer);
@@ -32,6 +32,10 @@ export default class MenuItemComponent  {
             this.click(this, e);
             this.event.emit("click");
         }
+    }
+
+    public get classList(): DOMTokenList {
+        return this.dom.classList;
     }
 
     public onClick(buttonComponent:MenuItemComponent, e :Event){}

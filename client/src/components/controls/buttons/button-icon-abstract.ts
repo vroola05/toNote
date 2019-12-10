@@ -29,6 +29,10 @@ export default class ButtonIconAbstract  {
         return this.dom.disabled;
     }
 
+    public get classList(): DOMTokenList {
+        return this.dom.classList;
+    }
+
     public click(buttonComponent: ButtonIconAbstract){
         console.error("Method not yet implemented!");
     }

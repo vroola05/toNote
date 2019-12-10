@@ -50,17 +50,21 @@ export class TabMenu extends Tab {
 		this.domItemList = document.createElement("div");
 		this.domItemList.classList.add("itemList");
 		
-		const addMenuItem = new ButtonFloatComponent(svgAdd, (e:any) => {
+		const addMenuItemMobile = new ButtonFloatComponent(svgAdd, (e:any) => {
 			this.clickNewItem(e);
-		})
-		/*new MenuItemComponent(svgAdd, this.labels.get("add"));
-		addMenuItem.click = (menuItem, e) => {
+		});
+		addMenuItemMobile.classList.add("addBtnMobile");
+
+		const addMenuItemDesktop = new MenuItemComponent(svgAdd, this.labels.get("add"));
+		addMenuItemDesktop.click = (menuItem, e) => {
 			this.clickNewItem(e);
-		};*/
+		};
+		addMenuItemDesktop.classList.add("addBtnDesktop");
 
 		this.itemContainer.appendChild(domName);
 		this.itemContainer.appendChild(this.domItemList);
-		this.itemContainer.appendChild(addMenuItem.dom);
+		this.itemContainer.appendChild(addMenuItemDesktop.dom);
+		this.itemContainer.appendChild(addMenuItemMobile.dom);
 
 		this.dropdownMenu.event.on('close', () => {
 			this.dropdownMenu.hide();

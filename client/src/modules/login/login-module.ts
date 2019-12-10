@@ -56,7 +56,7 @@ export default class LoginModule extends IWindow{
         const btnLogin = new ButtonContainedComponent(Lang.get("login_send"), () => {
             this.submit();
         });
-        btnLogin.addClass("loginSubmit");
+        btnLogin.classList.add("loginSubmit");
         loginSubmitContainer.appendChild(btnLogin.dom);
     }
 

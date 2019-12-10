@@ -26,8 +26,8 @@ export default class ButtonAbstract  {
         return this.dom.disabled;
     }
 
-    public addClass(value: string): void {
-        this.dom.classList.add(value);
+    public get classList(): DOMTokenList {
+        return this.dom.classList;
     }
 
     public click(buttonComponent: ButtonAbstract){

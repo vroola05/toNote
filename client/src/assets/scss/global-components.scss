@@ -14,7 +14,6 @@
         &.selected {
             font-weight: $font-weight-bold;
             background: $color-shade;
-            
         }
     }
 }
@@ -25,6 +24,7 @@
     justify-content: center;
     width: 100%;
     cursor: pointer;
+    background: inherit;
     
     .iconContainer {
         width: $default-menu-icon-size;
@@ -37,6 +37,9 @@
     }
     .nameContainer {
         flex: auto;
+    }
+    &:hover {
+        filter: brightness(90%);
     }
 }
 
