@@ -10,7 +10,7 @@
    viewBox="0 0 50 50"
    version="1.1"
    id="svg11"
-   sodipodi:docname="close-mobile.svg"
+   sodipodi:docname="ok.svg"
    inkscape:version="0.92.4 (f8dce91, 2019-08-02)">
   <metadata
      id="metadata15">
@@ -38,8 +38,8 @@
      id="namedview13"
      showgrid="true"
      inkscape:zoom="26.7"
-     inkscape:cx="19.248019"
-     inkscape:cy="27.530857"
+     inkscape:cx="6.8322883"
+     inkscape:cy="24.534603"
      inkscape:window-x="0"
      inkscape:window-y="54"
      inkscape:window-maximized="1"
@@ -92,9 +92,9 @@
      style="display:inline">
     <path
        style="fill:#ebecec;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 25,22 -7,-7 -3,3 7,7 -7,7 3,3 7,-7 7,7 3,-3 -7,-7 7,-7 -3,-3 z"
+       d="M 22,29.438202 18,25 l -3,3 7,7 13,-13 -3,-3 z"
        id="path4511"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccccccccccc" />
+       sodipodi:nodetypes="ccccccc" />
   </g>
 </svg>

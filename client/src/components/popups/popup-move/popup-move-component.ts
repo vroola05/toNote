@@ -7,9 +7,16 @@ import ListComponent from '../../controls/lists/list/list-component';
 export default class PopupMoveComponent extends PopupComponent {
     private popupError: HTMLDivElement;
     private listComponent: ListComponent;
+    private ok: ButtonContainedComponent;
 
     constructor(title: string, value: string) {
         super(title + value, "popupMove");
+
+        this.event.on("ok", (e:any)=>{
+            if(!this.ok.disabled){
+                this.click(e, this.object, this.listComponent.getValue());
+            }
+        });
 
         const popupMoveContainer = document.createElement("div");
         popupMoveContainer.className = "popupMoveContainer";
@@ -19,9 +26,9 @@ export default class PopupMoveComponent extends PopupComponent {
         popupMoveContainer.appendChild(this.listComponent.dom);
         this.listComponent.event.on("onSelected", (object) => {
             if (object) {
-                send.disabled = false;
+                this.ok.disabled = false;
             } else {
-                send.disabled = true;
+                this.ok.disabled = true;
             }
         });
         const popupErrorContainer = document.createElement("div");
@@ -38,13 +45,15 @@ export default class PopupMoveComponent extends PopupComponent {
         const cancel = new ButtonOutlinedComponent(Lang.get("popup_btn_cancel"), ()=>{
             this.hide();
         });
+        cancel.classList.add("btnCancel");
         popupInputBtnContainer.appendChild(cancel.dom);
-        
-        const send = new ButtonContainedComponent(Lang.get("popup_btn_ok"), (e:any)=>{
+
+        this.ok = new ButtonContainedComponent(Lang.get("popup_btn_ok"), (e:any)=>{
             this.click(e, this.object, this.listComponent.getValue());
         });
-        send.disabled = true;
-        popupInputBtnContainer.appendChild(send.dom);
+        this.ok.disabled = true;
+        this.ok.classList.add("btnOk");
+        popupInputBtnContainer.appendChild(this.ok.dom);
         this.append(popupInputBtnContainer);
     }
 

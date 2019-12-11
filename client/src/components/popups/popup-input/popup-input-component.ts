@@ -3,6 +3,7 @@ import InputComponent from '../../controls/input/input-component';
 import Lang from '../../language/lang';
 import ButtonContainedComponent from '../../controls/buttons/button-contained/button-contained-component';
 import ButtonOutlinedComponent from '../../controls/buttons/button-outlined/button-outlined-component';
+import { timingSafeEqual } from 'crypto';
 
 export default class PopupInputComponent extends PopupComponent {
     private input: InputComponent;
@@ -11,7 +12,10 @@ export default class PopupInputComponent extends PopupComponent {
     constructor(title: string, description: string, value: string, submit: any = null) {
         super(title, "popupInput");
 
-
+        this.event.on("ok", (e:any)=>{
+            this.click(e, this.object, this.input.value());
+        });
+        
         const popupInputContainer = document.createElement("div");
         popupInputContainer.className = "popupInputContainer";
 
@@ -37,16 +41,20 @@ export default class PopupInputComponent extends PopupComponent {
 
         const popupInputBtnContainer = document.createElement("div");
         popupInputBtnContainer.className = "popupInputBtnContainer";
+
         const cancel = new ButtonOutlinedComponent(Lang.get("popup_btn_cancel"), ()=>{
             this.hide();
         });
+        cancel.classList.add("btnCancel");
         popupInputBtnContainer.appendChild(cancel.dom);
         
-        const send = new ButtonContainedComponent(Lang.get("popup_btn_ok"), (e:any)=>{
+        const ok = new ButtonContainedComponent(Lang.get("popup_btn_ok"), (e:any)=>{
             this.click(e, this.object, this.input.value());
         });
-        popupInputBtnContainer.appendChild(send.dom);
+        ok.classList.add("btnOk");
+        popupInputBtnContainer.appendChild(ok.dom);
         this.append(popupInputBtnContainer);
+        
     }
 
     public show(): void {

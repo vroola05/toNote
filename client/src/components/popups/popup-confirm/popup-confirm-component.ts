@@ -9,6 +9,10 @@ export default class PopupConfirmComponent extends PopupComponent {
     constructor(title: string, value: string, submit: any = null) {
         super(title, "popupConfirm");
 
+        this.event.on("ok", (e:any)=>{
+            this.click(e, this.object);
+        });
+
         const popupInputContainer = document.createElement("div");
         popupInputContainer.className = "popupInputContainer";
         this.append(popupInputContainer);
@@ -32,12 +36,14 @@ export default class PopupConfirmComponent extends PopupComponent {
         const cancel = new ButtonOutlinedComponent(Lang.get("popup_confirm_btn_no"), ()=>{
             this.hide();
         });
+        cancel.classList.add("btnCancel");
         popupInputBtnContainer.appendChild(cancel.dom);
-        
-        const send = new ButtonContainedComponent(Lang.get("popup_confirm_btn_yes"), (e:any)=>{
+
+        const ok = new ButtonContainedComponent(Lang.get("popup_confirm_btn_yes"), (e:any)=>{
             this.click(e, this.object);
         });
-        popupInputBtnContainer.appendChild(send.dom);
+        ok.classList.add("btnOk");
+        popupInputBtnContainer.appendChild(ok.dom);
         this.append(popupInputBtnContainer);
     }
 

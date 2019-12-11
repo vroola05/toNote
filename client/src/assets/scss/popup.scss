@@ -34,33 +34,36 @@
       background: $color-primary;
       color: $color-shade;
       font-weight: $font-weight-bold;
-      .btnLeftContainer {
-        flex: auto;
-        display: flex;
+      
+      .popupHeaderMobile {
+        display: none;
         flex-direction: row;
-      }
-      .titleContainer {
-        flex: auto;
-        padding: $default-padding;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .btnRightContainer {
-        display: flex;
-        flex-direction: row;
-        flex: auto;
-        .btnIcon {
-          float: right;
+        width: 100%;
+
+        .popupHeaderMobileSpacer {
+          flex: auto;
         }
       }
 
-      .btnBackMobile {
-        display: none;
-      }
+      .popupHeaderDesktop {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
 
-      .btnOkMobile {
-        display: none;
+        .titleContainer {
+          flex: auto;
+          padding: $default-padding;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .btnRightContainer {
+          flex: auto;
+          .btnIcon {
+            float: right;
+          }
+        }
       }
     }
 
@@ -101,6 +104,13 @@
       background: $color-primary;
       overflow: hidden;
 
+      .btnCancel {
+        display: none;
+      }
+      .btnOk {
+        display: none;
+      }
+
       &.popupInput {
         width: 100%;
       }
@@ -116,13 +126,13 @@
       .popupHeader {
         height: $header-height;
 
-        .btnBackMobile {
+        .popupHeaderMobile {
           display: flex;
         }
-
-        .btnOkMobile {
-          display: flex;
+        .popupHeaderDesktop {
+          display: none;
         }
+        
 
         .btnCancelDesktop {
           display: none;

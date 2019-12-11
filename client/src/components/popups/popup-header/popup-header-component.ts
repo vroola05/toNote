@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import svgHome from '../../../assets/images/back.svg';
+import svgOk from '../../../assets/images/ok.svg';
 import svgClose from '../../../assets/images/close.svg';
 import svgCloseMobile from '../../../assets/images/close-mobile.svg';
 import ButtonIconComponent from '../../controls/buttons/button-icon/button-icon-component';
@@ -14,20 +14,31 @@ export default class PopupHeaderComponent  {
 
         const backBtn = new ButtonIconComponent(svgCloseMobile, Lang.get("header_icon_back"), (item:any) => {
             this.event.emit("close");
-        }, "btnBackMobile");
-        const okBtn = new ButtonIconComponent(svgCloseMobile, Lang.get("header_icon_back"), (item:any) => {
-            this.event.emit("ok");
-        }, "btnOkMobile");
+        }, "btnBackHeaderMobile");
 
-        const btnLeftContainer = document.createElement("div");
-        btnLeftContainer.className = "btnLeftContainer";
-        btnLeftContainer.appendChild(backBtn.dom);
+        const okBtn = new ButtonIconComponent(svgOk, Lang.get("header_icon_back"), (item:any) => {
+            this.event.emit("ok");
+        }, "btnOkHeaderMobile");
+
+        const popupHeaderMobileSpacer = document.createElement("div");
+        popupHeaderMobileSpacer.className = "popupHeaderMobileSpacer";
+
+        const popupHeaderMobile = document.createElement("div");
+        popupHeaderMobile.className = "popupHeaderMobile";
+        popupHeaderMobile.appendChild(backBtn.dom);
+        popupHeaderMobile.appendChild(popupHeaderMobileSpacer);
+        popupHeaderMobile.appendChild(okBtn.dom);
         
 
-        this.dom.appendChild(btnLeftContainer);
+        this.dom.appendChild(popupHeaderMobile);
+
+        const popupHeaderDesktop = document.createElement("div");
+        popupHeaderDesktop.className = "popupHeaderDesktop";
+        this.dom.appendChild(popupHeaderDesktop);
+
         const titleContainerDesktop = document.createElement("div");
         titleContainerDesktop.className = "titleContainer";
-        this.dom.appendChild(titleContainerDesktop);
+        popupHeaderDesktop.appendChild(titleContainerDesktop);
         titleContainerDesktop.innerHTML = title;
         const btnRightContainer = document.createElement("div");
         btnRightContainer.className = "btnRightContainer";
@@ -35,7 +46,6 @@ export default class PopupHeaderComponent  {
         const btnClose = new ButtonIconComponent(svgClose, "close", () => { this.event.emit("close"); }, "btnCancelDesktop small");
         
         btnRightContainer.appendChild(btnClose.dom);
-        btnRightContainer.appendChild(okBtn.dom);
-        this.dom.appendChild(btnRightContainer);
+        popupHeaderDesktop.appendChild(btnRightContainer);
     }
 }
