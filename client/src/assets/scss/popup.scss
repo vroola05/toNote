@@ -67,6 +67,12 @@
       }
     }
 
+    .popupInnerContainer {
+      .headerTitleMobile {
+        display: none;
+      }
+    }
+
     .popupInputContainer {
       .popupInputInnerContainer {
         margin: $default-margin * 2 $default-margin $default-margin/2 $default-margin;
@@ -147,6 +153,10 @@
 
         border-radius: $border-radius-big $border-radius-big 0 0;
         box-shadow: $default-shadow;
+
+        .headerTitleMobile {
+          display: block;
+        }
       }
     }
   }

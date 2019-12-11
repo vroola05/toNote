@@ -26,6 +26,11 @@ export default class PopupComponent  {
 
         this.domInnerContainer.className = "popupInnerContainer";
 
+        const headerTitleMobile = document.createElement("h1");
+        headerTitleMobile.classList.add("headerTitleMobile");
+        headerTitleMobile.innerText = title;
+        this.domInnerContainer.appendChild(headerTitleMobile);
+
         this.domContainer.appendChild(this.domInnerContainer);
         this.dom.appendChild(this.domContainer);
         
