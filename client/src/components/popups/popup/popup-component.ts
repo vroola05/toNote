@@ -5,25 +5,33 @@ export default class PopupComponent  {
     private domBackdrop: HTMLElement = document.createElement("div");
     protected dom: HTMLElement = document.createElement("div");
     protected domContainer: HTMLElement = document.createElement("div");
+    protected domInnerContainer: HTMLElement = document.createElement("div");
     private header: PopupHeaderComponent;
     protected _object: any;
 
-    public event = new EventEmitter();
+    public _event = new EventEmitter();
 
     constructor(title:string, className: string) {
         this.domBackdrop.className = "backdrop";
         
         this.dom.className = "popup";
         this.domContainer.className = "popupContainer" + (className?" "+className:"");
-        
-        
-        this.header = new PopupHeaderComponent(title, () => { 
-            this.event.emit("close");
+        this.header = new PopupHeaderComponent(title);
+
+        this.header.event.on("close", () => {
             this.hide();
         });
+
         this.domContainer.appendChild(this.header.dom);
+
+        this.domInnerContainer.className = "popupInnerContainer";
+
+        this.domContainer.appendChild(this.domInnerContainer);
         this.dom.appendChild(this.domContainer);
         
+    }
+    public get event(): EventEmitter{
+        return this.header.event;
     }
 
     public show(): void {
@@ -32,7 +40,7 @@ export default class PopupComponent  {
     }
 
     public append(element: HTMLElement){
-        this.domContainer.appendChild(element);
+        this.domInnerContainer.appendChild(element);
     }
 
     public hide(): void {

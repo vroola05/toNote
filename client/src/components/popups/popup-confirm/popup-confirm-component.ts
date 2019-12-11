@@ -1,6 +1,4 @@
-import { EventEmitter } from 'events';
 import PopupComponent from '../popup/popup-component';
-import InputComponent from '../../controls/input/input-component';
 import Lang from '../../language/lang';
 import ButtonContainedComponent from '../../controls/buttons/button-contained/button-contained-component';
 import ButtonOutlinedComponent from '../../controls/buttons/button-outlined/button-outlined-component';

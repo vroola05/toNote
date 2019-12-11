@@ -1,4 +1,3 @@
-import { EventEmitter } from 'events';
 import PopupComponent from '../popup/popup-component';
 import InputComponent from '../../controls/input/input-component';
 import Lang from '../../language/lang';

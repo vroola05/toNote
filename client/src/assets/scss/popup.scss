@@ -1,0 +1,143 @@
+.popup {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+
+  .popupContainer {
+    background: #ededed;
+    box-shadow: $default-shadow;
+    border-radius: $border-radius-small;
+    overflow: hidden;
+
+    &.popupInput {
+      width: 400px;
+    }
+    &.popupConfirm {
+      width: 400px;
+    }
+    &.popupMove {
+      width: 500px;
+    }
+
+    .popupHeader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: $header-height/2;
+      background: $color-primary;
+      color: $color-shade;
+      font-weight: $font-weight-bold;
+      .btnLeftContainer {
+        flex: auto;
+        display: flex;
+        flex-direction: row;
+      }
+      .titleContainer {
+        flex: auto;
+        padding: $default-padding;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .btnRightContainer {
+        display: flex;
+        flex-direction: row;
+        flex: auto;
+        .btnIcon {
+          float: right;
+        }
+      }
+
+      .btnBackMobile {
+        display: none;
+      }
+
+      .btnOkMobile {
+        display: none;
+      }
+    }
+
+    .popupInputContainer {
+      .popupInputInnerContainer {
+        margin: $default-margin * 2 $default-margin $default-margin/2 $default-margin;
+      }
+    }
+
+    .popupMoveContainer {
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+
+    .popupErrorContainer {
+      margin-left: $default-margin;
+      margin-right: $default-margin;
+      font-style: italic;
+      color: $color-error-msg;
+    }
+    .popupInputBtnContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0px $default-padding $default-padding $default-padding;
+
+      .btn {
+        margin: $default-margin/2;
+      }
+    }
+  }
+}
+
+@media (min-width: 0px) and (max-width: $default-width-mobile) {
+  .popup {
+    .popupContainer {
+      height: 100%;
+      background: $color-primary;
+      overflow: hidden;
+
+      &.popupInput {
+        width: 100%;
+      }
+
+      &.popupConfirm {
+        width: 100%;
+      }
+
+      &.popupMove {
+        width: 100%;
+      }
+
+      .popupHeader {
+        height: $header-height;
+
+        .btnBackMobile {
+          display: flex;
+        }
+
+        .btnOkMobile {
+          display: flex;
+        }
+
+        .btnCancelDesktop {
+          display: none;
+        }
+      }
+
+      .popupInnerContainer {
+        height: 100%;
+        padding: $mobile-padding;
+
+        background: #ededed;
+
+        border-radius: $border-radius-big $border-radius-big 0 0;
+        box-shadow: $default-shadow;
+      }
+    }
+  }
+}
