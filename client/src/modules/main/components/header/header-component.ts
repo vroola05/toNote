@@ -58,12 +58,10 @@ export default class HeaderComponent  {
             open:{icon:svgUnlocked, description: Lang.get("header_icon_unlocked")},
             closed:{icon:svgLocked, description: Lang.get("header_icon_locked")}
         }, (item:ButtonToggleComponent) => {
-            console.log(item.isOpened);
         }));
         
         //
         this.addAltMenuItem(new ButtonDropdownComponent(svgSearch, Lang.get("header_icon_search"), (item:any) => {
-            console.log(item.isOpened);
         }));
 
         //////////////////////////////////////////////////////////////////
@@ -71,7 +69,6 @@ export default class HeaderComponent  {
         //
 
         const btnMenu = new ButtonDropdownComponent(svgMenu, Lang.get("header_icon_menu"), (e:Event, item:any) => {
-            console.log(item.isOpened);
         });
         this.addAltMenuItem(btnMenu);
 

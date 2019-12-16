@@ -1,6 +1,7 @@
 import ButtonIconComponent from "../../../../../../../../components/controls/buttons/button-icon/button-icon-component";
 import svgLeft from '../../../../../../../../assets/images/left.svg';
 import svgRight from '../../../../../../../../assets/images/right.svg';
+import {Resize} from '../../../../../../../../services/resize/resize-service';
 
 export default class ToolbarComponent {
 	public dom: HTMLDivElement;
@@ -9,16 +10,22 @@ export default class ToolbarComponent {
 	private btnLeft: ButtonIconComponent;
 	private btnRight: ButtonIconComponent;
 
+	private toolbarGroupMargin = 15;
 	private toolbarGroups: Array<HTMLSpanElement>;
+	private toolbarPages: Array<Array<HTMLSpanElement>>;
+	private toolbarGroupsWidth: Array<number>;
+	private toolbarScrollIndex: number = 0;
+	private toolbarTimer: any;
+	private toolbarTimeout = 500;
+
 	constructor() {
-		
 		this.dom = document.createElement("div");
 		this.dom.classList.add("toolbar");
 		
 		this.btnLeft = new ButtonIconComponent(svgLeft,null,() => {
-			console.log("klik left");
-			this.scrollTo("left");
+			this.goToToolbarPage("previous");
 		},"small btnToolbar");
+		this.btnLeft.disable = true;
 		this.dom.appendChild(this.btnLeft.dom);
 
 		this.toolbarContainer = document.createElement("div");
@@ -28,61 +35,109 @@ export default class ToolbarComponent {
 
 		this.btnRight = new ButtonIconComponent(svgRight,null,
 		() => {
-			console.log("klik right");
-			this.scrollTo("right");
+			this.goToToolbarPage("next");
 		},"small btnToolbar");
+		this.btnRight.disable = true;
 		this.dom.appendChild(this.btnRight.dom);
 
 		this.createToolbar();		
 		
-		this.onResize();
-		this.setToolbarScrollBtns();
+		this.calculateToolbarPages();
 		
+		Resize.set("toolbar", ()=> {
+			clearTimeout(this.toolbarTimer);
+			this.calculateToolbarPages();
+		});
 	}
 
-	private isOverflown(element:HTMLDivElement) {
-		return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
-	}
+	public calculateToolbarPages() {
+		this.toolbarTimer = setTimeout(() => {
+		if (this.toolbarGroupsWidth) {
+			let width = this.toolbarContainer.getBoundingClientRect().width;
+			if (width === 0) {
+				return;
+			}
 
-	public setToolbarScrollBtns() {
-		if (this.isOverflown(this.toolbarContainer)) {
-			this.btnLeft.show();
-			this.btnRight.show();
-		} else {
-			this.btnLeft.hide();
-			this.btnRight.hide();
+			this.toolbarScrollIndex = 0;
+
+			this.toolbarPages = [];
+			let pageWidth = 0;
+			let pageIndex = 0;
+			this.toolbarPages[pageIndex] = new Array();
+
+			for (let i=0; i<this.toolbarGroupsWidth.length; i++) {
+				if (pageWidth + this.toolbarGroupsWidth[i] < width) {
+					pageWidth += this.toolbarGroupsWidth[i]
+				} else {
+					pageWidth = 0;
+					pageIndex++;
+					this.toolbarPages[pageIndex] = new Array();
+
+				}
+				this.toolbarPages[pageIndex].push(this.toolbarGroups[i]);
+			}
+			this.setPagesState();
 		}
-		this.setScrollButtonState();
+	}, this.toolbarTimeout );
 	}
 
-	private setScrollButtonState() {
-		if(this.scrolledEdgeLeft()){
+	private setPagesState() {
+		for (let i=0; i<this.toolbarPages.length; i++) {
+			if (i===this.toolbarScrollIndex) {
+				this.showToolbarPage(i);
+			} else {
+				this.hideToolbarPage(i);
+			}
+		}
+		this.setPagesBtnState();
+	}
+
+	private setPagesBtnState() {
+		if (this.toolbarScrollIndex <= 0) {
 			this.btnLeft.disable = true;
 		} else {
 			this.btnLeft.disable = false;
 		}
-		if(this.scrolledEdgeRight()){
+		if (this.toolbarScrollIndex >= this.toolbarPages.length-1) {
 			this.btnRight.disable = true;
-		} else { 
+		} else {
 			this.btnRight.disable = false;
 		}
 	}
 
-	private onResize() {
-		window.addEventListener('resize', ()=>{
-			this.setToolbarScrollBtns();
-		});
+	private hideToolbarPage(index: number) {
+		const pages = this.toolbarPages[index];
+		for (let page of pages) {
+			page.classList.add("hidden");
+		}
 	}
 
-	private scrolledEdgeLeft() {
-		return this.toolbarContainer.scrollLeft <= 0;
-	}
-	private scrolledEdgeRight() {
-		return this.toolbarContainer.clientWidth -(this.toolbarContainer.scrollWidth-this.toolbarContainer.scrollLeft) >=0;
+	private showToolbarPage(index: number) {
+		const pages = this.toolbarPages[index];
+		for (let page of pages) {
+			page.classList.remove("hidden");
+		}
 	}
 
-	private scrollTo(direction:string) {
+	private goToToolbarPage(direction:string) {
 		
+		if (direction==="previous") {
+			if (this.toolbarScrollIndex > 0 ) {
+				this.toolbarScrollIndex--;
+			}
+		} else {
+			if ( this.toolbarScrollIndex < this.toolbarPages.length-1 ) {
+				this.toolbarScrollIndex++;
+			}
+		}
+		this.setPagesState();
+	}
+
+	public setToolbarGroupsWidth() {
+		this.toolbarGroupsWidth = new Array<number>();
+		for(let i=0; i<this.toolbarGroups.length; i++) {
+			this.toolbarGroupsWidth.push(this.toolbarGroups[i].getBoundingClientRect().width+this.toolbarGroupMargin);
+		}
 	}
 
 	private createToolbar() {

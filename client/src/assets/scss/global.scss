@@ -7,6 +7,8 @@ $default-animation-length: 0.3s;
 
 $color-error-msg: #ff0000;
 
+$color-white: #fff;
+
 $color-light: #a7cedc;// #9ff9ff;
 $color-primary: #6ac6e6;
 $color-dark: #2f95b4;
@@ -23,20 +25,7 @@ $default-shadow-input: #d5d5d5 0px 0px 4px 0px;
 $default-shadow: #2e2e2e 0px 0px 6px 0px;
 $default-shadow-vague: #2e2e2e 0px 0px 16px 0px;
 
-/****************************
-    FONTS
-****************************/
-$default-font: Arial;
 
-$default-font-color: #000000;
-$font-color-contrast: #ffffff;
-$font-color-disabled: #8b8b8b;
-
-$default-font-size: 13px;
-$font-size-big: 18px;
-
-$default-font-weight: 300;
-$font-weight-bold: 500;
 
 /****************************
     Sizes margins and paddings
@@ -71,16 +60,6 @@ body {
   color: $default-font-color;
 }
 
-h1 {
-}
-h2 {
-}
-h3 {
-}
-
 $mobile-margin: 16px;
 $mobile-padding: 16px;
-
-$mobile-font-size: 16px;
-$mobile-font-size-big: 24px;
 

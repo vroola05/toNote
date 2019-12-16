@@ -30,14 +30,6 @@ export default class NoteContentComponent {
     constructor() {
         this.dom = document.createElement('div');
         this.dom.className = "noteContent loaded inactive";
-        this.dom.addEventListener("animationend", (a) => {
-            this.dom.classList.remove("loading");
-            this.dom.classList.add("loaded");
-
-            if(this.onanimationend !== undefined){
-                this.onanimationend();
-            }
-        });
 
         this.toolbar = new ToolbarComponent();
         this.dom.appendChild(this.toolbar.dom);
@@ -86,7 +78,17 @@ export default class NoteContentComponent {
                 }, ConfigService.get().content.delay);
             }
         });
-        
+
+        this.dom.addEventListener("animationend", (a) => {
+            this.dom.classList.remove("loading");
+            this.dom.classList.add("loaded");
+            
+            if(this.onanimationend !== undefined) {
+                this.onanimationend();
+                this.toolbar.setToolbarGroupsWidth();
+            }
+        });
+   
     }
 
     public setNote(note: Note) : void {
@@ -152,7 +154,7 @@ export default class NoteContentComponent {
     public show(onanimationend: any = undefined) : void {
         if( this.hidden ){
             this.onanimationend = (e:any)=>{
-                this.toolbar.setToolbarScrollBtns();
+                this.toolbar.calculateToolbarPages();
                 if(onanimationend){
                     onanimationend(e);
                 }

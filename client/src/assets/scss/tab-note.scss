@@ -49,7 +49,7 @@
         flex-direction: column;
         align-items: stretch;
         height: 100%;
-    
+        background: $color-white;
         &.loading.active {
             animation-name: show;
             animation-duration: $default-animation-length/2;
@@ -73,13 +73,20 @@
             width: 100%;
             display: flex;
             flex-direction: row;
+
+            background: inherit;
+
             &.ql-toolbar.ql-snow {
                 border: none;
             }
             .toolbarContainer {
                 white-space: nowrap;
-                overflow: hidden;
-                
+                flex: auto;
+                .ql-formats {
+                    &.hidden {
+                        display: none;
+                    }
+                }
             }
         }
 

@@ -7,7 +7,6 @@ export default class ConfigService {
 
     constructor(callback: Function | undefined = undefined ) {
         ConfigService.readConfig().then((value: ApplicationConfig) => {
-            console.log(value);
             ConfigService.config = value;
             ConfigService.readLanguage().then((lang: any) => {
                 Lang.setMap(lang);
@@ -38,7 +37,6 @@ export default class ConfigService {
     }
 
     public static readConfig() {
-        console.log("lala");
         return fetch('config/appconfig.json').then((response) => {
 
             if (response.status === 200) {

@@ -1,0 +1,36 @@
+/****************************
+    FONTS
+****************************/
+$default-font: Arial;
+
+$default-font-color: #000000;
+$font-color-contrast: #ffffff;
+$font-color-disabled: #8b8b8b;
+
+$default-font-size: 13px;
+$font-size-big: 18px;
+
+$default-font-weight: 300;
+$font-weight-bold: 500;
+
+h1 {
+    font-size: 96px;
+}
+h2 {
+    font-size: 60px;
+}
+h3 {
+    font-size: 48px;
+}
+h4 {
+    font-size: 34px;
+}
+h5 {
+    font-size: 24px;
+}
+h6 {
+    font-size: 20px;
+}
+$mobile-font-size: 16px;
+$mobile-font-size-big: 24px;
+
