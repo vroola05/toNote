@@ -87,6 +87,16 @@
             .toolbarContainer {
                 white-space: nowrap;
                 flex: auto;
+                overflow: hidden;
+                opacity: 0;
+
+                -webkit-transition: opacity $default-animation-length;
+                transition: opacity $default-animation-length;
+
+                &.active {
+                    overflow: unset;
+                    opacity: 1;
+                }
                 .ql-formats {
                     &.hidden {
                         display: none;

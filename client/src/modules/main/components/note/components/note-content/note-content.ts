@@ -85,11 +85,11 @@ export default class NoteContentComponent {
             
             if(this.onanimationend !== undefined) {
                 this.onanimationend();
-                this.toolbar.setToolbarGroupsWidth();
-                this.toolbar.calculateToolbarPages();
             }
+
+            this.toolbar.setToolbarGroupsWidth();
+            this.toolbar.calculateToolbarPages();
         });
-   
     }
 
     public setNote(note: Note) : void {
@@ -106,6 +106,7 @@ export default class NoteContentComponent {
         this.setTitle("");
         this.setDateCreated(null);
         this.setDateModified(null);
+        this.toolbar.clear();
     }
 
     private setTitle( title: string ) : void {

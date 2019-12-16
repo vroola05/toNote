@@ -88,6 +88,7 @@ export default class ToolbarComponent {
 			}
 		}
 		this.setPagesBtnState();
+		this.toolbarContainer.classList.add("active");
 	}
 
 	private setPagesBtnState() {
@@ -101,6 +102,13 @@ export default class ToolbarComponent {
 		} else {
 			this.btnRight.disable = false;
 		}
+	}
+
+	public clear() {
+		for (let group of this.toolbarGroups) {
+			group.classList.remove("hidden");
+		}
+		this.toolbarContainer.classList.remove("active");
 	}
 
 	private hideToolbarPage(index: number) {
