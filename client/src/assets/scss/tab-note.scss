@@ -78,7 +78,12 @@
 
             &.ql-toolbar.ql-snow {
                 border: none;
+
+                .ql-picker.ql-expanded .ql-picker-options {
+                    right: 0;
+                }
             }
+
             .toolbarContainer {
                 white-space: nowrap;
                 flex: auto;
@@ -126,12 +131,45 @@
 }
 
 @media (min-width: 0px) and (max-width: $default-width-mobile) {
-    .tab.tabNote { 
+    .tab.tabNote {
         display: none; 
         height: calc(100% - 10px); 
-        min-width: 100vw; /* 100vw is a trick for the animation so te text won't grow with the with */ 
-        padding:0px; }
-    .tabNote.stack.active { display: block; }
+        min-width: calc(100vw - 16px); /* 100vw is a trick for the animation so te text won't grow with the with */ 
+        padding:0px;
+
+        &.stack.active {
+            display: block;
+        }
+
+        .noteContent {
+            .toolbar {
+                &.ql-toolbar.ql-snow {
+    
+                    .ql-picker.ql-expanded .ql-picker-options {
+                        position: fixed;
+                        left: 0;
+                        top: 90px;
+                        min-width: unset;
+                        width: calc(100% - #{$mobile-margin*2});
+                        margin: $mobile-margin;
+                    }
+                    
+                }
+                .ql-color-picker {
+                    display: flex;
+                    flex-flow: wrap;
+                    align-items: center;
+                    justify-content: center;
+                    .ql-picker-item {
+                        width: 32px;
+                        height: 32px;
+                        margin: $default-margin/2;
+                    }
+                }
+            }
+            
+        }
+    }
 
     .datebar {
         &.created {
