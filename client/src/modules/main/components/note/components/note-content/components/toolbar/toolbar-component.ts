@@ -43,7 +43,7 @@ export default class ToolbarComponent {
 		this.createToolbar();		
 		
 		this.calculateToolbarPages();
-		
+
 		Resize.set("toolbar", ()=> {
 			clearTimeout(this.toolbarTimer);
 			this.calculateToolbarPages();
@@ -58,24 +58,22 @@ export default class ToolbarComponent {
 				return;
 			}
 
-			this.toolbarScrollIndex = 0;
-
 			this.toolbarPages = [];
 			let pageWidth = 0;
 			let pageIndex = 0;
 			this.toolbarPages[pageIndex] = new Array();
 
 			for (let i=0; i<this.toolbarGroupsWidth.length; i++) {
-				if (pageWidth + this.toolbarGroupsWidth[i] < width) {
-					pageWidth += this.toolbarGroupsWidth[i]
-				} else {
-					pageWidth = 0;
+				pageWidth += this.toolbarGroupsWidth[i];
+				
+				if (pageWidth > width) {
+					pageWidth = this.toolbarGroupsWidth[i];
 					pageIndex++;
 					this.toolbarPages[pageIndex] = new Array();
-
 				}
 				this.toolbarPages[pageIndex].push(this.toolbarGroups[i]);
 			}
+			this.toolbarScrollIndex = (this.toolbarScrollIndex<this.toolbarPages.length-1)?this.toolbarScrollIndex:this.toolbarPages.length-1;
 			this.setPagesState();
 		}
 	}, this.toolbarTimeout );

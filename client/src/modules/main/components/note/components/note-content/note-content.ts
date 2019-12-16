@@ -86,6 +86,7 @@ export default class NoteContentComponent {
             if(this.onanimationend !== undefined) {
                 this.onanimationend();
                 this.toolbar.setToolbarGroupsWidth();
+                this.toolbar.calculateToolbarPages();
             }
         });
    
@@ -154,7 +155,6 @@ export default class NoteContentComponent {
     public show(onanimationend: any = undefined) : void {
         if( this.hidden ){
             this.onanimationend = (e:any)=>{
-                this.toolbar.calculateToolbarPages();
                 if(onanimationend){
                     onanimationend(e);
                 }
