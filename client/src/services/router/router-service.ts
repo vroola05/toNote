@@ -27,6 +27,7 @@ export class Router{
      * Does the same as the back button
      */
     public static back(){
+        console.log("back");
         if(window.history.length>0){
             window.history.back();
             
