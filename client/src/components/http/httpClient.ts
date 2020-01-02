@@ -6,29 +6,29 @@ import { Router } from '../../services/router/router-service';
 import Lang from '../language/lang';
 
 export default class HttpClient{
-    private  auth : AuthenticationService = new AuthenticationService();
-    private apiUrl: string;
+    private static apiUrl: string;
+
     constructor(){
-        this.apiUrl = ConfigService.get().api.url;
+        HttpClient.apiUrl = ConfigService.get().api.url;
     }
 
-    public get<T, D>(endpoint: string, body: D = null) : Promise<T> {
-        return this.doRequest('GET', endpoint, null)
+    public static get<T, D>(endpoint: string, body: D = null) : Promise<T> {
+        return HttpClient.doRequest('GET', endpoint, null)
     }
 
-    public post<T, D>(endpoint: string, body: D) : Promise<T> {
-        return this.doRequest('POST', endpoint, body)
+    public static post<T, D>(endpoint: string, body: D) : Promise<T> {
+        return HttpClient.doRequest('POST', endpoint, body)
     }
 
-    public put<T, D>(endpoint: string, body: D) : Promise<T> {
-        return this.doRequest('PUT', endpoint, body)
+    public static put<T, D>(endpoint: string, body: D) : Promise<T> {
+        return HttpClient.doRequest('PUT', endpoint, body)
     }
 
-    public delete<T, D>(endpoint: string, body: D = null) : Promise<T> {
-        return this.doRequest('DELETE', endpoint, body)
+    public static delete<T, D>(endpoint: string, body: D = null) : Promise<T> {
+        return HttpClient.doRequest('DELETE', endpoint, body)
     }
 
-    private doRequest<T, D>(method: Method, endpoint: string, data: D) : Promise<T>{
+    private static doRequest<T, D>(method: Method, endpoint: string, data: D) : Promise<T>{
         let requestOptions: RequestInit = {
             method,
             body: data ? JSON.stringify(data) : null
@@ -39,7 +39,7 @@ export default class HttpClient{
         
         requestOptions.headers=headers;
 
-        const apikey = this.auth.getApikey();
+        const apikey = AuthenticationService.getApikey();
         if(apikey !== null){
             headers.append("apikey", apikey);
         }

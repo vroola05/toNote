@@ -7,14 +7,14 @@ export class LoginService extends HttpClient{
     }
 
     public login(user : User) : Promise<Message>{
-        return this.post("login", user);
+        return LoginService.post("login", user);
     }
 
     public logout() : Promise<Message>{
-        return this.get("logout");
+        return LoginService.get("logout");
     }
 
     public check() : Promise<Message>{
-        return this.get("login");
+        return LoginService.get("login");
     }
 }

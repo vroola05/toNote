@@ -6,19 +6,19 @@ export class NotebookService extends HttpClient{
         super();
     }
 
-    public getNotebooks() : Promise<Array<Notebook>>{
-        return this.get("notebooks");
+    public static getNotebooks() : Promise<Array<Notebook>>{
+        return NotebookService.get("notebooks");
     }
 
-    public putNotebook(id:number, notebook:Notebook) : Promise<Message>{
-        return this.put("notebooks/" + id, notebook);
+    public static putNotebook(id:number, notebook:Notebook) : Promise<Message>{
+        return NotebookService.put("notebooks/" + id, notebook);
     }
 
-    public postNotebook(notebook:Notebook) : Promise<Message>{
-        return this.post("notebooks", notebook);
+    public static postNotebook(notebook:Notebook) : Promise<Message>{
+        return NotebookService.post("notebooks", notebook);
     }
 
-    public deleteNotebook(id:number) : Promise<Message>{
-        return this.delete("notebooks/" + id);
+    public static deleteNotebook(id:number) : Promise<Message>{
+        return NotebookService.delete("notebooks/" + id);
     }
 }

@@ -20,7 +20,6 @@ export default class OverlayComponent {
         this.dom.addEventListener("animationend", (a) => {
             this.dom.classList.remove("loading");
             this.dom.classList.add("loaded");
-
             if(this.onanimationend !== undefined){
                 this.onanimationend();
             }

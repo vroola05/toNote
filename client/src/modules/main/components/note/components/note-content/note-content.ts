@@ -11,7 +11,7 @@ import { Note } from 'types';
 
 export default class NoteContentComponent {
     public dom: HTMLDivElement;
-    
+
     private titlebarComponent = new TitlebarComponent
     private dateCreated: DatebarComponent;
     private dateModified: DatebarComponent;
@@ -115,7 +115,7 @@ export default class NoteContentComponent {
 
     public setDateCreated( date: Date ) : void {
         if (!date) {
-            this.dateCreated.value("");    
+            this.dateCreated.value("");
         } else {
             this.dateCreated.value(Lang.get("main_note_header_created") +": "+ DateFormat.get(date));
         }
@@ -123,7 +123,7 @@ export default class NoteContentComponent {
 
     public setDateModified( date: Date ) : void {
         if (!date) {
-            this.dateCreated.value("");    
+            this.dateCreated.value("");
         } else {
             this.dateModified.value(Lang.get("main_note_header_modified") +": "+ DateFormat.get(date));
         }

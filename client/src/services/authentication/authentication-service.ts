@@ -5,15 +5,15 @@ export class AuthenticationService{
     }
 
     
-    public clear() : void{
+    public static clear() : void{
         localStorage.clear();
     }
 
-    public getApikey() : string{
+    public static getApikey() : string{
         return localStorage.getItem("apikey");
     }
 
-    public setApikey(apikey: string)  {
+    public static setApikey(apikey: string)  {
         localStorage.setItem("apikey", apikey);
     }
 }

@@ -21,7 +21,6 @@ import PopupMoveComponent from '../../../../components/popups/popup-move/popup-m
 
 export default class ChaptersComponent extends TabMenu {
     private notebookId : number;
-    private chapterService: ChapterService;
 
     constructor(){
         let labels = new Map<string,string>([
@@ -30,8 +29,6 @@ export default class ChaptersComponent extends TabMenu {
         ]);
 
         super(labels, "chapter", TabMenu.COLOR_TYPE_ITEM_COLOR);
-
-        this.chapterService = new ChapterService();
 
         this.bindRenamePopup();
         this.bindMovePopup();
@@ -72,7 +69,7 @@ export default class ChaptersComponent extends TabMenu {
         this.clear();
         this.notebookId = mainState.notebook.id;
 
-        return this.chapterService.getChapters(mainState.notebook.id).then((chapters:Array<Chapter>) => {
+        return ChapterService.getChapters(mainState.notebook.id).then((chapters:Array<Chapter>) => {
             if(chapters !== null ){
                 for(let i in chapters){
                     this.addItem(chapters[i].id, chapters[i].name, chapters[i], chapters[i].color);
@@ -104,7 +101,7 @@ export default class ChaptersComponent extends TabMenu {
                 }
                 object.object.name = value;
 
-                this.chapterService.putChapter(object.object.notebookId, object.object.id, object.object).then((message:Message) => {
+                ChapterService.putChapter(object.object.notebookId, object.object.id, object.object).then((message:Message) => {
                     if(message.status === 200){
                         object.setName(value);
                         object.object.name = value;
@@ -131,15 +128,15 @@ export default class ChaptersComponent extends TabMenu {
         this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get("ctx_move"), (e:any) => {
             const movePopup = new PopupMoveComponent(Lang.get("popup_move_title"), Lang.get("chapters_name") + " - " + this.dropdownMenu.object.name);
             movePopup.object = this.dropdownMenu.object;
-            
-            this.chapterService.getMoveChapterList(this.notebookId, this.dropdownMenu.object.identifier).then((notebooks:Array<Notebook>) => {
-                
+
+            ChapterService.getMoveChapterList(this.notebookId, this.dropdownMenu.object.identifier).then((notebooks:Array<Notebook>) => {
+
                 for(let i in notebooks){
                     movePopup.add(notebooks[i].name, notebooks[i]);
                 }
                 movePopup.click = (e, object, value) => {
-                    
-                    this.chapterService.moveChapter(object.object.notebookId, object.object.id, value.id).then((message: Message) => {
+
+                    ChapterService.moveChapter(object.object.notebookId, object.object.id, value.id).then((message: Message) => {
                         if(message.status === 200){
                             this.removeItem(object);
                             movePopup.hide();
@@ -173,7 +170,7 @@ export default class ChaptersComponent extends TabMenu {
             deletePopup.object = this.dropdownMenu.object;
 
             deletePopup.click = (e, object) => {
-                this.chapterService.deleteChapter(object.object.notebookId, object.object.id).then((message:Message) => {
+                ChapterService.deleteChapter(object.object.notebookId, object.object.id).then((message:Message) => {
                     if(message.status === 200){
                         this.removeItem(object);
                         deletePopup.hide();
@@ -208,7 +205,7 @@ export default class ChaptersComponent extends TabMenu {
             chapter.name = value;
             chapter.notebookId = this.notebookId;
 
-            this.chapterService.postChapter(this.notebookId, chapter).then((message:Message) => {
+            ChapterService.postChapter(this.notebookId, chapter).then((message:Message) => {
                 if(message.status === 200){
                     for(let i=0; i<message.info.length; i++){
                         if(message.info[i].id === "id"){
@@ -228,13 +225,10 @@ export default class ChaptersComponent extends TabMenu {
                         newPopup.setError(error);
                     }
                 }
-                
-                
             }).catch((e)=>{
 
             });
         };
         newPopup.show();
-    
     }
 }

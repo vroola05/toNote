@@ -59,12 +59,15 @@ class ChapterResource {
 
             $connection = Database::getInstance();
             $connection->dbConnect();
+
+            $datetime = new \DateTime();
             
-            $now = (new \DateTime())->format("Y-m-d H:i:s");
+            $datetime->format(\DateTime::W3C);
+            $now = $datetime->format("Y-m-d H:i:s");
 
             if($connection->dbPreparedStatement("update chapters set notebookId = ?, modifyDate=? where userid = ? and notebookId = ? and id = ?", array($parameters[2], $now, Security::getUserId(), $parameters[0], $parameters[1]))) {
                 $message = new \Core\Message(200, Lang::get("chapter_put_saved"));
-                $message->addExtraInfo("modifyDate", $now);
+                $message->addExtraInfo("modifyDate", $datetime->format(\DateTime::W3C));
                 return $message;
             }
         }
@@ -80,7 +83,12 @@ class ChapterResource {
             $input->setName($chapter->name);
             $input->setColor($chapter->color);
             $input->setCreationDate(Formatter::w3cToSqlDate($chapter->creationDate));
-            $now = (new \DateTime())->format("Y-m-d H:i:s");
+            
+            $datetime = new \DateTime();
+            
+            $datetime->format(\DateTime::W3C);
+            $now = $datetime->format("Y-m-d H:i:s");
+            
             $input->setModifyDate($now);
             $input->setHash('');
             
@@ -88,7 +96,7 @@ class ChapterResource {
             $connection->dbConnect();
             if($input->put($connection)){
                 $message = new \Core\Message(200, Lang::get("chapter_put_saved"));
-                $message->addExtraInfo("modifyDate", $now);
+                $message->addExtraInfo("modifyDate", $datetime->format(\DateTime::W3C));
                 return $message;
             }
         }

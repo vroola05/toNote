@@ -32,8 +32,18 @@ class NotesResource {
             $connection = Database::getInstance();
             $connection->dbConnect();
 
-            return $connection->getSingleItem(new Note(), "select * from notes where userId = ? and sectionId = ? and id = ?", 
+            $note = $connection->getSingleItem(new Note(), "select id, name, sectionId, modifyDate, creationDate, hash from notes where userId = ? and sectionId = ? and id = ?", 
             array(Security::getUserId(), $parameters[1], $parameters[2]));
+
+            if($note->getCreationDate()!=null && $note->getCreationDate()!="") {
+                $note->setCreationDate((new \DateTime($note->getCreationDate()))->format(\DateTime::W3C));
+            }
+
+            if($note->getModifyDate()!=null && $note->getModifyDate()!="") {
+                $note->setModifyDate((new \DateTime($note->getModifyDate()))->format(\DateTime::W3C));
+            }
+
+            return $note;
         }
     }
 
@@ -66,12 +76,13 @@ class NotesResource {
 
             $connection = Database::getInstance();
             $connection->dbConnect();
-            
-            $now = (new \DateTime())->format("Y-m-d H:i:s");
+
+            $datetime = new \DateTime();
+            $now = $datetime->format("Y-m-d H:i:s");
 
             if($connection->dbPreparedStatement("update notes set sectionId = ?, modifyDate=? where userid = ? and sectionId = ? and id = ?", array($parameters[3], $now, Security::getUserId(), $parameters[1], $parameters[2]))) {
                 $message = new \Core\Message(200, Lang::get("note_put_saved"));
-                $message->addExtraInfo("modifyDate", $now);
+                $message->addExtraInfo("modifyDate", $datetime->format(\DateTime::W3C));
                 return $message;
             }
         }
@@ -84,11 +95,12 @@ class NotesResource {
             $connection = Database::getInstance();
             $connection->dbConnect();
             
-            $now = (new \DateTime())->format("Y-m-d H:i:s");
+            $datetime = new \DateTime();
+            $now = $datetime->format("Y-m-d H:i:s");
 
             if($connection->dbPreparedStatement("update notes set note = ?, modifyDate=? where userid = ? and sectionId = ? and id = ?", array(\json_encode($content), $now, Security::getUserId(), $parameters[1], $parameters[2]))) {
                 $message = new \Core\Message(200, Lang::get("note_put_saved"));
-                $message->addExtraInfo("modifyDate", $now);
+                $message->addExtraInfo("modifyDate", $datetime->format(\DateTime::W3C));
                 return $message;
             }
         }
@@ -103,7 +115,10 @@ class NotesResource {
             $input->setUserId(Security::getUserId());
             $input->setName($note->name);
             $input->setCreationDate(Formatter::w3cToSqlDate($note->creationDate));
-            $now = (new \DateTime())->format("Y-m-d H:i:s");
+
+            $datetime = new \DateTime();
+
+            $now = $datetime->format("Y-m-d H:i:s");
             $input->setModifyDate($now);
             $input->setHash('');
             
@@ -111,7 +126,7 @@ class NotesResource {
             $connection->dbConnect();
             if($input->put($connection)){
                 $message = new \Core\Message(200, Lang::get("note_put_saved"));
-                $message->addExtraInfo("modifyDate", $now);
+                $message->addExtraInfo("modifyDate", $datetime->format(\DateTime::W3C));
                 return $message;
             }
         }

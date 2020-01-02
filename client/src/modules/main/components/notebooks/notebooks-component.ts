@@ -35,7 +35,7 @@ export default class NotebooksComponent extends TabMenu {
     }
 
     public getItems(mainState: MainState=null) : Promise<any>{
-        const notebookService = new NotebookService();
+        
         if(this.hasItems()){
             return new Promise((resolve, reject) => {
                 if(mainState!=null && mainState.notebook!==undefined){
@@ -45,7 +45,7 @@ export default class NotebooksComponent extends TabMenu {
                 
             });
         }
-        return notebookService.getNotebooks().then((notebooks:Array<Notebook>) => {
+        return NotebookService.getNotebooks().then((notebooks:Array<Notebook>) => {
             this.clear();
             if(notebooks !== null ){
                 for(let i in notebooks){
@@ -79,8 +79,7 @@ export default class NotebooksComponent extends TabMenu {
                 }
                 object.object.name = value;
 
-                const notebookService = new NotebookService();
-                notebookService.putNotebook(object.identifier, object.object).then((message:Message) => {
+                NotebookService.putNotebook(object.identifier, object.object).then((message:Message) => {
                     if(message.status === 200){
                         object.setName(value);
                         object.object.name = value;
@@ -115,8 +114,7 @@ export default class NotebooksComponent extends TabMenu {
             deletePopup.object = this.dropdownMenu.object;
 
             deletePopup.click = (e, object) => {
-                const notebookService = new NotebookService();
-                notebookService.deleteNotebook(object.identifier).then((message:Message) => {
+                NotebookService.deleteNotebook(object.identifier).then((message:Message) => {
                     if(message.status === 200){
                         this.removeItem(object);                        
                         deletePopup.hide();
@@ -152,8 +150,7 @@ export default class NotebooksComponent extends TabMenu {
             const notebook = new Notebook();
             notebook.name = value;
 
-            const notebookService = new NotebookService();
-            notebookService.postNotebook(notebook).then((message:Message) => {
+            NotebookService.postNotebook(notebook).then((message:Message) => {
                 if(message.status === 200){
                     for(let i=0; i<message.info.length; i++){
                         if(message.info[i].id === "id"){

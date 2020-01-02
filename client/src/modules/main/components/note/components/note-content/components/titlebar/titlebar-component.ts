@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import ConfigService from '../../../../../../../../services/config/configService';
 
 export default class TitlebarComponent {
     public dom: HTMLDivElement = document.createElement('div');
@@ -12,7 +13,7 @@ export default class TitlebarComponent {
             clearTimeout(this.timeout);
             this.timeout = setTimeout(() => {
                 this.event.emit("change", this.value());
-            }, 400);
+            }, ConfigService.get().content.delay);
             
         });
     }

@@ -75,6 +75,8 @@
         .color {
           min-width: $default-menu-icon-size/2;
           min-height: $default-menu-icon-size/2;
+          width: $default-menu-icon-size/2;
+          height: $default-menu-icon-size/2;
           padding-right: $default-padding;
           svg {
             vertical-align: middle;

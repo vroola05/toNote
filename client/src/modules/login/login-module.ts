@@ -74,16 +74,14 @@ export default class LoginModule extends IWindow{
             return;
         }
 
-        let  auth : AuthenticationService = new AuthenticationService();
-        auth.clear();
-        
+        AuthenticationService.clear();
+
         const loginService : LoginService = new LoginService();
         loginService.login(user).then((message:Message) => {
             if( message.info ) {
                 message.info.forEach( (info:Info) => {
                     if(info.id==="apikey" && info.value!==undefined && info.value != ""){
-                        const auth : AuthenticationService = new AuthenticationService();
-                        auth.setApikey(info.value);
+                        AuthenticationService.setApikey(info.value);
 
                         Router.set({ key : "main", value : null}, Lang.get("state_title_notebooks"),"main");
                         this.hide();
@@ -92,8 +90,6 @@ export default class LoginModule extends IWindow{
             } else {
                 this.setError(message.message);
             }
-            
-            
         },
         () => {
             

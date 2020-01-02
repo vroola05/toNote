@@ -16,7 +16,7 @@ import PopupMoveComponent from '../../../../components/popups/popup-move/popup-m
 export default class NotesComponent extends TabMenu {
     private notebookId : number;
     private chapterId : number;
-    private noteService: NoteService;
+    //private noteService: NoteService;
     
     constructor(){
         let labels = new Map<string,string>([
@@ -24,8 +24,10 @@ export default class NotesComponent extends TabMenu {
             ["add", Lang.get("notes_add")]
         ]);
         super(labels, "notes", TabMenu.COLOR_TYPE_MENU_COLOR);
-
-        this.noteService = new NoteService();
+        NoteService.event.on("change", (note:Note) => {
+            this.getSelectedMenuItem().setName(note.name);
+            this.getSelectedMenuItem().setObject(note);
+        });
 
         this.bindRenamePopup();
         this.bindMovePopup();
@@ -58,7 +60,7 @@ export default class NotesComponent extends TabMenu {
         this.notebookId = mainState.notebook.id;
         this.chapterId = mainState.chapter.id;
 
-        return this.noteService.getNotes(mainState.notebook.id, mainState.chapter.id).then((notes:Array<Note>) => {
+        return NoteService.getNotes(mainState.notebook.id, mainState.chapter.id).then((notes:Array<Note>) => {
             if(notes !== null ){
                 for(let i in notes){
                     this.addItem(notes[i].id, notes[i].name, notes[i], undefined);
@@ -88,9 +90,8 @@ export default class NotesComponent extends TabMenu {
                     return;
                 }
                 object.object.name = value;
-                
-                
-                this.noteService.putNote(this.notebookId, object.object.sectionId, object.object.id, object.object).then((message:Message) => {
+
+                NoteService.putNote(this.notebookId, object.object.sectionId, object.object.id, object.object).then((message:Message) => {
                     if(message.status === 200){
                         object.setName(value);
                         object.object.name = value;
@@ -117,15 +118,13 @@ export default class NotesComponent extends TabMenu {
         this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get("ctx_move"), (e:any) => {
             const movePopup = new PopupMoveComponent(Lang.get("popup_move_title"), Lang.get("note_name") + " - " + this.dropdownMenu.object.name);
             movePopup.object = this.dropdownMenu.object;
-            
-            this.noteService.getMoveNotesList(this.notebookId, this.chapterId, this.dropdownMenu.object.identifier).then((chapters:Array<Chapter>) => {
-                
+
+            NoteService.getMoveNotesList(this.notebookId, this.chapterId, this.dropdownMenu.object.identifier).then((chapters:Array<Chapter>) => {
                 for(let chapter of chapters){
                     movePopup.add(chapter.name, chapter);
                 }
                 movePopup.click = (e, object, value) => {
-                    
-                    this.noteService.moveNote(this.notebookId, object.object.sectionId, object.object.id, value.id).then((message: Message) => {
+                    NoteService.moveNote(this.notebookId, object.object.sectionId, object.object.id, value.id).then((message: Message) => {
                         if(message.status === 200){
                             this.removeItem(object);
                             movePopup.hide();
@@ -159,7 +158,7 @@ export default class NotesComponent extends TabMenu {
             deletePopup.object = this.dropdownMenu.object;
 
             deletePopup.click = (e, object) => {
-                this.noteService.deleteNote(this.notebookId, object.object.sectionId, object.object.id).then((message:Message) => {
+                NoteService.deleteNote(this.notebookId, object.object.sectionId, object.object.id).then((message:Message) => {
                     if(message.status === 200){
                         this.removeItem(object);
                         deletePopup.hide();
@@ -194,7 +193,7 @@ export default class NotesComponent extends TabMenu {
             note.name = value;
             note.sectionId = this.chapterId;
 
-            this.noteService.postNote(this.notebookId, this.chapterId, note).then((message:Message) => {
+            NoteService.postNote(this.notebookId, this.chapterId, note).then((message:Message) => {
                 if(message.status === 200){
                     for(let i=0; i<message.info.length; i++){
                         if(message.info[i].id === "id"){
