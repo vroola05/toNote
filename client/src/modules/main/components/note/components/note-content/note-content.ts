@@ -8,6 +8,7 @@ import ToolbarComponent from './components/toolbar/toolbar-component';
 import Lang from '../../../../../../components/language/lang';
 import { EventEmitter } from 'events';
 import { Note } from 'types';
+import HeaderService from '../../../header/header-service';
 
 export default class NoteContentComponent {
     public dom: HTMLDivElement;
@@ -45,7 +46,6 @@ export default class NoteContentComponent {
                 this.event.emit("change", this.note);
             }
         });
-
         const noteDateContainer: HTMLDivElement = document.createElement('div');
         noteDateContainer.className = "dateContainer";
         noteHeaderContainer.appendChild(noteDateContainer);
@@ -69,6 +69,7 @@ export default class NoteContentComponent {
                 toolbar: this.toolbar.dom
             }
         });
+        
         this.editor.on("text-change", (delta, oldDelta, source: string) => {
             
             if (source == "user") {
@@ -89,6 +90,15 @@ export default class NoteContentComponent {
 
             this.toolbar.setToolbarGroupsWidth();
             this.toolbar.calculateToolbarPages();
+        });
+
+        HeaderService.onBtnLockedChange((locked:boolean) => {
+            if(locked) {
+                this.editor.enable();
+                
+            } else {
+                this.editor.disable();
+            }
         });
     }
 

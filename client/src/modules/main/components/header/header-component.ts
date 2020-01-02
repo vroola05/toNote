@@ -18,6 +18,7 @@ import MenuItemComponent from '../../../../components/controls/menu-item/menu-it
 
 import TitleComponent from './components/title/title-component';
 import MainModule from '../../main-module';
+import HeaderService from './header-service';
 
 
 export default class HeaderComponent  {
@@ -31,7 +32,7 @@ export default class HeaderComponent  {
     
     private buttonComponents: Array<ButtonIconComponent> = new Array();
 
-    constructor(mainModule: MainModule){
+    constructor(mainModule: MainModule) {
         this.mainModule = mainModule;
         this.dom.className = "header";
 
@@ -57,7 +58,8 @@ export default class HeaderComponent  {
         this.addMenuItem(new ButtonToggleComponent({
             open:{icon:svgUnlocked, description: Lang.get("header_icon_unlocked")},
             closed:{icon:svgLocked, description: Lang.get("header_icon_locked")}
-        }, (item:ButtonToggleComponent) => {
+        }, (event:any,item:ButtonToggleComponent) => {
+           HeaderService.setBtnLocked(item.isOpened);
         }));
         
         //
@@ -81,6 +83,12 @@ export default class HeaderComponent  {
             }).catch(() => {});;
         }));
 
+        HeaderService.onTitleMainChange((title:string) => {
+            this.setMainTitle(title);
+        });
+        HeaderService.onTitleSubChange((title:string) => {
+            this.setSubTitle(title);
+        });
     }
 
     public addMenuItem(buttonComponent: ButtonIconComponent){

@@ -13,6 +13,7 @@ import { TabMenu } from '../../../../components/controls/tabMenu/tab-menu';
 import MenuItemComponent from '../../../../components/controls/menu-item/menu-item-component';
 import PopupInputComponent from '../../../../components/popups/popup-input/popup-input-component';
 import PopupConfirmComponent from '../../../../components/popups/popup-confirm/popup-confirm-component';
+import HeaderService from '../header/header-service';
 
 export default class NotebooksComponent extends TabMenu {
     constructor(){
@@ -83,6 +84,11 @@ export default class NotebooksComponent extends TabMenu {
                     if(message.status === 200){
                         object.setName(value);
                         object.object.name = value;
+
+                        if (this.getSelectedMenuItem() && this.getSelectedMenuItem().getId() === object.object.id ) {
+                            HeaderService.setTitleMain(value);
+                        }
+
                         renamePopup.hide();
                     } else {
                         if(message.info){

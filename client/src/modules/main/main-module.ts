@@ -10,6 +10,7 @@ import ChaptersComponent from './components/chapters/chapters-component';
 import NotesComponent from './components/notes/notes-component';
 import NoteComponent from './components/note/note-component';
 import { Util } from '../../components/util/util';
+import HeaderService from "./components/header/header-service";
 
 export default class MainModule extends IWindow{
     protected notebooksComponent:NotebooksComponent = new NotebooksComponent();
@@ -29,7 +30,7 @@ export default class MainModule extends IWindow{
         tabs.className = "tabs";
         
         this.append(tabs);
-
+        
         this.notebooksComponent.setChild( this.chaptersComponent );
         this.chaptersComponent.setChild( this.notesComponent );
         this.notesComponent.setChild( this.noteComponent );
@@ -43,9 +44,7 @@ export default class MainModule extends IWindow{
         window.onresize = (uiEvent:UIEvent) => {
             this.setDeviceLayout();
         };
-		
     }
-
 
     public setDeviceLayout() {
         this.notebooksComponent.setDeviceLayout();
@@ -56,9 +55,8 @@ export default class MainModule extends IWindow{
             state.value = new MainState();
         }
         this.state = state;
-
-        this.headerComponent.setMainTitle("");
-        this.headerComponent.setSubTitle("");
+        HeaderService.setTitleMain("");
+        HeaderService.setTitleSub("");
 
         let newState : MainState = state.value;
         let currentState = this.getCurrentState(state.value);
@@ -76,7 +74,7 @@ export default class MainModule extends IWindow{
         this.notebooksComponent.getItems(newState).then(() => {
             this.notebooksComponent.show();
             if(state=="notebook" || state=="chapter" || state=="note"){
-                this.headerComponent.setMainTitle(newState.notebook.name);
+                HeaderService.setTitleMain(newState.notebook.name);
                 this.chaptersComponent.getItems(newState).then(()=>{
                     this.chaptersComponent.show();
                     this.loadChapters(state, newState);
@@ -91,7 +89,7 @@ export default class MainModule extends IWindow{
 
     private loadChapters(state: string, newState: MainState) {
         if(state=="chapter" || state=="note"){
-            this.headerComponent.setSubTitle(newState.chapter.name);
+            HeaderService.setTitleSub(newState.chapter.name);
             this.notesComponent.getItems(newState).then(() => {
                 this.notesComponent.setMenuColor(newState.chapter.color);
                 this.notesComponent.show();

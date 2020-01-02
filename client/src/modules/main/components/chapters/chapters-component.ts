@@ -18,6 +18,7 @@ import MenuItemComponent from '../../../../components/controls/menu-item/menu-it
 import PopupInputComponent from '../../../../components/popups/popup-input/popup-input-component';
 import PopupConfirmComponent from '../../../../components/popups/popup-confirm/popup-confirm-component';
 import PopupMoveComponent from '../../../../components/popups/popup-move/popup-move-component';
+import HeaderService from '../header/header-service';
 
 export default class ChaptersComponent extends TabMenu {
     private notebookId : number;
@@ -90,7 +91,6 @@ export default class ChaptersComponent extends TabMenu {
         this.dropdownMenu.addItem(menuItem);
 
         menuItem.click = (e:any) => {
-            
             const renamePopup = new PopupInputComponent(Lang.get("popup_rename_title"), Lang.get("notebooks_name"), this.dropdownMenu.object.name);
 
             renamePopup.object = this.dropdownMenu.object;
@@ -105,6 +105,10 @@ export default class ChaptersComponent extends TabMenu {
                     if(message.status === 200){
                         object.setName(value);
                         object.object.name = value;
+                        if (this.getSelectedMenuItem() && this.getSelectedMenuItem().getId() === object.object.id ) {
+                            HeaderService.setTitleSub(value);
+                        }
+
                         renamePopup.hide();
                     } else {
                         if(message.info){
@@ -160,10 +164,9 @@ export default class ChaptersComponent extends TabMenu {
     }
     
     private bindDeletePopup() : void {
-        
         const menuItem = new MenuItemComponent(svgDelete, Lang.get("ctx_remove"));
         this.dropdownMenu.addItem(menuItem);
-        
+
         menuItem.click = (e:any) => {
             const deleteMsg = Lang.get("popup_delete_confirm_msg1") +this.dropdownMenu.object.name+ Lang.get("popup_delete_confirm_msg2");
             const deletePopup = new PopupConfirmComponent(Lang.get("popup_delete_title"), deleteMsg);
@@ -179,15 +182,11 @@ export default class ChaptersComponent extends TabMenu {
                             let error = "";
                             for(let i=0; i<message.info.length; i++){
                                 error += "<span>" + message.info[i].value + "</span>";
-                                
                             }
                             deletePopup.setError(error);
                         }
                     }
-                    
-                    
                 }).catch((e)=>{
-    
                 });
             };
             deletePopup.show();
