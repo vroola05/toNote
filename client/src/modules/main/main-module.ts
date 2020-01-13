@@ -1,6 +1,6 @@
 import { State, IRouter } from "../../services/router/types";
 import { IWindow } from '../../components/controls/iwindow/iwindow';
-import { MainState } from '../../types';
+import { MainState, TabEnum } from '../../types';
 
 import HeaderComponent from './components/header/header-component';
 import ButtonComponent from '../../components/controls/buttons/button-icon/button-icon-component';
@@ -13,6 +13,7 @@ import { Util } from '../../components/util/util';
 import HeaderService from "./components/header/header-service";
 
 export default class MainModule extends IWindow{
+    
     protected notebooksComponent:NotebooksComponent = new NotebooksComponent();
     protected chaptersComponent:ChaptersComponent = new ChaptersComponent();
     protected notesComponent:NotesComponent = new NotesComponent();
@@ -70,10 +71,10 @@ export default class MainModule extends IWindow{
         this.notebooksComponent.back();
     }
 
-    private loadNotebooks(state: string, newState: MainState) {
+    private loadNotebooks(state: number, newState: MainState) {
         this.notebooksComponent.getItems(newState).then(() => {
             this.notebooksComponent.show();
-            if(state=="notebook" || state=="chapter" || state=="note"){
+            if(state===TabEnum.Notebooks || state===TabEnum.Chapters || state===TabEnum.Notes){
                 HeaderService.setTitleMain(newState.notebook.name);
                 this.chaptersComponent.getItems(newState).then(()=>{
                     this.chaptersComponent.show();
@@ -87,8 +88,8 @@ export default class MainModule extends IWindow{
         }).catch(() => {});
     }
 
-    private loadChapters(state: string, newState: MainState) {
-        if(state=="chapter" || state=="note"){
+    private loadChapters(state: number, newState: MainState) {
+        if(state===TabEnum.Chapters || state===TabEnum.Notes){
             HeaderService.setTitleSub(newState.chapter.name);
             this.notesComponent.getItems(newState).then(() => {
                 this.notesComponent.setMenuColor(newState.chapter.color);
@@ -101,8 +102,8 @@ export default class MainModule extends IWindow{
         }
     }
 
-    private loadNote(state: string, newState: MainState) {
-        if(state=="note"){
+    private loadNote(state: number, newState: MainState) {
+        if(state===TabEnum.Notes){
             this.noteComponent.getItem(newState).then(() =>{
                 this.noteComponent.show();
                 this.notebooksComponent.setDeviceLayout();
@@ -117,11 +118,11 @@ export default class MainModule extends IWindow{
         if(mainState.notebook != null && mainState.notebook.id != null){
             if(mainState.chapter != null && mainState.chapter.id != null){
                 if(mainState.note != null && mainState.note.id != null){
-                    return "note";
+                    return TabEnum.Notes;
                 }
-                return "chapter";
+                return TabEnum.Chapters;
             }
-            return "notebook";
+            return TabEnum.Notebooks;
         }
         return null;
     }

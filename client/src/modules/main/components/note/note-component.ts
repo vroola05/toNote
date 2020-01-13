@@ -19,7 +19,6 @@ export default class NoteComponent extends Tab {
 
     constructor(){
         super();
-
         this.dom.className = this.dom.className +" tabNote";
 
         this.overlayComponent = new OverlayComponent();
@@ -40,7 +39,6 @@ export default class NoteComponent extends Tab {
                 const date = this.getInfoValue(message.info, "modifyDate");
                 this.noteContentComponent.setDateModified(date);
                 note.modifyDate = date;
-                console.log(date);
                 NoteService.event.emit("change", note);
             });
         });
@@ -77,23 +75,24 @@ export default class NoteComponent extends Tab {
 
     public getItem( mainState: MainState ) : Promise<any> {
         this.clear();
-
         this.notebookId = mainState.notebook.id;
         this.chapterId = mainState.chapter.id
         this.noteId = mainState.note.id;
         return NoteService.getNote(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((note:Note) => {
             NoteService.getNoteContent(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((content:any) => {
                 this.noteContentComponent.setNote(note);
-                
                 if (content) {
                     this.object = JSON.parse(content);
                 }
                 this.noteContentComponent.setContent(this.object);
 
-                this.overlayComponent.hide(() => {
+                if (!this.overlayComponent.isHidden()) {
+                    this.overlayComponent.hide(() => {
+                        this.noteContentComponent.show();
+                    });
+                } else {
                     this.noteContentComponent.show();
-                });
-
+                }
                 return note;
             }).catch((error: Error) => {
                 console.error(error.stack);   

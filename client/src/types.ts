@@ -56,5 +56,11 @@ export class MainState {
     note: Note | null;
 }
 
+export enum TabEnum {
+    Notebooks = 0,
+    Chapters = 1,
+    Notes = 2,
+    Note = 3
+}
 
 export type Method = "POST" | "PUT" | "DELETE" | "GET";

@@ -18,12 +18,20 @@ export default class OverlayComponent {
         noteOverlayMessage.innerText = Lang.get("main_note_content_no_note");
         this.dom.appendChild(noteOverlayMessage);
         this.dom.addEventListener("animationend", (a) => {
-            this.dom.classList.remove("loading");
-            this.dom.classList.add("loaded");
-            if(this.onanimationend !== undefined){
-                this.onanimationend();
-            }
+            this.setLoaded();
         });
+    }
+
+    private setLoaded() {
+        this.dom.classList.remove("loading");
+        this.dom.classList.add("loaded");
+        if(this.onanimationend !== undefined){
+            this.onanimationend();
+        }
+    }
+
+    public isHidden (): boolean {
+        return this.hidden;
     }
 
     public hide(onanimationend: any = undefined){
@@ -46,5 +54,9 @@ export default class OverlayComponent {
             this.dom.classList.remove("inactive");
             this.dom.classList.add("active");
         }
+    }
+
+    public clear(): void {
+        this.hidden = false;
     }
 }

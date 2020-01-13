@@ -50,6 +50,14 @@ export default class ToolbarComponent {
 		});
 	}
 
+	public show() {
+
+	}
+
+	public hide() {
+
+	}
+
 	public calculateToolbarPages() {
 		this.toolbarTimer = setTimeout(() => {
 		if (this.toolbarGroupsWidth) {

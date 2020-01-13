@@ -107,7 +107,6 @@ export class Tab {
             this.hide();
             return true;
 		} else if ( this.child != null ) {
-            
 			if( this.child.back() ){
                 this.dom.classList.add("active");
             }

@@ -18,7 +18,7 @@ export default class NoteContentComponent {
     private dateModified: DatebarComponent;
 
     private editor : Quill;
-    private hidden: boolean = true;
+    public hidden: boolean = true;
     private onanimationend: any;
     private toolbar: ToolbarComponent;
 
@@ -72,7 +72,7 @@ export default class NoteContentComponent {
         
         this.editor.on("text-change", (delta, oldDelta, source: string) => {
             
-            if (source == "user") {
+            if (source === "user") {
                 clearTimeout(this.timeout);
                 this.timeout = setTimeout(() => {
                     this.event.emit("text-change", this.getContent());
@@ -83,7 +83,7 @@ export default class NoteContentComponent {
         this.dom.addEventListener("animationend", (a) => {
             this.dom.classList.remove("loading");
             this.dom.classList.add("loaded");
-            
+
             if(this.onanimationend !== undefined) {
                 this.onanimationend();
             }
@@ -95,7 +95,6 @@ export default class NoteContentComponent {
         HeaderService.onBtnLockedChange((locked:boolean) => {
             if(locked) {
                 this.editor.enable();
-                
             } else {
                 this.editor.disable();
             }
@@ -112,11 +111,11 @@ export default class NoteContentComponent {
     
     public clear() : void {
         this.note = null;
+        this.toolbar.clear();
         this.setContent("");
         this.setTitle("");
         this.setDateCreated(null);
         this.setDateModified(null);
-        this.toolbar.clear();
     }
 
     private setTitle( title: string ) : void {
@@ -164,7 +163,9 @@ export default class NoteContentComponent {
     }
 
     public show(onanimationend: any = undefined) : void {
-        if( this.hidden ){
+        if( !this.hidden ) {
+            this.toolbar.calculateToolbarPages();
+        } else {
             this.onanimationend = (e:any)=>{
                 if(onanimationend){
                     onanimationend(e);
