@@ -44,7 +44,9 @@ export class Router{
         if(title){
             document.title = title;
         }
-        window.history.pushState(state, title, "#" + url);
+
+        window.history.pushState(state, title, "#" + (!url?"":url));
+
         Router.load(state);
     }
 

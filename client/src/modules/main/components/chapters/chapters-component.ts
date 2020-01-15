@@ -6,7 +6,7 @@ import svgColors from '../../../../assets/images/colors.svg';
 
 import Lang from '../../../../components/language/lang';
 
-import { Chapter, MainState, Message, Notebook } from '../../../../types';
+import { Chapter, MainState, Message, Notebook, TabEnum } from '../../../../types';
 
 import { Router } from '../../../../services/router/router-service';
 import { ChapterService } from '../../../../services/http/chapter-service';
@@ -48,7 +48,7 @@ export default class ChaptersComponent extends TabMenu {
         mainState.note = null;
         state.value = mainState;
         
-        Router.set(state, Lang.get("state_title_notes") +" - "+ name, "notes" );
+        Router.set(state, Lang.get("state_title_notes"),  "" + TabEnum.Notes );
     }
 
     public clear() : void {

@@ -3,7 +3,7 @@ import svgMove from '../../../../assets/images/move.svg';
 import svgDelete from '../../../../assets/images/delete.svg';
 
 import Lang from '../../../../components/language/lang';
-import { Note, MainState, Message, Chapter } from '../../../../types';
+import { Note, MainState, Message, Chapter, TabEnum } from '../../../../types';
 import { Router } from '../../../../services/router/router-service';
 import { NoteService } from '../../../../services/http/note-service';
 import { TabMenu } from '../../../../components/controls/tabMenu/tab-menu';
@@ -46,7 +46,7 @@ export default class NotesComponent extends TabMenu {
         mainState.note = note;
         state.value = mainState;
 
-        Router.set(state, Lang.get("state_title_note") + " - "+ name  , "note" );
+        Router.set(state, Lang.get("state_title_note"), "" + TabEnum.Note );
     }
 
     public getItems(mainState: MainState) : Promise<Array<Note>> {
@@ -59,13 +59,12 @@ export default class NotesComponent extends TabMenu {
         this.clear();
         this.notebookId = mainState.notebook.id;
         this.chapterId = mainState.chapter.id;
-
         return NoteService.getNotes(mainState.notebook.id, mainState.chapter.id).then((notes:Array<Note>) => {
             if(notes !== null ){
                 for(let i in notes){
                     this.addItem(notes[i].id, notes[i].name, notes[i], undefined);
                 }
-                if(mainState!=null && mainState.note!==null){
+                if(!mainState && !mainState.note && !mainState.note.id){
                     this.setMenuItemActive(mainState.note.id);
                 }
             }

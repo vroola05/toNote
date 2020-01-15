@@ -99,21 +99,6 @@ export class Tab {
         return this.child.getLastTab();
     }
 
-    /**
-     * 
-     */
-	public back() : boolean {
-		if ( this.dom.classList.contains("active") && this.parent != null ) {
-            this.hide();
-            return true;
-		} else if ( this.child != null ) {
-			if( this.child.back() ){
-                this.dom.classList.add("active");
-            }
-        }
-        return false;
-    }
-
     public activate() : void {
         this.dom.classList.add("active");
     }

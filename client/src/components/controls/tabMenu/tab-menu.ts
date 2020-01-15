@@ -121,13 +121,11 @@ export class TabMenu extends Tab {
 		}
 
 		tabMenuItem.oncontextmenu = (e, item: TabMenuItem, identifier: number, name: string, object: any) => {
-			
 			this.dropdownMenu.setObject(item);
 			this.dropdownMenu.show();
 			this.dropdownMenu.setPosition(e.pageX, e.pageY);
-			
 		}
-		
+
 		this.domItemList.appendChild(tabMenuItem.dom);
 		this.tabMenuItems.push(tabMenuItem);
 	}

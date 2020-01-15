@@ -19,6 +19,8 @@ import MenuItemComponent from '../../../../components/controls/menu-item/menu-it
 import TitleComponent from './components/title/title-component';
 import MainModule from '../../main-module';
 import HeaderService from './header-service';
+import { MainState, TabEnum } from '../../../../types';
+import MainService from '../../main-service';
 
 
 export default class HeaderComponent  {
@@ -45,23 +47,34 @@ export default class HeaderComponent  {
         this.dom.appendChild(this.titleContainer);
         this.dom.appendChild(this.btnRightContainer);
 
-        //////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////
 
-        //
-        this.addMenuItem(new ButtonIconComponent(svgHome, Lang.get("header_icon_back"), (item:any) => {
-            this.mainModule.back();
+        const btnBack = this.addMenuItem(new ButtonIconComponent(svgHome, Lang.get("header_icon_back"), (item:any) => {
+            MainService.back();
             this.mainModule.setDeviceLayout();
         }));
-
+        
         //
-        this.addMenuItem(new ButtonToggleComponent({
+        const btnLock = this.addMenuItem(new ButtonToggleComponent({
             open:{icon:svgUnlocked, description: Lang.get("header_icon_unlocked")},
             closed:{icon:svgLocked, description: Lang.get("header_icon_locked")}
         }, (event:any,item:ButtonToggleComponent) => {
            HeaderService.setBtnLocked(item.isOpened);
         }));
         
+        MainService.onMainStateChange((mainState: MainState) => {
+            if(MainService.getCurrentMainState() === TabEnum.Notebooks) {
+                btnBack.hide();
+            }else {
+                btnBack.show();
+            }
+
+            if(MainService.getCurrentMainState() !== TabEnum.Note) {
+                btnLock.hide();
+            } else {
+                btnLock.show();
+            }
+        });
+
         //
         this.addAltMenuItem(new ButtonDropdownComponent(svgSearch, Lang.get("header_icon_search"), (item:any) => {
         }));
@@ -91,9 +104,10 @@ export default class HeaderComponent  {
         });
     }
 
-    public addMenuItem(buttonComponent: ButtonIconComponent){
+    public addMenuItem(buttonComponent: ButtonIconComponent) : ButtonIconComponent{
         this.buttonComponents.push(buttonComponent);
         this.btnLeftContainer.appendChild(buttonComponent.dom);
+        return buttonComponent;
     }
 
     public addAltMenuItem(buttonComponent: ButtonIconComponent){

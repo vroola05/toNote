@@ -31,7 +31,7 @@ class Startup {
                 if(state==null){
                     state = { "key" : "main", value : null};
                 }
-                Router.set(state, Lang.get("state_title_notebooks"),"main");
+                Router.set(state, Lang.get("state_title_notebooks"),null);
             }).catch(() => {});
         } );
         

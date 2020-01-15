@@ -4,7 +4,7 @@ import svgDelete from '../../../../assets/images/delete.svg';
 
 import Lang from '../../../../components/language/lang';
 
-import { Notebook, MainState, Message } from '../../../../types';
+import { Notebook, MainState, Message, TabEnum } from '../../../../types';
 
 import { Router } from '../../../../services/router/router-service';
 import { NotebookService } from '../../../../services/http/notebook-service';
@@ -32,7 +32,7 @@ export default class NotebooksComponent extends TabMenu {
         let mainState = new MainState();
         mainState.notebook = notebook;
         state.value = mainState;
-        Router.set(state, Lang.get("state_title_chapters") +" - "+ name, "notebook" );
+        Router.set(state, Lang.get("state_title_chapters"),  "" + TabEnum.Chapters );
     }
 
     public getItems(mainState: MainState=null) : Promise<any>{
