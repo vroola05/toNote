@@ -8,7 +8,8 @@ import ToolbarComponent from './components/toolbar/toolbar-component';
 import Lang from '../../../../../../components/language/lang';
 import { EventEmitter } from 'events';
 import { Note } from 'types';
-import HeaderService from '../../../header/header-service';
+import HeaderService from '../../../../services/header-service';
+import { NoteComponentService } from '../../note-component-service';
 
 export default class NoteContentComponent {
     public dom: HTMLDivElement;
@@ -69,14 +70,9 @@ export default class NoteContentComponent {
                 toolbar: this.toolbar.dom
             }
         });
-        
         this.editor.on("text-change", (delta, oldDelta, source: string) => {
-            
             if (source === "user") {
-                clearTimeout(this.timeout);
-                this.timeout = setTimeout(() => {
-                    this.event.emit("text-change", this.getContent());
-                }, ConfigService.get().content.delay);
+                NoteComponentService.textChanged(this.getContent());
             }
         });
 

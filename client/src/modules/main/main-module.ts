@@ -10,10 +10,11 @@ import ChaptersComponent from './components/chapters/chapters-component';
 import NotesComponent from './components/notes/notes-component';
 import NoteComponent from './components/note/note-component';
 import { Util } from '../../components/util/util';
-import HeaderService from "./components/header/header-service";
+import HeaderService from "./services/header-service";
 import { Router } from "../../services/router/router-service";
 import Lang from "../../components/language/lang";
-import MainService from "./main-service";
+import MainService from "./services/main-service";
+import { getMaxListeners } from "cluster";
 
 export default class MainModule extends IWindow{
     
@@ -45,13 +46,13 @@ export default class MainModule extends IWindow{
         tabs.appendChild( this.notesComponent.dom );
         tabs.appendChild( this.noteComponent.dom );
 
-        window.onresize = (uiEvent:UIEvent) => {
-            this.setDeviceLayout();
-        };
-    }
+        MainService.onDeviceLayoutChange(() => {
+            this.notebooksComponent.setDeviceLayout();    
+        });
 
-    public setDeviceLayout() : void {
-        this.notebooksComponent.setDeviceLayout();
+        window.onresize = (uiEvent:UIEvent) => {
+            MainService.deviceLayoutChanged();
+        };
     }
 
     public load( state : State ) : boolean {

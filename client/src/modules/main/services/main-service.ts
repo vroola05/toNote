@@ -1,6 +1,6 @@
-import { MainState, TabEnum } from "../../types";
-import { Router } from "../../services/router/router-service";
-import Lang from "../../components/language/lang";
+import { MainState, TabEnum } from "../../../types";
+import { Router } from "../../../services/router/router-service";
+import Lang from "../../../components/language/lang";
 import { EventEmitter } from "events";
 
 export default class MainService {
@@ -34,7 +34,6 @@ export default class MainService {
   public static mainStateChanged(mainState: MainState) : void {
     MainService.event.emit("mainStateChanged", mainState);
   }
-
   public static onMainStateChange(event: any) : void {
     MainService.event.on("mainStateChanged", event);
   }
@@ -42,6 +41,7 @@ export default class MainService {
   public static getCurrentMainState(): number {
     return MainService.currentMainState;
   }
+
 
   public static back(): void {
     let state = Router.getCurrentState();
@@ -71,5 +71,13 @@ export default class MainService {
 
     state.value = newState;
     Router.set(state, title, url);
+    MainService.deviceLayoutChanged()
+  }
+
+  public static onDeviceLayoutChange(event: any) : void {
+    MainService.event.on("deviceLayoutChange", event);
+  }
+  public static deviceLayoutChanged() : void {
+    MainService.event.emit("deviceLayoutChange");
   }
 }

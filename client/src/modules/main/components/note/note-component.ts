@@ -7,6 +7,7 @@ import OverlayComponent from './components/overlay/overlay-component';
 import NoteContentComponent from './components/note-content/note-content';
 import { Constants } from '../../../../services/config/constants';
 import { Util } from '../../../../components/util/util';
+import { NoteComponentService } from './note-component-service';
 
 export default class NoteComponent extends Tab {
     private notebookId : number = null;
@@ -26,13 +27,8 @@ export default class NoteComponent extends Tab {
 
         this.noteContentComponent = new NoteContentComponent();
         this.dom.appendChild(this.noteContentComponent.dom);
-        this.noteContentComponent.event.on("text-change", text => {
-            NoteService.putNoteContent(this.notebookId, this.chapterId, this.noteId, text)
-            .then((message: Message) => {
-                this.noteContentComponent.setDateModified(this.getInfoValue(message.info, "modifyDate"));
-            });
-        });
 
+        
         this.noteContentComponent.event.on("change", (note:Note) => {
             NoteService.putNote(this.notebookId, this.chapterId, this.noteId, note)
             .then((message: Message) => {
@@ -42,6 +38,14 @@ export default class NoteComponent extends Tab {
                 NoteService.event.emit("change", note);
             });
         });
+
+        NoteComponentService.onTextChanged((text: any) => {
+            NoteService.putNoteContent(this.notebookId, this.chapterId, this.noteId, text)
+            .then((message: Message) => {
+                this.noteContentComponent.setDateModified(this.getInfoValue(message.info, "modifyDate"));
+            });
+        });
+        
     }
 
     /**

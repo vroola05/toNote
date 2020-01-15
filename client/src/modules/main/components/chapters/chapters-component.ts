@@ -18,7 +18,7 @@ import MenuItemComponent from '../../../../components/controls/menu-item/menu-it
 import PopupInputComponent from '../../../../components/popups/popup-input/popup-input-component';
 import PopupConfirmComponent from '../../../../components/popups/popup-confirm/popup-confirm-component';
 import PopupMoveComponent from '../../../../components/popups/popup-move/popup-move-component';
-import HeaderService from '../header/header-service';
+import HeaderService from '../../services/header-service';
 
 export default class ChaptersComponent extends TabMenu {
     private notebookId : number;
