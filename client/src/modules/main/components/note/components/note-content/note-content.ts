@@ -10,10 +10,11 @@ import { EventEmitter } from 'events';
 import { Note } from 'types';
 import HeaderService from '../../../../services/header-service';
 import { NoteComponentService } from '../../note-component-service';
+import { Timer } from '../../../../../../components/timer/timer';
 
 export default class NoteContentComponent {
     public dom: HTMLDivElement;
-
+    public loader: HTMLDivElement = document.createElement('div');
     private titlebarComponent = new TitlebarComponent
     private dateCreated: DatebarComponent;
     private dateModified: DatebarComponent;
@@ -30,6 +31,7 @@ export default class NoteContentComponent {
     private note: Note;
 
     constructor() {
+
         this.dom = document.createElement('div');
         this.dom.className = "noteContent loaded inactive";
 
@@ -39,8 +41,16 @@ export default class NoteContentComponent {
         noteHeaderContainer.className = "noteHeaderContainer";
         this.dom.appendChild(noteHeaderContainer);
         
+
         this.titlebarComponent = new TitlebarComponent();
         noteHeaderContainer.appendChild(this.titlebarComponent.dom);
+
+        this.loader.className = "loader";
+        this.loader.style.height = "2px";
+        this.loader.style.backgroundColor = "#FF0000";
+        this.loader.style.width = "0%";
+
+        noteHeaderContainer.appendChild(this.loader);
         this.titlebarComponent.event.on("change", (text: string) => {
             if(this.note) {
                 this.note.name = text;
@@ -70,11 +80,25 @@ export default class NoteContentComponent {
                 toolbar: this.toolbar.dom
             }
         });
+
+        const timer = new Timer(300);
+
         this.editor.on("text-change", (delta, oldDelta, source: string) => {
             if (source === "user") {
                 NoteComponentService.textChanged(this.getContent());
+                timer.start();
             }
         });
+
+        
+        timer.onInterval((prc:number) => {
+            this.loader.style.width = prc+"%";
+        });
+        timer.onFinished(() => {
+            NoteComponentService.sendNoteText();
+            this.loader.style.width = "0%";
+        });
+        
 
         this.dom.addEventListener("animationend", (a) => {
             this.dom.classList.remove("loading");

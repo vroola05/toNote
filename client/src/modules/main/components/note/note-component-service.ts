@@ -20,13 +20,13 @@ export class NoteComponentService {
 
     public static textChanged(noteText: any) {
       NoteComponentService.noteText = noteText;
-      clearTimeout(NoteComponentService.noteTexttimeout);
+      /*clearTimeout(NoteComponentService.noteTexttimeout);
       NoteComponentService.noteTexttimeout = setTimeout(() => {
           NoteComponentService.sendNoteText();
-        }, ConfigService.get().content.delay);
+        }, ConfigService.get().content.delay);*/
     }
 
-    private static sendNoteText(){
+    public static sendNoteText(){
       if(NoteComponentService.noteText != null) {
         this.event.emit("text-change", NoteComponentService.noteText);
       }
