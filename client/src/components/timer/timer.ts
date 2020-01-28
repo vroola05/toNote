@@ -2,7 +2,7 @@ import { Constants } from "../../services/config/constants";
 
 export  class Timer {
     
-    private readonly fps: number = 20;
+    private readonly fps: number = 28;
 
     private finished: Function;
     private interval: Function;
@@ -34,7 +34,7 @@ export  class Timer {
                 }
                 this.stop();
             }
-            
+
             this.counter+=this.intervals;
         }, this.intervals);
     }
@@ -52,7 +52,6 @@ export  class Timer {
     }
 
     public onInterval(interval: Function) {
-        
         this.interval = interval;
     }
 }

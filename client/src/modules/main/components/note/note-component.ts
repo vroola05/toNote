@@ -28,8 +28,7 @@ export default class NoteComponent extends Tab {
         this.noteContentComponent = new NoteContentComponent();
         this.dom.appendChild(this.noteContentComponent.dom);
 
-        
-        this.noteContentComponent.event.on("change", (note:Note) => {
+        NoteComponentService.onNoteChanged((note:Note) => {
             NoteService.putNote(this.notebookId, this.chapterId, this.noteId, note)
             .then((message: Message) => {
                 const date = this.getInfoValue(message.info, "modifyDate");
@@ -39,7 +38,7 @@ export default class NoteComponent extends Tab {
             });
         });
 
-        NoteComponentService.onTextChanged((text: any) => {
+        NoteComponentService.onNoteTextChanged((text: any) => {
             NoteService.putNoteContent(this.notebookId, this.chapterId, this.noteId, text)
             .then((message: Message) => {
                 this.noteContentComponent.setDateModified(this.getInfoValue(message.info, "modifyDate"));

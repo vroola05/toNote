@@ -59,7 +59,7 @@ export default class ChaptersComponent extends TabMenu {
     public getItems(mainState: MainState) : Promise<Array<Chapter>> {
         if (this.hasItems() && this.notebookId == mainState.notebook.id ){
             return new Promise((resolve, reject) => {
-                if(mainState!=null && mainState.chapter!==undefined){
+                if (mainState && mainState.chapter && mainState.chapter.id) {
                     this.setMenuItemActive(mainState.chapter.id);
                 }
 
@@ -75,7 +75,8 @@ export default class ChaptersComponent extends TabMenu {
                 for(let i in chapters){
                     this.addItem(chapters[i].id, chapters[i].name, chapters[i], chapters[i].color);
                 }
-                if(mainState!=null && mainState.chapter!==undefined){
+
+                if (mainState && mainState.chapter && mainState.chapter.id) {
                     this.setMenuItemActive(mainState.chapter.id);
                 }
             }

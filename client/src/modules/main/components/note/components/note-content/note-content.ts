@@ -11,13 +11,15 @@ import { Note } from 'types';
 import HeaderService from '../../../../services/header-service';
 import { NoteComponentService } from '../../note-component-service';
 import { Timer } from '../../../../../../components/timer/timer';
+import LoaderComponent from './components/loader/loader-component';
 
 export default class NoteContentComponent {
     public dom: HTMLDivElement;
-    public loader: HTMLDivElement = document.createElement('div');
+
     private titlebarComponent = new TitlebarComponent
     private dateCreated: DatebarComponent;
     private dateModified: DatebarComponent;
+    private loaderComponent: LoaderComponent;
 
     private editor : Quill;
     public hidden: boolean = true;
@@ -26,7 +28,6 @@ export default class NoteContentComponent {
 
     public event = new EventEmitter();
 
-    private timeout: any = null;
 
     private note: Note;
 
@@ -40,23 +41,10 @@ export default class NoteContentComponent {
         const noteHeaderContainer: HTMLDivElement = document.createElement('div');
         noteHeaderContainer.className = "noteHeaderContainer";
         this.dom.appendChild(noteHeaderContainer);
-        
 
         this.titlebarComponent = new TitlebarComponent();
         noteHeaderContainer.appendChild(this.titlebarComponent.dom);
 
-        this.loader.className = "loader";
-        this.loader.style.height = "2px";
-        this.loader.style.backgroundColor = "#FF0000";
-        this.loader.style.width = "0%";
-
-        noteHeaderContainer.appendChild(this.loader);
-        this.titlebarComponent.event.on("change", (text: string) => {
-            if(this.note) {
-                this.note.name = text;
-                this.event.emit("change", this.note);
-            }
-        });
         const noteDateContainer: HTMLDivElement = document.createElement('div');
         noteDateContainer.className = "dateContainer";
         noteHeaderContainer.appendChild(noteDateContainer);
@@ -65,6 +53,9 @@ export default class NoteContentComponent {
         noteDateContainer.appendChild(this.dateCreated.dom);
         this.dateModified = new DatebarComponent("modified");
         noteDateContainer.appendChild(this.dateModified.dom);
+
+        this.loaderComponent = new LoaderComponent();
+        noteDateContainer.appendChild(this.loaderComponent.dom);
 
         const noteInnerContainer: HTMLDivElement = document.createElement('div');
         noteInnerContainer.className = "noteInnerContainer";
@@ -80,25 +71,6 @@ export default class NoteContentComponent {
                 toolbar: this.toolbar.dom
             }
         });
-
-        const timer = new Timer(300);
-
-        this.editor.on("text-change", (delta, oldDelta, source: string) => {
-            if (source === "user") {
-                NoteComponentService.textChanged(this.getContent());
-                timer.start();
-            }
-        });
-
-        
-        timer.onInterval((prc:number) => {
-            this.loader.style.width = prc+"%";
-        });
-        timer.onFinished(() => {
-            NoteComponentService.sendNoteText();
-            this.loader.style.width = "0%";
-        });
-        
 
         this.dom.addEventListener("animationend", (a) => {
             this.dom.classList.remove("loading");
@@ -119,6 +91,45 @@ export default class NoteContentComponent {
                 this.editor.disable();
             }
         });
+
+        this.onNoteUpdate();
+        this.onNoteTextUpdate();
+    }
+
+    private onNoteTextUpdate() : void {
+        const timer = new Timer(ConfigService.get().content.delay);
+        this.editor.on("text-change", (delta, oldDelta, source: string) => {
+            if (source === "user") {
+                NoteComponentService.noteTextChanged(this.getContent());
+                timer.start();
+            }
+        });
+
+        timer.onInterval((prc:number) => {
+            this.loaderComponent.setPercentage(prc);
+        });
+        timer.onFinished(() => {
+            NoteComponentService.sendNoteText();
+            this.loaderComponent.clear();
+        });
+    }
+
+    private onNoteUpdate() : void {
+        const timer = new Timer(ConfigService.get().content.delay);
+        this.titlebarComponent.event.on("change", (text: string) => {
+            if(this.note) {
+                this.note.name = text;
+                NoteComponentService.noteChanged(this.note);
+                timer.start();
+            }
+        });
+        timer.onInterval((prc:number) => {
+            this.loaderComponent.setPercentage(prc);
+        });
+        timer.onFinished(() => {
+            NoteComponentService.sendNote();
+            this.loaderComponent.clear();
+        });
     }
 
     public setNote(note: Note) : void {
@@ -130,6 +141,7 @@ export default class NoteContentComponent {
     }
     
     public clear() : void {
+        NoteComponentService.flush();
         this.note = null;
         this.toolbar.clear();
         this.setContent("");

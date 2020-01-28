@@ -4,17 +4,12 @@ import ConfigService from '../../../../../../../../services/config/configService
 export default class TitlebarComponent {
     public dom: HTMLDivElement = document.createElement('div');
     public event = new EventEmitter();
-    private timeout: any = null;
 
     constructor(){
         this.dom.className = "titlebar";
         this.dom.contentEditable = "true";
         this.dom.addEventListener("input", () => {
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-                this.event.emit("change", this.value());
-            }, ConfigService.get().content.delay);
-            
+            this.event.emit("change", this.value());
         });
     }
 

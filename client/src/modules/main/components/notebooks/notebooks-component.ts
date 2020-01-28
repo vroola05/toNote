@@ -39,7 +39,7 @@ export default class NotebooksComponent extends TabMenu {
         
         if(this.hasItems()){
             return new Promise((resolve, reject) => {
-                if(mainState!=null && mainState.notebook!==undefined){
+                if (mainState && mainState.notebook && mainState.notebook.id) {
                     this.setMenuItemActive(mainState.notebook.id);
                 }
                 resolve(this.getObjects());
@@ -52,7 +52,7 @@ export default class NotebooksComponent extends TabMenu {
                 for(let i in notebooks){
                     this.addItem(notebooks[i].id, notebooks[i].name, notebooks[i], undefined);
                 }
-                if(mainState!=null && mainState.notebook!==undefined){
+                if (mainState && mainState.notebook && mainState.notebook.id) {
                     this.setMenuItemActive(mainState.notebook.id);
                 }
             }

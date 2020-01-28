@@ -116,6 +116,26 @@
                 border-bottom: $color-border solid 1px;
                 cursor: pointer;
             }
+
+            .loaderContainer {
+                float: right;
+                width: 10px;
+                height: 10px;
+                margin: 0 $default-margin*2;
+
+                .loader {
+                    display: inline-block;
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    
+                        background-image: conic-gradient(
+                            #d1d1d1 0 calc(3.6deg * var(--loaderPrc)),
+                            $color-shade 0
+                        );
+                }
+            }
+            
             .dateContainer {
                 .datebar {
                     margin: $default-margin/2 0 0 $default-margin;
