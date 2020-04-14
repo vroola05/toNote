@@ -71,7 +71,7 @@ export default class MainService {
 
     state.value = newState;
     Router.set(state, title, url);
-    MainService.deviceLayoutChanged()
+    MainService.deviceLayoutChanged();
   }
 
   public static onDeviceLayoutChange(event: any) : void {
