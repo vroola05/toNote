@@ -57,14 +57,14 @@ export default class MainService {
       newState.notebook = mainState.notebook;
       newState.chapter = mainState.chapter;
       title = Lang.get("state_title_notes");
-      url = "" + TabEnum.Notes;
+      url = "main/" + mainState.notebook.id + "/" + mainState.chapter.id + "/" + mainState.note.id;
     } else if (currentState === TabEnum.Notes) {
       newState.notebook = mainState.notebook;
       title = Lang.get("state_title_chapters");
-      url = "" + TabEnum.Chapters;
+      url = "main/" + mainState.notebook.id + "/" + mainState.chapter.id;
     } else if (currentState === TabEnum.Chapters) {
       title = Lang.get("state_title_notebooks");
-      url = "" + TabEnum.Notebooks;
+      url = "main/" + mainState.notebook.id;
     } else {
       return;
     }

@@ -48,7 +48,7 @@ export default class LoginModule extends IWindow{
     }
 */
 
-    public load( state : State ) : boolean {
+    public load( state : State, route: Array<string> ) : boolean {
         this.state = state;
 
         this.show();

@@ -41,10 +41,12 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      'title': 'ToNote',
+      'title': 'toNote',
       'meta': {
         'viewport': 'width=device-width, initial-scale=1.0',
-        'theme-color': '#6ac6e6'
+        'theme-color': '#c4e7f3',
+        'apple-mobile-web-app-capable' :'yes',
+        'apple-mobile-web-app-status-bar-style': 'black'
       }
     }),
     new MiniCssExtractPlugin({
@@ -52,6 +54,6 @@ module.exports = {
       // both options are optional
       filename: devMode ? '[name].css' : '[name].[hash].css',
       chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
-    }),
+    })
   ]
 };

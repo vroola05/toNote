@@ -1,7 +1,7 @@
 import { User, Message } from '../../types';
 import HttpClient from '../../components/http/httpClient';
 
-export class LoginService extends HttpClient{
+export class LoginService extends HttpClient {
     constructor(){
         super();
     }

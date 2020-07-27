@@ -16,26 +16,25 @@ import { LoginService } from './services/http/login-service';
 
 class Startup {
     public static main(): number {
-        
         ////////////////////////////////////////
         // 
         ////////////////////////////////////////
         new ConfigService( function() {
+            Router.readUrl();
             Router.register("login", new LoginModule());
             Router.register("main", new MainModule());
             Router.register("settings", new SettingsModule());
 
             const loginService : LoginService = new LoginService();
-            loginService.check().then(()=>{
+            loginService.check().then(() => {
                 let state = window.history.state;
-                if(state==null){
+                if ( state == null ) {
                     state = { "key" : "main", value : null};
                 }
                 Router.set(state, Lang.get("state_title_notebooks"),null);
             }).catch(() => {});
         } );
-        
-        
+
         return 0;
     }
 }

@@ -55,7 +55,8 @@ export default class MainModule extends IWindow{
         };
     }
 
-    public load( state : State ) : boolean {
+    public load( state : State, route: Array<string> ) : boolean {
+        console.log('route',route);
         if(state.value== null){
             state.value = new MainState();
         }

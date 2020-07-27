@@ -32,7 +32,7 @@ export default class NotebooksComponent extends TabMenu {
         let mainState = new MainState();
         mainState.notebook = notebook;
         state.value = mainState;
-        Router.set(state, Lang.get("state_title_chapters"),  "" + TabEnum.Chapters );
+        Router.set(state, Lang.get("state_title_chapters"),  "main/" + mainState.notebook.id );
     }
 
     public getItems(mainState: MainState=null) : Promise<any>{

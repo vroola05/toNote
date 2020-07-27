@@ -48,7 +48,7 @@ export default class ChaptersComponent extends TabMenu {
         mainState.note = null;
         state.value = mainState;
         
-        Router.set(state, Lang.get("state_title_notes"),  "" + TabEnum.Notes );
+        Router.set(state, Lang.get("state_title_notes"),  "main/" + mainState.notebook.id + "/" + mainState.chapter.id );
     }
 
     public clear() : void {

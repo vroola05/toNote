@@ -46,7 +46,7 @@ export default class NotesComponent extends TabMenu {
         mainState.note = note;
         state.value = mainState;
 
-        Router.set(state, Lang.get("state_title_note"), "" + TabEnum.Note );
+        Router.set(state, Lang.get("state_title_note"), "main/" + mainState.notebook.id + "/" + mainState.chapter.id + "/" + mainState.note.id);
     }
 
     public getItems(mainState: MainState) : Promise<Array<Note>> {

@@ -28,6 +28,7 @@ export class Note {
 
 export class User {
     userId: number | undefined;
+    name: string;
     username: string;
     password: string;
     active: boolean | undefined;
@@ -48,6 +49,10 @@ export class Chapter {
     color: string | null;
     creationDate: string;
     modifyDate: string | undefined;
+}
+
+export class LoginState {
+    page: string | null;
 }
 
 export class MainState {
