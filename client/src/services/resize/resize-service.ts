@@ -1,21 +1,21 @@
-export class Resize{
+export class Resize {
     
     private static resize: Map<string, any> = new Map<string, any>();
 
-    constructor(){
+    constructor() {
     }
 
-    public static set(key:string, value:any) {
+    public static set(key: string, value: any) {
         Resize.remove(key);
 
-        window.addEventListener("resize", value, true);
+        window.addEventListener('resize', value, true);
         this.resize.set(key, value);
     }
 
-    public static remove(key:string) {
+    public static remove(key: string) {
         const func = this.resize.get(key);
         if (func) {
-            window.removeEventListener("resize", func, true);
+            window.removeEventListener('resize', func, true);
             this.resize.delete(key);
         }
     }

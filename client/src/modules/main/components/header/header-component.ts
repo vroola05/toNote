@@ -23,112 +23,112 @@ import { MainState, TabEnum } from '../../../../types';
 import MainService from '../../services/main-service';
 
 
-export default class HeaderComponent  {
-    public dom: HTMLElement = document.createElement("div");
+export default class HeaderComponent {
+  public dom: HTMLElement = document.createElement('div');
 
-    private btnBack: ButtonIconComponent;
-    private btnLock: ButtonIconComponent;
+  private btnBack: ButtonIconComponent;
+  private btnLock: ButtonIconComponent;
 
-    private btnLeftContainer: HTMLElement = document.createElement("div");
-    private btnRightContainer: HTMLElement = document.createElement("div");
-    private titleContainer: HTMLElement = document.createElement("div");
+  private btnLeftContainer: HTMLElement = document.createElement('div');
+  private btnRightContainer: HTMLElement = document.createElement('div');
+  private titleContainer: HTMLElement = document.createElement('div');
 
-    private mainModule: MainModule;
-    private titleComponent: TitleComponent = new TitleComponent();
+  private mainModule: MainModule;
+  private titleComponent: TitleComponent = new TitleComponent();
 
-    constructor(mainModule: MainModule) {
-        this.mainModule = mainModule;
-        this.dom.className = "header";
+  constructor(mainModule: MainModule) {
+    this.mainModule = mainModule;
+    this.dom.className = 'header';
 
-        this.createMenuLeft();
-        this.createTitles();
-        this.createMenuRight();
+    this.createMenuLeft();
+    this.createTitles();
+    this.createMenuRight();
 
-        HeaderService.onTitleMainChange((title:string) => {
-            this.setMainTitle(title);
-        });
+    HeaderService.onTitleMainChange((title: string) => {
+      this.setMainTitle(title);
+    });
 
-        HeaderService.onTitleSubChange((title:string) => {
-            this.setSubTitle(title);
-        });
+    HeaderService.onTitleSubChange((title: string) => {
+      this.setSubTitle(title);
+    });
 
-        this.setOnStateChange();
-    }
+    this.setOnStateChange();
+  }
 
-    private createMenuLeft() : void {
-        this.btnLeftContainer.className = "btnLeftContainer";
-        this.dom.appendChild(this.btnLeftContainer);
+  private createMenuLeft(): void {
+    this.btnLeftContainer.className = 'btnLeftContainer';
+    this.dom.appendChild(this.btnLeftContainer);
 
-        this.btnBack = this.addMenuItem(new ButtonIconComponent(svgHome, Lang.get("header_icon_back"), (item:any) => {
-            MainService.back();
-        }));
+    this.btnBack = this.addMenuItem(new ButtonIconComponent(svgHome, Lang.get('header_icon_back'), (item: any) => {
+      MainService.back();
+    }));
 
-        this.btnLock = this.addMenuItem(new ButtonToggleComponent({
-            open:{icon:svgUnlocked, description: Lang.get("header_icon_unlocked")},
-            closed:{icon:svgLocked, description: Lang.get("header_icon_locked")}
-        }, (event:any,item:ButtonToggleComponent) => {
-           HeaderService.setBtnLocked(item.isOpened);
-        }));
-    }
+    this.btnLock = this.addMenuItem(new ButtonToggleComponent({
+      open: { icon: svgUnlocked, description: Lang.get('header_icon_unlocked') },
+      closed: { icon: svgLocked, description: Lang.get('header_icon_locked') }
+    }, (event: any, item: ButtonToggleComponent) => {
+      HeaderService.setBtnLocked(item.isOpened);
+    }));
+  }
 
-    private createMenuRight() : void {
-        this.btnRightContainer.className = "btnRightContainer";
-        this.dom.appendChild(this.btnRightContainer);
+  private createMenuRight(): void {
+    this.btnRightContainer.className = 'btnRightContainer';
+    this.dom.appendChild(this.btnRightContainer);
 
-        this.addAltMenuItem(new ButtonDropdownComponent(svgSearch, Lang.get("header_icon_search"), (item:any) => {
-        }));
+    this.addAltMenuItem(new ButtonDropdownComponent(svgSearch, Lang.get('header_icon_search'), (item: any) => {
+    }));
 
-        const btnMenu = this.addAltMenuItem(new ButtonDropdownComponent(svgMenu, Lang.get("header_icon_menu"), (e:Event, item:any) => {
-        })) as ButtonDropdownComponent;
+    const btnMenu = this.addAltMenuItem(new ButtonDropdownComponent(svgMenu, Lang.get('header_icon_menu'), (e: Event, item: any) => {
+    })) as ButtonDropdownComponent;
 
-        btnMenu.addItem(new MenuItemComponent(svgSettings, Lang.get("header_menu_settings"), (e:any) => {
-            Router.set({ "key" : "settings", "value" : null}, Lang.get("state_title_settings"),"settings");
-        }));
+    btnMenu.addItem(new MenuItemComponent(svgSettings, Lang.get('header_menu_settings'), (e: any) => {
+      Router.set({ key: 'settings', value: null }, Lang.get('state_title_settings'), 'settings');
+    }));
 
-        btnMenu.addItem(new MenuItemComponent(svgLogout, Lang.get("header_menu_logout"), (e:any) => {
-            new LoginService().logout().then(()=>{
-                Router.set({ "key" : "login", "value" : null}, Lang.get("state_title_login"),"login");
-            }).catch(() => {});;
-        }));
-    }
+    btnMenu.addItem(new MenuItemComponent(svgLogout, Lang.get('header_menu_logout'), (e: any) => {
+      new LoginService().logout().then(() => {
+        Router.set({ key: 'login', value: null }, Lang.get('state_title_login'), 'login');
+      }).catch(() => { });
+    }));
+  }
 
-    private createTitles() : void {
-        this.titleContainer.className = "titleContainer";
-        this.titleContainer.appendChild(this.titleComponent.dom);
-        this.dom.appendChild(this.titleContainer);
-    }
+  private createTitles(): void {
+    this.titleContainer.className = 'titleContainer';
+    this.titleContainer.appendChild(this.titleComponent.dom);
+    this.dom.appendChild(this.titleContainer);
+  }
 
-    public setOnStateChange() : void {
-        MainService.onMainStateChange((mainState: MainState) => {
-            if(MainService.getCurrentMainState() === TabEnum.Notebooks) {
-                this.btnBack.hide();
-            }else {
-                this.btnBack.show();
-            }
+  public setOnStateChange(): void {
+    MainService.onMainStateChange((mainState: MainState) => {
+      if (MainService.getCurrentMainState() === TabEnum.Notebooks) {
+        this.btnBack.hide();
+      } else {
+        this.btnBack.show();
+      }
 
-            if(MainService.getCurrentMainState() !== TabEnum.Note) {
-                this.btnLock.hide();
-            } else {
-                this.btnLock.show();
-            }
-        });
-    }
+      if (MainService.getCurrentMainState() !== TabEnum.Note) {
+        this.btnLock.hide();
+      } else {
+        this.btnLock.show();
+      }
+    });
+  }
 
-    public addMenuItem(buttonComponent: ButtonIconComponent) : ButtonIconComponent{
-        this.btnLeftContainer.appendChild(buttonComponent.dom);
-        return buttonComponent;
-    }
+  public addMenuItem(buttonComponent: ButtonIconComponent): ButtonIconComponent {
+    this.btnLeftContainer.appendChild(buttonComponent.dom);
+    return buttonComponent;
+  }
 
-    public addAltMenuItem(buttonComponent: ButtonIconComponent){
-        this.btnRightContainer.appendChild(buttonComponent.dom);
-        return buttonComponent;
-    }
+  public addAltMenuItem(buttonComponent: ButtonIconComponent) {
+    this.btnRightContainer.appendChild(buttonComponent.dom);
+    return buttonComponent;
+  }
 
-    public setMainTitle(title: string){
-        this.titleComponent.setMainTitle(title);
-    }
+  public setMainTitle(title: string) {
+    this.titleComponent.setMainTitle(title);
+  }
 
-    public setSubTitle(title: string){
-        this.titleComponent.setSubTitle(title);
-    }
+  public setSubTitle(title: string) {
+    this.titleComponent.setSubTitle(title);
+  }
 }

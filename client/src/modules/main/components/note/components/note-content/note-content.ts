@@ -16,12 +16,12 @@ import LoaderComponent from './components/loader/loader-component';
 export default class NoteContentComponent {
     public dom: HTMLDivElement;
 
-    private titlebarComponent = new TitlebarComponent
+    private titlebarComponent = new TitlebarComponent;
     private dateCreated: DatebarComponent;
     private dateModified: DatebarComponent;
     private loaderComponent: LoaderComponent;
 
-    private editor : Quill;
+    private editor: Quill;
     public hidden: boolean = true;
     private onanimationend: any;
     private toolbar: ToolbarComponent;
@@ -34,35 +34,35 @@ export default class NoteContentComponent {
     constructor() {
 
         this.dom = document.createElement('div');
-        this.dom.className = "noteContent loaded inactive";
+        this.dom.className = 'noteContent loaded inactive';
 
         this.toolbar = new ToolbarComponent();
         this.dom.appendChild(this.toolbar.dom);
         const noteHeaderContainer: HTMLDivElement = document.createElement('div');
-        noteHeaderContainer.className = "noteHeaderContainer";
+        noteHeaderContainer.className = 'noteHeaderContainer';
         this.dom.appendChild(noteHeaderContainer);
 
         this.titlebarComponent = new TitlebarComponent();
         noteHeaderContainer.appendChild(this.titlebarComponent.dom);
 
         const noteDateContainer: HTMLDivElement = document.createElement('div');
-        noteDateContainer.className = "dateContainer";
+        noteDateContainer.className = 'dateContainer';
         noteHeaderContainer.appendChild(noteDateContainer);
 
-        this.dateCreated = new DatebarComponent("created");
+        this.dateCreated = new DatebarComponent('created');
         noteDateContainer.appendChild(this.dateCreated.dom);
-        this.dateModified = new DatebarComponent("modified");
+        this.dateModified = new DatebarComponent('modified');
         noteDateContainer.appendChild(this.dateModified.dom);
 
         this.loaderComponent = new LoaderComponent();
         noteDateContainer.appendChild(this.loaderComponent.dom);
 
         const noteInnerContainer: HTMLDivElement = document.createElement('div');
-        noteInnerContainer.className = "noteInnerContainer";
+        noteInnerContainer.className = 'noteInnerContainer';
         this.dom.appendChild(noteInnerContainer);
 
         const note: HTMLDivElement = document.createElement('div');
-        note.className = "note";
+        note.className = 'note';
         noteInnerContainer.appendChild(note);
 
         this.editor =  new Quill(note, { 
@@ -72,11 +72,11 @@ export default class NoteContentComponent {
             }
         });
 
-        this.dom.addEventListener("animationend", (a) => {
-            this.dom.classList.remove("loading");
-            this.dom.classList.add("loaded");
+        this.dom.addEventListener('animationend', (a) => {
+            this.dom.classList.remove('loading');
+            this.dom.classList.add('loaded');
 
-            if(this.onanimationend !== undefined) {
+            if (this.onanimationend !== undefined) {
                 this.onanimationend();
             }
 
@@ -84,8 +84,8 @@ export default class NoteContentComponent {
             this.toolbar.calculateToolbarPages();
         });
 
-        HeaderService.onBtnLockedChange((locked:boolean) => {
-            if(locked) {
+        HeaderService.onBtnLockedChange((locked: boolean) => {
+            if (locked) {
                 this.editor.enable();
             } else {
                 this.editor.disable();
@@ -96,16 +96,16 @@ export default class NoteContentComponent {
         this.onNoteTextUpdate();
     }
 
-    private onNoteTextUpdate() : void {
+    private onNoteTextUpdate(): void {
         const timer = new Timer(ConfigService.get().content.delay);
-        this.editor.on("text-change", (delta, oldDelta, source: string) => {
-            if (source === "user") {
+        this.editor.on('text-change', (delta, oldDelta, source: string) => {
+            if (source === 'user') {
                 NoteComponentService.noteTextChanged(this.getContent());
                 timer.start();
             }
         });
 
-        timer.onInterval((prc:number) => {
+        timer.onInterval((prc: number) => {
             this.loaderComponent.setPercentage(prc);
         });
         timer.onFinished(() => {
@@ -114,16 +114,16 @@ export default class NoteContentComponent {
         });
     }
 
-    private onNoteUpdate() : void {
+    private onNoteUpdate(): void {
         const timer = new Timer(ConfigService.get().content.delay);
-        this.titlebarComponent.event.on("change", (text: string) => {
-            if(this.note) {
+        this.titlebarComponent.event.on('change', (text: string) => {
+            if (this.note) {
                 this.note.name = text;
                 NoteComponentService.noteChanged(this.note);
                 timer.start();
             }
         });
-        timer.onInterval((prc:number) => {
+        timer.onInterval((prc: number) => {
             this.loaderComponent.setPercentage(prc);
         });
         timer.onFinished(() => {
@@ -132,7 +132,7 @@ export default class NoteContentComponent {
         });
     }
 
-    public setNote(note: Note) : void {
+    public setNote(note: Note): void {
         this.clear();
         this.note = note;
         this.setTitle(note.name);
@@ -140,73 +140,73 @@ export default class NoteContentComponent {
         this.setDateModified(note.modifyDate);
     }
     
-    public clear() : void {
+    public clear(): void {
         NoteComponentService.flush();
         this.note = null;
         this.toolbar.clear();
-        this.setContent("");
-        this.setTitle("");
+        this.setContent('');
+        this.setTitle('');
         this.setDateCreated(null);
         this.setDateModified(null);
     }
 
-    private setTitle( title: string ) : void {
-        this.titlebarComponent.value(title);
+    private setTitle( title: string ): void {
+        this.titlebarComponent.value = title;
     }
 
-    public setDateCreated( date: Date ) : void {
+    public setDateCreated( date: Date ): void {
         if (!date) {
-            this.dateCreated.value("");
+            this.dateCreated.value('');
         } else {
-            this.dateCreated.value(Lang.get("main_note_header_created") +": "+ DateFormat.get(date));
+            this.dateCreated.value(Lang.get('main_note_header_created') + ': ' + DateFormat.get(date));
         }
     }
 
-    public setDateModified( date: Date ) : void {
+    public setDateModified( date: Date ): void {
         if (!date) {
-            this.dateCreated.value("");
+            this.dateCreated.value('');
         } else {
-            this.dateModified.value(Lang.get("main_note_header_modified") +": "+ DateFormat.get(date));
+            this.dateModified.value(Lang.get('main_note_header_modified') + ': ' + DateFormat.get(date));
         }
     }
 
-    public setContent( content : any ) : void {
+    public setContent( content: any ): void {
         this.editor.setContents(content);
     }
 
-    public getContent() : any{
+    public getContent(): any {
         return this.editor.getContents();
     }
 
-    public hide(onanimationend: any = undefined) : void {
-        if( !this.hidden ){
-            this.onanimationend = (e:any)=> { 
-                if(onanimationend) {
+    public hide(onanimationend: any = undefined): void {
+        if ( !this.hidden ) {
+            this.onanimationend = (e: any) => { 
+                if (onanimationend) {
                     onanimationend(e);
                 }
-            }
+            };
             this.hidden = true;
-            this.dom.classList.remove("loaded");
-            this.dom.classList.add("loading");
-            this.dom.classList.add("inactive");
-            this.dom.classList.remove("active");
+            this.dom.classList.remove('loaded');
+            this.dom.classList.add('loading');
+            this.dom.classList.add('inactive');
+            this.dom.classList.remove('active');
         }
         
     }
 
-    public show(onanimationend: any = undefined) : void {
-        if( !this.hidden ) {
+    public show(onanimationend: any = undefined): void {
+        if ( !this.hidden ) {
             this.toolbar.calculateToolbarPages();
         } else {
-            this.onanimationend = (e:any)=>{
-                if(onanimationend){
+            this.onanimationend = (e: any) => {
+                if (onanimationend) {
                     onanimationend(e);
                 }
             };
             this.hidden = false;
-            this.dom.classList.add("loading");
-            this.dom.classList.remove("inactive");
-            this.dom.classList.add("active");
+            this.dom.classList.add('loading');
+            this.dom.classList.remove('inactive');
+            this.dom.classList.add('active');
         }
     }
 }

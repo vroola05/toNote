@@ -10,93 +10,93 @@ import MenuItemComponent from '../menu-item/menu-item-component';
 import ButtonFloatComponent from '../buttons/button-float/button-float-component';
 
 export class TabMenu extends Tab {
-	public static COLOR_TYPE_NONE = 1;
-	public static COLOR_TYPE_ITEM_COLOR = 2;
-	public static COLOR_TYPE_MENU_COLOR = 3;
+  public static COLOR_TYPE_NONE = 1;
+  public static COLOR_TYPE_ITEM_COLOR = 2;
+  public static COLOR_TYPE_MENU_COLOR = 3;
 
-	private colorType : number;
-	private domItemList: HTMLElement;
-	private itemContainer: HTMLElement 
-	private labels: Map<string, string>;
-	private tabMenuItems: Array<TabMenuItem> = new Array<TabMenuItem>();
-	private selectedTabMenuItem: TabMenuItem = null;
+  private colorType: number;
+  private domItemList: HTMLElement;
+  private itemContainer: HTMLElement; 
+  private labels: Map<string, string>;
+  private tabMenuItems: Array<TabMenuItem> = new Array<TabMenuItem>();
+  private selectedTabMenuItem: TabMenuItem = null;
 
-	public dropdownMenu: DropdownMenuComponent = new DropdownMenuComponent();
+  public dropdownMenu: DropdownMenuComponent = new DropdownMenuComponent();
 
-	constructor(labels: Map<string, string>, classes: string | null, colorType: number = TabMenu.COLOR_TYPE_NONE) {
-		super();
-		this.dom.className = this.dom.className + " tabMenu" + (classes != null && classes != "" ? " " + classes : "");
-		this.labels = labels;
-		this.colorType = colorType;
-		if (this.colorType == TabMenu.COLOR_TYPE_MENU_COLOR){
-			this.dom.classList.add("color");
-		}
-		this.dom.addEventListener("transitionstart", () => {
-			this.itemContainer.style.width = "180px";
-		});
-		this.dom.addEventListener("transitionend", () => {
-			this.itemContainer.style.width =null;
-		});
+  constructor(labels: Map<string, string>, classes: string | null, colorType: number = TabMenu.COLOR_TYPE_NONE) {
+    super();
+    this.dom.className = this.dom.className + ' tabMenu' + (classes != null && classes !== '' ? ' ' + classes : '');
+    this.labels = labels;
+    this.colorType = colorType;
+    if (this.colorType === TabMenu.COLOR_TYPE_MENU_COLOR) {
+      this.dom.classList.add('color');
+    }
+    this.dom.addEventListener('transitionstart', () => {
+      this.itemContainer.style.width = '180px';
+    });
+    this.dom.addEventListener('transitionend', () => {
+      this.itemContainer.style.width = null;
+    });
 
-		this.itemContainer = document.createElement("div");
-		this.itemContainer.classList.add("itemContainer");
+    this.itemContainer = document.createElement('div');
+    this.itemContainer.classList.add('itemContainer');
 
-		this.dom.appendChild(this.itemContainer);
+    this.dom.appendChild(this.itemContainer);
 
-		let domName = document.createElement("div");
-		domName.classList.add("menuName");
-		domName.innerHTML = this.labels.get("name");
+    const domName = document.createElement('div');
+    domName.classList.add('menuName');
+    domName.innerHTML = this.labels.get('name');
 
-		this.domItemList = document.createElement("div");
-		this.domItemList.classList.add("itemList");
-		
-		const addMenuItemMobile = new ButtonFloatComponent(svgAdd, (e:any) => {
-			this.clickNewItem(e);
-		});
-		addMenuItemMobile.classList.add("addBtnMobile");
+    this.domItemList = document.createElement('div');
+    this.domItemList.classList.add('itemList');
+    
+    const addMenuItemMobile = new ButtonFloatComponent(svgAdd, (e: any) => {
+      this.clickNewItem(e);
+    });
+    addMenuItemMobile.classList.add('addBtnMobile');
 
-		const addMenuItemDesktop = new MenuItemComponent(svgAdd, this.labels.get("add"));
-		addMenuItemDesktop.click = (menuItem, e) => {
-			this.clickNewItem(e);
-		};
-		addMenuItemDesktop.classList.add("addBtnDesktop");
+    const addMenuItemDesktop = new MenuItemComponent(svgAdd, this.labels.get('add'));
+    addMenuItemDesktop.click = (menuItem, e) => {
+      this.clickNewItem(e);
+    };
+    addMenuItemDesktop.classList.add('addBtnDesktop');
 
-		this.itemContainer.appendChild(domName);
-		this.itemContainer.appendChild(this.domItemList);
-		this.itemContainer.appendChild(addMenuItemDesktop.dom);
-		this.itemContainer.appendChild(addMenuItemMobile.dom);
+    this.itemContainer.appendChild(domName);
+    this.itemContainer.appendChild(this.domItemList);
+    this.itemContainer.appendChild(addMenuItemDesktop.dom);
+    this.itemContainer.appendChild(addMenuItemMobile.dom);
 
-		this.dropdownMenu.event.on('close', () => {
-			this.dropdownMenu.hide();
-		}
-	 );
-	}
+    this.dropdownMenu.event.on('close', () => {
+      this.dropdownMenu.hide();
+    }
+   );
+  }
 
     /**
      * 
      */
-	public clear(): void {
-		this.domItemList.innerHTML = "";
-		this.tabMenuItems = new Array<TabMenuItem>();
-		this.clearSelectedMenuItem();
-	}
+  public clear(): void {
+    this.domItemList.innerHTML = '';
+    this.tabMenuItems = new Array<TabMenuItem>();
+    this.clearSelectedMenuItem();
+  }
 
-	public show() {
-		super.show();
-	}
+  public show() {
+    super.show();
+  }
 
-	public hide() {
-		this.clear();
-		super.hide();
-	}
+  public hide() {
+    this.clear();
+    super.hide();
+  }
 
-	public removeItem(tabMenuItem:TabMenuItem){
-		if (tabMenuItem === this.selectedTabMenuItem) { 
-			this.clearSelectedMenuItem();
-		}
-		this.domItemList.removeChild(tabMenuItem.dom);
-		this.tabMenuItems.splice(this.tabMenuItems.indexOf(tabMenuItem), 1);
-	}
+  public removeItem(tabMenuItem: TabMenuItem) {
+    if (tabMenuItem === this.selectedTabMenuItem) { 
+      this.clearSelectedMenuItem();
+    }
+    this.domItemList.removeChild(tabMenuItem.dom);
+    this.tabMenuItems.splice(this.tabMenuItems.indexOf(tabMenuItem), 1);
+  }
 
     /**
      * 
@@ -104,105 +104,105 @@ export class TabMenu extends Tab {
      * @param identifier 
      * @param color 
      */
-	public addItem(identifier: number, name: string, object: any, color: null | string): void {
-		if (this.dom.classList.contains("hidden")) {
-			this.dom.classList.remove("hidden");
-		}
+  public addItem(identifier: number, name: string, object: any, color: null | string): void {
+    if (this.dom.classList.contains('hidden')) {
+      this.dom.classList.remove('hidden');
+    }
 
-		//
-		if (this.colorType == TabMenu.COLOR_TYPE_ITEM_COLOR){
-			color = (!color || color == ""?this.getColor(identifier*6%Constants.colorsMenu.length):color)	;
-			object.color = color;
-		}
-		let tabMenuItem = new TabMenuItem(identifier, name, object, color);
-		tabMenuItem.click = (item: TabMenuItem, identifier: number, name: string, object: any) => {
-			this.click(item, identifier, name, object);
-			this.setMenuItemActive(identifier);
-		}
+    //
+    if (this.colorType === TabMenu.COLOR_TYPE_ITEM_COLOR) {
+      color = (!color || color === '' ? this.getColor(identifier * 6 % Constants.colorsMenu.length) : color)	;
+      object.color = color;
+    }
+    const tabMenuItem = new TabMenuItem(identifier, name, object, color);
+    tabMenuItem.click = (item: TabMenuItem, identifier: number, name: string, object: any) => {
+      this.click(item, identifier, name, object);
+      this.setMenuItemActive(identifier);
+    };
 
-		tabMenuItem.oncontextmenu = (e, item: TabMenuItem, identifier: number, name: string, object: any) => {
-			this.dropdownMenu.setObject(item);
-			this.dropdownMenu.show();
-			this.dropdownMenu.setPosition(e.pageX, e.pageY);
-		}
+    tabMenuItem.oncontextmenu = (e, item: TabMenuItem, identifier: number, name: string, object: any) => {
+      this.dropdownMenu.setObject(item);
+      this.dropdownMenu.show();
+      this.dropdownMenu.setPosition(e.pageX, e.pageY);
+    };
 
-		this.domItemList.appendChild(tabMenuItem.dom);
-		this.tabMenuItems.push(tabMenuItem);
-	}
+    this.domItemList.appendChild(tabMenuItem.dom);
+    this.tabMenuItems.push(tabMenuItem);
+  }
 
-	/**
+  /**
 	 * 
 	 * @param index 
 	 */
-	private getColor(index: number): string {
-		return Constants.colorsMenu[index];
-	}
+  private getColor(index: number): string {
+    return Constants.colorsMenu[index];
+  }
 
-	public setMenuColor( color : string ){
-		if(this.colorType === TabMenu.COLOR_TYPE_MENU_COLOR) {
-			this.dom.style.borderColor = color;
-		}
-	}
+  public setMenuColor( color: string ) {
+    if (this.colorType === TabMenu.COLOR_TYPE_MENU_COLOR) {
+      this.dom.style.borderColor = color;
+    }
+  }
 
-	public hasItems(){
-		return this.tabMenuItems.length>0;
-	}
+  public hasItems() {
+    return this.tabMenuItems.length > 0;
+  }
 
-	public clearSelectedMenuItem(): void {
-		this.selectedTabMenuItem = null;
-		if( this.child != null ){
-			this.child.hide();
-		}
-	}
+  public clearSelectedMenuItem(): void {
+    this.selectedTabMenuItem = null;
+    if ( this.child != null ) {
+      this.child.hide();
+    }
+  }
 
-	public getSelectedMenuItem(): TabMenuItem {
-		return this.selectedTabMenuItem;
-	}
+  public getSelectedMenuItem(): TabMenuItem {
+    return this.selectedTabMenuItem;
+  }
 
-	public getTabMenuItems(): Array<TabMenuItem> {
-		return this.tabMenuItems;
-	}
+  public getTabMenuItems(): Array<TabMenuItem> {
+    return this.tabMenuItems;
+  }
 
-	public getObjects(){
-		let objects = new Array<any>();
-		
-		this.tabMenuItems.forEach((tabMenuItem) => {
-			objects.push(tabMenuItem.getObject());
-		});
+  public getObjects() {
+    const objects = new Array<any>();
+    
+    this.tabMenuItems.forEach((tabMenuItem) => {
+      objects.push(tabMenuItem.getObject());
+    });
 
-		return objects;
-	}
+    return objects;
+  }
 
-	/**
+  /**
 	 * 
 	 * @param identifier 
 	 */
-	public setMenuItemActive(identifier: number): void {
-		if(identifier===null) return;
-		this.tabMenuItems.forEach((tabMenuItem) => {
-			if (identifier == tabMenuItem.getId()) {
-				this.selectedTabMenuItem = tabMenuItem;
-				tabMenuItem.activate(true);
-			} else {
-				tabMenuItem.activate(false);
-			}
-		});
-	}
+  public setMenuItemActive(identifier: number): void {
+    if (identifier === null) { return; }
+    this.tabMenuItems.forEach((tabMenuItem) => {
+      if (identifier === tabMenuItem.getId()) {
+        this.selectedTabMenuItem = tabMenuItem;
+        tabMenuItem.activate(true);
+      } else {
+        tabMenuItem.activate(false);
+      }
+    });
+  }
 
-	/**
+  /**
 	 * 
 	 * @param e 
 	 * @param identifier 
 	 */
-	public click(item: TabMenuItem, identifier: number, name: string, object: any) {
-		alert("Method not yet implemented!");
-	}
+  public click(item: TabMenuItem, identifier: number, name: string, object: any) {
+    alert('Method not yet implemented!');
+  }
 
-	/**
+  /**
 	 * 
 	 * @param e 
 	 */
-	public clickNewItem(e: Event) {
-		alert("Method not yet implemented!");
-	}
+  public clickNewItem(e: Event) {
+    alert('Method not yet implemented!');
+  }
 }

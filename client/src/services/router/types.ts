@@ -1,8 +1,8 @@
 export class State {
-    public key : string;
-    public value : any | null;
+    public key: string;
+    public value: any | null;
 }
 
 export interface IRouter {
-    load(state:State, route: Array<string>) : boolean;
+    load(state: State, route: Array<string>): boolean;
 }

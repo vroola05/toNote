@@ -7,42 +7,42 @@ export default class PopupConfirmComponent extends PopupComponent {
     private popupError: HTMLDivElement;
     
     constructor(title: string, value: string, submit: any = null) {
-        super(title, "popupConfirm");
+        super(title, 'popupConfirm');
 
-        this.event.on("ok", (e:any)=>{
+        this.event.on('ok', (e: any) => {
             this.click(e, this.object);
         });
 
-        const popupInputContainer = document.createElement("div");
-        popupInputContainer.className = "popupInputContainer";
+        const popupInputContainer = document.createElement('div');
+        popupInputContainer.className = 'popupInputContainer';
         this.append(popupInputContainer);
 
-        const popupInputInnerContainer = document.createElement("div");
-        popupInputInnerContainer.className = "popupInputInnerContainer";
+        const popupInputInnerContainer = document.createElement('div');
+        popupInputInnerContainer.className = 'popupInputInnerContainer';
         popupInputInnerContainer.innerText = value;
         popupInputContainer.appendChild(popupInputInnerContainer);
 
-        const popupErrorContainer = document.createElement("div");
-        popupErrorContainer.className = "popupErrorContainer";
+        const popupErrorContainer = document.createElement('div');
+        popupErrorContainer.className = 'popupErrorContainer';
 
-        this.popupError = document.createElement("div");
-        this.popupError.className = "popupError";
+        this.popupError = document.createElement('div');
+        this.popupError.className = 'popupError';
 
         popupErrorContainer.appendChild(this.popupError);
         this.append(popupErrorContainer);
 
-        const popupInputBtnContainer = document.createElement("div");
-        popupInputBtnContainer.className = "popupInputBtnContainer";
-        const cancel = new ButtonOutlinedComponent(Lang.get("popup_confirm_btn_no"), ()=>{
+        const popupInputBtnContainer = document.createElement('div');
+        popupInputBtnContainer.className = 'popupInputBtnContainer';
+        const cancel = new ButtonOutlinedComponent(Lang.get('popup_confirm_btn_no'), () => {
             this.hide();
         });
-        cancel.classList.add("btnCancel");
+        cancel.classList.add('btnCancel');
         popupInputBtnContainer.appendChild(cancel.dom);
 
-        const ok = new ButtonContainedComponent(Lang.get("popup_confirm_btn_yes"), (e:any)=>{
+        const ok = new ButtonContainedComponent(Lang.get('popup_confirm_btn_yes'), (e: any) => {
             this.click(e, this.object);
         });
-        ok.classList.add("btnOk");
+        ok.classList.add('btnOk');
         popupInputBtnContainer.appendChild(ok.dom);
         this.append(popupInputBtnContainer);
     }
@@ -52,7 +52,7 @@ export default class PopupConfirmComponent extends PopupComponent {
     }
 
     public click(e: any, object: any): void {
-        alert("Not yet implemented!");
+        alert('Not yet implemented!');
     }
     public setError(message: string): void {
         this.popupError.innerHTML = message;

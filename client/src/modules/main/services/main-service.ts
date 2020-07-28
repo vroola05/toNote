@@ -1,7 +1,7 @@
-import { MainState, TabEnum } from "../../../types";
-import { Router } from "../../../services/router/router-service";
-import Lang from "../../../components/language/lang";
-import { EventEmitter } from "events";
+import { MainState, TabEnum } from '../../../types';
+import { Router } from '../../../services/router/router-service';
+import Lang from '../../../components/language/lang';
+import { EventEmitter } from 'events';
 
 export default class MainService {
   private static event = new EventEmitter();
@@ -11,7 +11,7 @@ export default class MainService {
   constructor() {
   }
 
-  public static setCurrentMainState(mainState: MainState) : number {
+  public static setCurrentMainState(mainState: MainState): number {
     if (mainState.notebook != null && mainState.notebook.id != null) {
       if (mainState.chapter != null && mainState.chapter.id != null) {
         if (mainState.note != null && mainState.note.id != null) {
@@ -31,11 +31,11 @@ export default class MainService {
     return MainService.currentMainState;
   }
 
-  public static mainStateChanged(mainState: MainState) : void {
-    MainService.event.emit("mainStateChanged", mainState);
+  public static mainStateChanged(mainState: MainState): void {
+    MainService.event.emit('mainStateChanged', mainState);
   }
-  public static onMainStateChange(event: any) : void {
-    MainService.event.on("mainStateChanged", event);
+  public static onMainStateChange(event: any): void {
+    MainService.event.on('mainStateChanged', event);
   }
 
   public static getCurrentMainState(): number {
@@ -44,27 +44,27 @@ export default class MainService {
 
 
   public static back(): void {
-    let state = Router.getCurrentState();
+    const state = Router.getCurrentState();
     const mainState = state.value as MainState;
-    let currentState = MainService.getCurrentMainState();
+    const currentState = MainService.getCurrentMainState();
 
-    let title = "";
-    let url = "";
+    let title = '';
+    let url = '';
 
     const newState = new MainState();
 
     if (currentState === TabEnum.Note) {
       newState.notebook = mainState.notebook;
       newState.chapter = mainState.chapter;
-      title = Lang.get("state_title_notes");
-      url = "main/" + mainState.notebook.id + "/" + mainState.chapter.id + "/" + mainState.note.id;
+      title = Lang.get('state_title_notes');
+      url = 'main/' + mainState.notebook.id + '/' + mainState.chapter.id + '/' + mainState.note.id;
     } else if (currentState === TabEnum.Notes) {
       newState.notebook = mainState.notebook;
-      title = Lang.get("state_title_chapters");
-      url = "main/" + mainState.notebook.id + "/" + mainState.chapter.id;
+      title = Lang.get('state_title_chapters');
+      url = 'main/' + mainState.notebook.id + '/' + mainState.chapter.id;
     } else if (currentState === TabEnum.Chapters) {
-      title = Lang.get("state_title_notebooks");
-      url = "main/" + mainState.notebook.id;
+      title = Lang.get('state_title_notebooks');
+      url = 'main/' + mainState.notebook.id;
     } else {
       return;
     }
@@ -74,10 +74,10 @@ export default class MainService {
     MainService.deviceLayoutChanged();
   }
 
-  public static onDeviceLayoutChange(event: any) : void {
-    MainService.event.on("deviceLayoutChange", event);
+  public static onDeviceLayoutChange(event: any): void {
+    MainService.event.on('deviceLayoutChange', event);
   }
-  public static deviceLayoutChanged() : void {
-    MainService.event.emit("deviceLayoutChange");
+  public static deviceLayoutChanged(): void {
+    MainService.event.emit('deviceLayoutChange');
   }
 }

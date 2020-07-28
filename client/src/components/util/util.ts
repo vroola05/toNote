@@ -1,8 +1,8 @@
-import { Constants } from "../../services/config/constants";
+import { Constants } from '../../services/config/constants';
 
 export  class Util {
 
-    public static getDevice() : string {
+    public static getDevice(): string {
         const width = document.body.getBoundingClientRect().width;
         if (width <= 768) {
             return Constants.mobile;
