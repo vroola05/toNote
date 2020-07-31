@@ -1,275 +1,275 @@
-import ButtonIconComponent from "../../../../../../../../components/controls/buttons/button-icon/button-icon-component";
+import ButtonIconComponent from '../../../../../../../../components/controls/buttons/button-icon/button-icon-component';
 import svgLeft from '../../../../../../../../assets/images/left.svg';
 import svgRight from '../../../../../../../../assets/images/right.svg';
-import {Resize} from '../../../../../../../../services/resize/resize-service';
+import { Resize } from '../../../../../../../../services/resize/resize-service';
 
 export default class ToolbarComponent {
-	public dom: HTMLDivElement;
-	private toolbarContainer: HTMLDivElement;
+  public dom: HTMLDivElement;
+  private toolbarContainer: HTMLDivElement;
 
-	private btnLeft: ButtonIconComponent;
-	private btnRight: ButtonIconComponent;
+  private btnLeft: ButtonIconComponent;
+  private btnRight: ButtonIconComponent;
 
-	private toolbarGroupMargin = 15;
-	private toolbarGroups: Array<HTMLSpanElement>;
-	private toolbarPages: Array<Array<HTMLSpanElement>>;
-	private toolbarGroupsWidth: Array<number>;
-	private toolbarScrollIndex: number = 0;
-	private toolbarTimer: any;
-	private toolbarTimeout = 500;
+  private toolbarGroupMargin = 15;
+  private toolbarGroups: Array<HTMLSpanElement>;
+  private toolbarPages: Array<Array<HTMLSpanElement>>;
+  private toolbarGroupsWidth: Array<number>;
+  private toolbarScrollIndex: number = 0;
+  private toolbarTimer: any;
+  private toolbarTimeout = 500;
 
-	constructor() {
-		this.dom = document.createElement("div");
-		this.dom.classList.add("toolbar");
-		
-		this.btnLeft = new ButtonIconComponent(svgLeft,null,() => {
-			this.goToToolbarPage("previous");
-		},"small btnToolbar");
-		this.btnLeft.disable = true;
-		this.dom.appendChild(this.btnLeft.dom);
+  constructor() {
+    this.dom = document.createElement('div');
+    this.dom.classList.add('toolbar');
 
-		this.toolbarContainer = document.createElement("div");
-		this.toolbarContainer.classList.add("toolbarContainer");
-		
-		this.dom.appendChild(this.toolbarContainer);
+    this.btnLeft = new ButtonIconComponent(svgLeft, null, () => {
+      this.goToToolbarPage('previous');
+    }, 'small btnToolbar');
+    this.btnLeft.disable = true;
+    this.dom.appendChild(this.btnLeft.dom);
 
-		this.btnRight = new ButtonIconComponent(svgRight,null,
-		() => {
-			this.goToToolbarPage("next");
-		},"small btnToolbar");
-		this.btnRight.disable = true;
-		this.dom.appendChild(this.btnRight.dom);
+    this.toolbarContainer = document.createElement('div');
+    this.toolbarContainer.classList.add('toolbarContainer');
 
-		this.createToolbar();		
-		
-		this.calculateToolbarPages();
+    this.dom.appendChild(this.toolbarContainer);
 
-		Resize.set("toolbar", ()=> {
-			clearTimeout(this.toolbarTimer);
-			this.calculateToolbarPages();
-		});
-	}
+    this.btnRight = new ButtonIconComponent(svgRight, null,
+      () => {
+        this.goToToolbarPage('next');
+      }, 'small btnToolbar');
+    this.btnRight.disable = true;
+    this.dom.appendChild(this.btnRight.dom);
 
-	public show() {
+    this.createToolbar();
 
-	}
+    this.calculateToolbarPages();
 
-	public hide() {
+    Resize.set('toolbar', () => {
+      clearTimeout(this.toolbarTimer);
+      this.calculateToolbarPages();
+    });
+  }
 
-	}
+  public show() {
 
-	public calculateToolbarPages() {
-		this.toolbarTimer = setTimeout(() => {
-		if (this.toolbarGroupsWidth) {
-			let width = this.toolbarContainer.getBoundingClientRect().width;
-			if (width === 0) {
-				return;
-			}
+  }
 
-			this.toolbarPages = [];
-			let pageWidth = 0;
-			let pageIndex = 0;
-			this.toolbarPages[pageIndex] = new Array();
+  public hide() {
 
-			for (let i=0; i<this.toolbarGroupsWidth.length; i++) {
-				pageWidth += this.toolbarGroupsWidth[i];
-				
-				if (pageWidth > width) {
-					pageWidth = this.toolbarGroupsWidth[i];
-					pageIndex++;
-					this.toolbarPages[pageIndex] = new Array();
-				}
-				this.toolbarPages[pageIndex].push(this.toolbarGroups[i]);
-			}
-			this.toolbarScrollIndex = (this.toolbarScrollIndex<this.toolbarPages.length-1)?this.toolbarScrollIndex:this.toolbarPages.length-1;
-			this.setPagesState();
-		}
-	}, this.toolbarTimeout );
-	}
+  }
 
-	private setPagesState() {
-		for (let i=0; i<this.toolbarPages.length; i++) {
-			if (i===this.toolbarScrollIndex) {
-				this.showToolbarPage(i);
-			} else {
-				this.hideToolbarPage(i);
-			}
-		}
-		this.setPagesBtnState();
-		this.toolbarContainer.classList.add("active");
-	}
+  public calculateToolbarPages() {
+    this.toolbarTimer = setTimeout(() => {
+      if (this.toolbarGroupsWidth) {
+        const width = this.toolbarContainer.getBoundingClientRect().width;
+        if (width === 0) {
+          return;
+        }
 
-	private setPagesBtnState() {
-		if (this.toolbarScrollIndex <= 0) {
-			this.btnLeft.disable = true;
-		} else {
-			this.btnLeft.disable = false;
-		}
-		if (this.toolbarScrollIndex >= this.toolbarPages.length-1) {
-			this.btnRight.disable = true;
-		} else {
-			this.btnRight.disable = false;
-		}
-	}
+        this.toolbarPages = [];
+        let pageWidth = 0;
+        let pageIndex = 0;
+        this.toolbarPages[pageIndex] = new Array();
 
-	public clear() {
-		for (let group of this.toolbarGroups) {
-			group.classList.remove("hidden");
-		}
-		this.toolbarContainer.classList.remove("active");
-	}
+        for (let i = 0; i < this.toolbarGroupsWidth.length; i++) {
+          pageWidth += this.toolbarGroupsWidth[i];
 
-	private hideToolbarPage(index: number) {
-		const pages = this.toolbarPages[index];
-		for (let page of pages) {
-			page.classList.add("hidden");
-		}
-	}
+          if (pageWidth > width) {
+            pageWidth = this.toolbarGroupsWidth[i];
+            pageIndex++;
+            this.toolbarPages[pageIndex] = new Array();
+          }
+          this.toolbarPages[pageIndex].push(this.toolbarGroups[i]);
+        }
+        this.toolbarScrollIndex = (this.toolbarScrollIndex < this.toolbarPages.length - 1) ? this.toolbarScrollIndex : this.toolbarPages.length - 1;
+        this.setPagesState();
+      }
+    }, this.toolbarTimeout);
+  }
 
-	private showToolbarPage(index: number) {
-		const pages = this.toolbarPages[index];
-		for (let page of pages) {
-			page.classList.remove("hidden");
-		}
-	}
+  private setPagesState() {
+    for (let i = 0; i < this.toolbarPages.length; i++) {
+      if (i === this.toolbarScrollIndex) {
+        this.showToolbarPage(i);
+      } else {
+        this.hideToolbarPage(i);
+      }
+    }
+    this.setPagesBtnState();
+    this.toolbarContainer.classList.add('active');
+  }
 
-	private goToToolbarPage(direction:string) {
-		
-		if (direction==="previous") {
-			if (this.toolbarScrollIndex > 0 ) {
-				this.toolbarScrollIndex--;
-			}
-		} else {
-			if ( this.toolbarScrollIndex < this.toolbarPages.length-1 ) {
-				this.toolbarScrollIndex++;
-			}
-		}
-		this.setPagesState();
-	}
+  private setPagesBtnState() {
+    if (this.toolbarScrollIndex <= 0) {
+      this.btnLeft.disable = true;
+    } else {
+      this.btnLeft.disable = false;
+    }
+    if (this.toolbarScrollIndex >= this.toolbarPages.length - 1) {
+      this.btnRight.disable = true;
+    } else {
+      this.btnRight.disable = false;
+    }
+  }
 
-	public setToolbarGroupsWidth() {
-		this.toolbarGroupsWidth = new Array<number>();
-		for(let i=0; i<this.toolbarGroups.length; i++) {
-			this.toolbarGroupsWidth.push(this.toolbarGroups[i].getBoundingClientRect().width+this.toolbarGroupMargin);
-		}
-	}
+  public clear() {
+    for (const group of this.toolbarGroups) {
+      group.classList.remove('hidden');
+    }
+    this.toolbarContainer.classList.remove('active');
+  }
 
-	private createToolbar() {
-		this.toolbarGroups = new Array<HTMLSpanElement>();
-		//////////////////////////////////////////////////
-		//
-		//////////////////////////////////////////////////
-		var domGroupSizeType = document.createElement("span");
-		domGroupSizeType.className = "ql-formats groupSizeType";
-		this.toolbarContainer.appendChild(domGroupSizeType);
-		this.toolbarGroups.push(domGroupSizeType);
+  private hideToolbarPage(index: number) {
+    const pages = this.toolbarPages[index];
+    for (const page of pages) {
+      page.classList.add('hidden');
+    }
+  }
 
-		var domToobarSize = document.createElement("select");
-		domToobarSize.className = "tb-btn ql-size";
-		domToobarSize.innerHTML = '<option value="small">Klein</option><option selected>Normaal</option><option value="large">Groot</option><option value="huge">Supergroot</option>';
-		domGroupSizeType.appendChild(domToobarSize);
+  private showToolbarPage(index: number) {
+    const pages = this.toolbarPages[index];
+    for (const page of pages) {
+      page.classList.remove('hidden');
+    }
+  }
 
-		var domToobarFonts = document.createElement("select");
-		domToobarFonts.className = "tb-btn ql-font";
-		domToobarFonts.innerHTML = '<option selected="selected"></option><option value="serif"></option><option value="monospace"></option>';
-		domGroupSizeType.appendChild(domToobarFonts);
+  private goToToolbarPage(direction: string) {
 
-		//////////////////////////////////////////////////
-		//
-		//////////////////////////////////////////////////
-		var domGroupDefault = document.createElement("span");
-		domGroupDefault.className = "ql-formats groupDefault";
-		this.toolbarContainer.appendChild(domGroupDefault);
-		this.toolbarGroups.push(domGroupDefault);
+    if (direction === 'previous') {
+      if (this.toolbarScrollIndex > 0) {
+        this.toolbarScrollIndex--;
+      }
+    } else {
+      if (this.toolbarScrollIndex < this.toolbarPages.length - 1) {
+        this.toolbarScrollIndex++;
+      }
+    }
+    this.setPagesState();
+  }
 
-		var domToobarBold = document.createElement("button");
-		domToobarBold.className = "tb-btn ql-bold";
-		domToobarBold.innerHTML = "B";
-		domGroupDefault.appendChild(domToobarBold);
+  public setToolbarGroupsWidth() {
+    this.toolbarGroupsWidth = new Array<number>();
+    for (const toolbarGroup of this.toolbarGroups) {
+      this.toolbarGroupsWidth.push(toolbarGroup.getBoundingClientRect().width + this.toolbarGroupMargin);
+    }
+  }
 
-		var domToobarItalic = document.createElement("button");
-		domToobarItalic.className = "tb-btn ql-italic";
-		domToobarItalic.innerHTML = "I";
-		domGroupDefault.appendChild(domToobarItalic);
+  private createToolbar() {
+    this.toolbarGroups = new Array<HTMLSpanElement>();
+    //////////////////////////////////////////////////
+    //
+    //////////////////////////////////////////////////
+    const domGroupSizeType = document.createElement('span');
+    domGroupSizeType.className = 'ql-formats groupSizeType';
+    this.toolbarContainer.appendChild(domGroupSizeType);
+    this.toolbarGroups.push(domGroupSizeType);
 
-		var domToobarUnderline = document.createElement("button");
-		domToobarUnderline.className = "tb-btn ql-underline";
-		domToobarUnderline.innerHTML = "U";
-		domGroupDefault.appendChild(domToobarUnderline);
+    const domToobarSize = document.createElement('select');
+    domToobarSize.className = 'tb-btn ql-size';
+    domToobarSize.innerHTML = '<option value="small">Klein</option><option selected>Normaal</option><option value="large">Groot</option><option value="huge">Supergroot</option>';
+    domGroupSizeType.appendChild(domToobarSize);
 
-		//////////////////////////////////////////////////
-		//
-		//////////////////////////////////////////////////
-		var domGroupStyle = document.createElement("span");
-		domGroupStyle.className = "ql-formats groupStyle";
-		this.toolbarContainer.appendChild(domGroupStyle);
-		this.toolbarGroups.push(domGroupStyle);
+    const domToobarFonts = document.createElement('select');
+    domToobarFonts.className = 'tb-btn ql-font';
+    domToobarFonts.innerHTML = '<option selected="selected"></option><option value="serif"></option><option value="monospace"></option>';
+    domGroupSizeType.appendChild(domToobarFonts);
 
-		var domToobarH1 = document.createElement("button");
-		domToobarH1.className = "tb-btn ql-header";
-		domToobarH1.value = "1";
-		domGroupStyle.appendChild(domToobarH1);
+    //////////////////////////////////////////////////
+    //
+    //////////////////////////////////////////////////
+    const domGroupDefault = document.createElement('span');
+    domGroupDefault.className = 'ql-formats groupDefault';
+    this.toolbarContainer.appendChild(domGroupDefault);
+    this.toolbarGroups.push(domGroupDefault);
 
-		var domToobarH2 = document.createElement("button");
-		domToobarH2.className = "tb-btn ql-header";
-		domToobarH2.value = "2";
-		domGroupStyle.appendChild(domToobarH2);
+    const domToobarBold = document.createElement('button');
+    domToobarBold.className = 'tb-btn ql-bold';
+    domToobarBold.innerHTML = 'B';
+    domGroupDefault.appendChild(domToobarBold);
 
-		var domToobarBlockQuote = document.createElement("button");
-		domToobarBlockQuote.className = "tb-btn ql-blockquote";
-		domGroupStyle.appendChild(domToobarBlockQuote);
+    const domToobarItalic = document.createElement('button');
+    domToobarItalic.className = 'tb-btn ql-italic';
+    domToobarItalic.innerHTML = 'I';
+    domGroupDefault.appendChild(domToobarItalic);
 
-		var domToobarCodeBlock = document.createElement("button");
-		domToobarCodeBlock.className = "tb-btn ql-code-block";
-		domGroupStyle.appendChild(domToobarCodeBlock);
-		//////////////////////////////////////////////////
-		//
-		//////////////////////////////////////////////////
-		var domGroupLists = document.createElement("span");
-		domGroupLists.className = "ql-formats groupLists";
-		this.toolbarContainer.appendChild(domGroupLists);
-		this.toolbarGroups.push(domGroupLists);
+    const domToobarUnderline = document.createElement('button');
+    domToobarUnderline.className = 'tb-btn ql-underline';
+    domToobarUnderline.innerHTML = 'U';
+    domGroupDefault.appendChild(domToobarUnderline);
 
-		var domToobarListOrdered = document.createElement("button");
-		domToobarListOrdered.className = "tb-btn ql-list";
-		domToobarListOrdered.value = "ordered";
-		domGroupLists.appendChild(domToobarListOrdered);
+    //////////////////////////////////////////////////
+    //
+    //////////////////////////////////////////////////
+    const domGroupStyle = document.createElement('span');
+    domGroupStyle.className = 'ql-formats groupStyle';
+    this.toolbarContainer.appendChild(domGroupStyle);
+    this.toolbarGroups.push(domGroupStyle);
 
-		var domToobarListBulled = document.createElement("button");
-		domToobarListBulled.className = "tb-btn ql-list";
-		domToobarListBulled.value = "bullet";
-		domGroupLists.appendChild(domToobarListBulled);
+    const domToobarH1 = document.createElement('button');
+    domToobarH1.className = 'tb-btn ql-header';
+    domToobarH1.value = '1';
+    domGroupStyle.appendChild(domToobarH1);
 
-		var domToobarAlign = document.createElement("select");
-		domToobarAlign.className = "tb-btn ql-align";
-		domToobarAlign.innerHTML = '<option selected=""></option><option value="center"></option><option value="right"></option><option value="justify"></option>';
-		domGroupLists.appendChild(domToobarAlign);		
+    const domToobarH2 = document.createElement('button');
+    domToobarH2.className = 'tb-btn ql-header';
+    domToobarH2.value = '2';
+    domGroupStyle.appendChild(domToobarH2);
 
-		var domToobarIndent1 = document.createElement("button");
-		domToobarIndent1.className = "tb-btn ql-indent";
-		domToobarIndent1.value = "-1";
-		domGroupLists.appendChild(domToobarIndent1);
+    const domToobarBlockQuote = document.createElement('button');
+    domToobarBlockQuote.className = 'tb-btn ql-blockquote';
+    domGroupStyle.appendChild(domToobarBlockQuote);
 
-		var domToobarIndent2 = document.createElement("button");
-		domToobarIndent2.className = "tb-btn ql-indent";
-		domToobarIndent2.value = "+1";
-		domGroupLists.appendChild(domToobarIndent2);
-		//////////////////////////////////////////////////
-		//
-		//////////////////////////////////////////////////
-		var domGroupColor = document.createElement("span");
-		domGroupColor.className = "ql-formats groupColor";
-		this.toolbarContainer.appendChild(domGroupColor);
-		this.toolbarGroups.push(domGroupColor);
+    const domToobarCodeBlock = document.createElement('button');
+    domToobarCodeBlock.className = 'tb-btn ql-code-block';
+    domGroupStyle.appendChild(domToobarCodeBlock);
+    //////////////////////////////////////////////////
+    //
+    //////////////////////////////////////////////////
+    const domGroupLists = document.createElement('span');
+    domGroupLists.className = 'ql-formats groupLists';
+    this.toolbarContainer.appendChild(domGroupLists);
+    this.toolbarGroups.push(domGroupLists);
 
-		var domToobarColor = document.createElement("select");
-		domToobarColor.className = "tb-btn ql-color";
-		domToobarColor.innerHTML = '<option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option>';
-		domGroupColor.appendChild(domToobarColor);
+    const domToobarListOrdered = document.createElement('button');
+    domToobarListOrdered.className = 'tb-btn ql-list';
+    domToobarListOrdered.value = 'ordered';
+    domGroupLists.appendChild(domToobarListOrdered);
 
-		var domToobarBackground = document.createElement("select");
-		domToobarBackground.className = "tb-btn ql-background";
-		domToobarBackground.innerHTML = "BC";
-		domGroupColor.appendChild(domToobarBackground);
-	}
+    const domToobarListBulled = document.createElement('button');
+    domToobarListBulled.className = 'tb-btn ql-list';
+    domToobarListBulled.value = 'bullet';
+    domGroupLists.appendChild(domToobarListBulled);
+
+    const domToobarAlign = document.createElement('select');
+    domToobarAlign.className = 'tb-btn ql-align';
+    domToobarAlign.innerHTML = '<option selected=""></option><option value="center"></option><option value="right"></option><option value="justify"></option>';
+    domGroupLists.appendChild(domToobarAlign);
+
+    const domToobarIndent1 = document.createElement('button');
+    domToobarIndent1.className = 'tb-btn ql-indent';
+    domToobarIndent1.value = '-1';
+    domGroupLists.appendChild(domToobarIndent1);
+
+    const domToobarIndent2 = document.createElement('button');
+    domToobarIndent2.className = 'tb-btn ql-indent';
+    domToobarIndent2.value = '+1';
+    domGroupLists.appendChild(domToobarIndent2);
+    //////////////////////////////////////////////////
+    //
+    //////////////////////////////////////////////////
+    const domGroupColor = document.createElement('span');
+    domGroupColor.className = 'ql-formats groupColor';
+    this.toolbarContainer.appendChild(domGroupColor);
+    this.toolbarGroups.push(domGroupColor);
+
+    const domToobarColor = document.createElement('select');
+    domToobarColor.className = 'tb-btn ql-color';
+    domToobarColor.innerHTML = '<option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option>';
+    domGroupColor.appendChild(domToobarColor);
+
+    const domToobarBackground = document.createElement('select');
+    domToobarBackground.className = 'tb-btn ql-background';
+    domToobarBackground.innerHTML = 'BC';
+    domGroupColor.appendChild(domToobarBackground);
+  }
 }

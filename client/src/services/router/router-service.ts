@@ -1,10 +1,24 @@
 import { State, IRouter } from './types';
 
-export class Router{
-    private static stateMap:Map<string, IRouter>;
-    protected static state : State;
+export class Router {
+    private static stateMap: Map<string, IRouter>;
+    protected static module: string;
+    protected static urlParameters: Array<string>;
 
-    constructor(){
+    constructor() {
+    }
+ 
+    public static getPath(): string {
+        return location.hash.replace('#', '');
+    }
+
+    public static readUrl(): void {
+        const urlParameters = location.hash.replace('#', '');
+        if (urlParameters) {
+            this.urlParameters = urlParameters.split('/');
+        } else {
+            this.urlParameters = new Array<string>();
+        }
     }
 
     /**
@@ -12,8 +26,8 @@ export class Router{
      * @param key - An identifier key
      * @param value - 
      */
-    public static register(key:string, value:IRouter){
-        if(Router.stateMap == null){
+    public static register(key: string, value: IRouter): void {
+        if (Router.stateMap == null) {
             Router.stateMap = new Map<string, IRouter>();
             window.onpopstate = function(event: PopStateEvent) {
                 event.preventDefault();
@@ -26,11 +40,9 @@ export class Router{
     /**
      * Does the same as the back button
      */
-    public static back(){
-        console.log("back");
-        if(window.history.length>0){
+    public static back(): void {
+        if (window.history.length > 0) {
             window.history.back();
-            
         }
     }
 
@@ -40,28 +52,33 @@ export class Router{
      * @param title 
      * @param url 
      */
-    public static set(state : State, title : string, url : string){
-        if(title){
+    public static set(module: string, title: string, url: string): void {
+        this.module = module;
+        if (title) {
             document.title = title;
         }
 
-        window.history.pushState(state, title, "#" + (!url?"":url));
+        window.history.pushState(module, title, '#' + ( !url ? '' : url ));
 
-        Router.load(state);
+        Router.load(module);
     }
 
     /**
      * Loads a specific state
      * @param state 
      */
-    private static load(state : State){
-        if(Router.stateMap.has(state.key)){
-            Router.state = state;
-            Router.stateMap.get(state.key).load(state);
+    private static load(module: string): void {
+        Router.readUrl();
+        if (Router.stateMap.has(module)) {
+            Router.stateMap.get(module).load(module, Router.getUrlparameters());
         }
     }
 
-    public static getCurrentState() : State{
-        return Router.state;
+    public static getCurrentModule(): string {
+        return Router.module;
+    }
+
+    public static getUrlparameters(): Array<string> {
+        return this.urlParameters;
     }
 }

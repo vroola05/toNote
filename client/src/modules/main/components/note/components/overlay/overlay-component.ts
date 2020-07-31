@@ -11,48 +11,48 @@ export default class OverlayComponent {
 
     constructor( ) {
 
-        this.dom.className = "noteOverlay";
+        this.dom.className = 'noteOverlay';
 
         const noteOverlayMessage: HTMLDivElement = document.createElement('div');
-        noteOverlayMessage.className = "noteOverlayMessage";
-        noteOverlayMessage.innerText = Lang.get("main_note_content_no_note");
+        noteOverlayMessage.className = 'noteOverlayMessage';
+        noteOverlayMessage.innerText = Lang.get('main_note_content_no_note');
         this.dom.appendChild(noteOverlayMessage);
-        this.dom.addEventListener("animationend", (a) => {
+        this.dom.addEventListener('animationend', (a) => {
             this.setLoaded();
         });
     }
 
     private setLoaded() {
-        this.dom.classList.remove("loading");
-        this.dom.classList.add("loaded");
-        if(this.onanimationend !== undefined){
+        this.dom.classList.remove('loading');
+        this.dom.classList.add('loaded');
+        if (this.onanimationend !== undefined) {
             this.onanimationend();
         }
     }
 
-    public isHidden (): boolean {
+    public isHidden(): boolean {
         return this.hidden;
     }
 
-    public hide(onanimationend: any = undefined){
-        if( !this.hidden ){
+    public hide(onanimationend: any = undefined) {
+        if ( !this.hidden ) {
             this.onanimationend = onanimationend;
             this.hidden = true;
-            this.dom.classList.remove("loaded");
-            this.dom.classList.add("loading");
-            this.dom.classList.add("inactive");
-            this.dom.classList.remove("active");
+            this.dom.classList.remove('loaded');
+            this.dom.classList.add('loading');
+            this.dom.classList.add('inactive');
+            this.dom.classList.remove('active');
         }
         
     }
 
-    public show(onanimationend: any = undefined){
-        if( this.hidden ){
+    public show(onanimationend: any = undefined) {
+        if ( this.hidden ) {
             this.onanimationend = onanimationend;
             this.hidden = false;
-            this.dom.classList.add("loading");
-            this.dom.classList.remove("inactive");
-            this.dom.classList.add("active");
+            this.dom.classList.add('loading');
+            this.dom.classList.remove('inactive');
+            this.dom.classList.add('active');
         }
     }
 

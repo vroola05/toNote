@@ -8,7 +8,7 @@ export class NoteComponentService {
     private static noteText: any = null;
     private static note: Note = null;
 
-    constructor(){
+    constructor() {
     }
 
     public static flush() {
@@ -17,27 +17,27 @@ export class NoteComponentService {
     }
 
     public static onNoteChanged(event: any) {
-      this.event.on("change", event);
+      this.event.on('change', event);
     }
     public static noteChanged(note: Note) {
       NoteComponentService.note = note;
     }
-    public static sendNote(){
-      if(NoteComponentService.note != null) {
-        this.event.emit("change", NoteComponentService.note);
+    public static sendNote() {
+      if (NoteComponentService.note != null) {
+        this.event.emit('change', NoteComponentService.note);
       }
       NoteComponentService.note = null;
     }
     
     public static onNoteTextChanged(event: any) {
-      this.event.on("text-change", event);
+      this.event.on('text-change', event);
     }
     public static noteTextChanged(noteText: any) {
       NoteComponentService.noteText = noteText;
     }
-    public static sendNoteText(){
-      if(NoteComponentService.noteText != null) {
-        this.event.emit("text-change", NoteComponentService.noteText);
+    public static sendNoteText() {
+      if (NoteComponentService.noteText != null) {
+        this.event.emit('text-change', NoteComponentService.noteText);
       }
       NoteComponentService.noteText = null;
     }

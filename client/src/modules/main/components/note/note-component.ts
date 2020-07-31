@@ -10,17 +10,17 @@ import { Util } from '../../../../components/util/util';
 import { NoteComponentService } from './note-component-service';
 
 export default class NoteComponent extends Tab {
-    private notebookId : number = null;
-    private chapterId : number = null;
-    private noteId : number = null;
+    private notebookId: number = null;
+    private chapterId: number = null;
+    private noteId: number = null;
     private overlayComponent: OverlayComponent;
     private noteContentComponent: NoteContentComponent;
 
     private object: any;
 
-    constructor(){
+    constructor() {
         super();
-        this.dom.className = this.dom.className +" tabNote";
+        this.dom.className = this.dom.className + ' tabNote';
 
         this.overlayComponent = new OverlayComponent();
         this.dom.appendChild(this.overlayComponent.dom);
@@ -28,20 +28,20 @@ export default class NoteComponent extends Tab {
         this.noteContentComponent = new NoteContentComponent();
         this.dom.appendChild(this.noteContentComponent.dom);
 
-        NoteComponentService.onNoteChanged((note:Note) => {
+        NoteComponentService.onNoteChanged((note: Note) => {
             NoteService.putNote(this.notebookId, this.chapterId, this.noteId, note)
             .then((message: Message) => {
-                const date = this.getInfoValue(message.info, "modifyDate");
+                const date = this.getInfoValue(message.info, 'modifyDate');
                 this.noteContentComponent.setDateModified(date);
                 note.modifyDate = date;
-                NoteService.event.emit("change", note);
+                NoteService.event.emit('change', note);
             });
         });
 
         NoteComponentService.onNoteTextChanged((text: any) => {
             NoteService.putNoteContent(this.notebookId, this.chapterId, this.noteId, text)
             .then((message: Message) => {
-                this.noteContentComponent.setDateModified(this.getInfoValue(message.info, "modifyDate"));
+                this.noteContentComponent.setDateModified(this.getInfoValue(message.info, 'modifyDate'));
             });
         });
         
@@ -50,8 +50,8 @@ export default class NoteComponent extends Tab {
     /**
      * 
      */
-    public onHide() : void {
-        if(Util.getDevice() == Constants.mobile) {
+    public onHide(): void {
+        if (Util.getDevice() === Constants.mobile) {
             this.noteContentComponent.hide();
             this.overlayComponent.show();
             this.clear();
@@ -64,7 +64,7 @@ export default class NoteComponent extends Tab {
         }
     }
 
-    public clear() : void {
+    public clear(): void {
         this.noteContentComponent.clear();
         this.notebookId = null;
         this.chapterId = null;
@@ -72,17 +72,17 @@ export default class NoteComponent extends Tab {
         this.object = null;
     }
 
-    public hasContent() : boolean{
+    public hasContent(): boolean {
         return this.object != null;
     }
 
-    public getItem( mainState: MainState ) : Promise<any> {
+    public getItem( notebookId: number, chapterId: number, notesId: number ): Promise<any> {
         this.clear();
-        this.notebookId = mainState.notebook.id;
-        this.chapterId = mainState.chapter.id
-        this.noteId = mainState.note.id;
-        return NoteService.getNote(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((note:Note) => {
-            NoteService.getNoteContent(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((content:any) => {
+        this.notebookId = notebookId;
+        this.chapterId = chapterId;
+        this.noteId = notesId;
+        return NoteService.getNote(notebookId, chapterId, notesId).then((note: Note) => {
+            NoteService.getNoteContent(notebookId, chapterId, notesId).then((content: any) => {
                 this.noteContentComponent.setNote(note);
                 if (content) {
                     this.object = JSON.parse(content);
@@ -99,13 +99,13 @@ export default class NoteComponent extends Tab {
                 return note;
             }).catch((error: Error) => {
                 console.error(error.stack);   
-                throw error 
+                throw error; 
             });
             
             this.show();
         }).catch((error: Error) => {
             console.error(error.stack);   
-            throw error 
+            throw error; 
         });
     }
 }

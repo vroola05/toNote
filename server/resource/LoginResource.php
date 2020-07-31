@@ -25,13 +25,13 @@ class LoginResource {
         }
         
         if( $user==null || !array_key_exists("username", $user) || $user->username == "" ){
-            Http::setStatus(401);
+            Http::setStatus(200);
             Http::remand(new \Core\Message(401, Lang::get("generic_status_401")),Http::CONTENT_TYPE_JSON);
             return false;
         }
         
         if( !array_key_exists("password", $user) || $user->password == "" ){
-            Http::setStatus(401);
+            Http::setStatus(200);
             Http::remand(new \Core\Message(401, Lang::get("generic_status_401")),Http::CONTENT_TYPE_JSON);
             return false;
         }
@@ -40,7 +40,7 @@ class LoginResource {
         $connection->dbConnect();
         
         $u = $connection->getSingleItem(new User(), "select * from users where username = ? and active = 1", array($user->username));
-        if ($u !== false) {
+        if (isset($u) && $u !== false) {
             if ($u->userId !== null && $u->password != null && $u->password != "") {
                 if (password_verify($user->password, $u->password) === true) {
                     //If the password algorithm has changed update the password
@@ -58,7 +58,7 @@ class LoginResource {
             } 
         }
         
-        Http::setStatus(401);
+        Http::setStatus(200);
         Http::remand(new \Core\Message(401, Lang::get("login_login_failed")),Http::CONTENT_TYPE_JSON);
         return false;
     }

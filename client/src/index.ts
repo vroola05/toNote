@@ -1,4 +1,4 @@
-import "./styles.scss";
+import './styles.scss';
 import ConfigService from './services/config/configService';
 import Lang from './components/language/lang';
 
@@ -11,33 +11,30 @@ import SettingsModule from './modules/settings/settings-module';
 
 import { LoginService } from './services/http/login-service';
 
-    
+
 
 
 class Startup {
-    public static main(): number {
-        
-        ////////////////////////////////////////
-        // 
-        ////////////////////////////////////////
-        new ConfigService( function() {
-            Router.register("login", new LoginModule());
-            Router.register("main", new MainModule());
-            Router.register("settings", new SettingsModule());
+  public static main(): number {
+    ////////////////////////////////////////
+    // 
+    ////////////////////////////////////////
+    const conf = new ConfigService(() => {
+      Router.readUrl();
+      Router.register('login', new LoginModule());
+      Router.register('main', new MainModule());
+      Router.register('settings', new SettingsModule());
 
-            const loginService : LoginService = new LoginService();
-            loginService.check().then(()=>{
-                let state = window.history.state;
-                if(state==null){
-                    state = { "key" : "main", value : null};
-                }
-                Router.set(state, Lang.get("state_title_notebooks"),null);
-            }).catch(() => {});
-        } );
-        
-        
-        return 0;
-    }
+      const loginService: LoginService = new LoginService();
+      loginService.check().then(() => {
+        const path = Router.getPath();
+
+        Router.set('main', Lang.get('state_title_notebooks'), path);
+      }).catch(() => { });
+    });
+
+    return 0;
+  }
 }
 
 Startup.main();

@@ -11,8 +11,8 @@ export class Tab {
     public dom: HTMLElement;
 
     constructor() {
-        this.dom = document.createElement("div");
-        this.dom.className = "tab";
+        this.dom = document.createElement('div');
+        this.dom.className = 'tab';
     }
 
     /**
@@ -44,7 +44,7 @@ export class Tab {
     }
 
     public getStackSize(): number {
-        if (this.dom.classList.contains("stack")) {
+        if (this.dom.classList.contains('stack')) {
             return 1 + (this.child == null ? 0 : this.child.getStackSize());
         } else {
             return 0;
@@ -53,11 +53,11 @@ export class Tab {
 
     public setHidden(amount: number = 1): void {
         if (amount > 0) {
-            if (!this.dom.classList.contains("active")) {
-                this.dom.classList.add("hide");
+            if (!this.dom.classList.contains('active')) {
+                this.dom.classList.add('hide');
             }
         } else {
-            this.dom.classList.remove("hide");
+            this.dom.classList.remove('hide');
         }
         if (this.child != null) {
             this.child.setHidden(amount - 1);
@@ -102,12 +102,12 @@ export class Tab {
     }
 
     public activate(): void {
-        this.dom.classList.add("active");
-        this.dom.classList.remove("hide");
+        this.dom.classList.add('active');
+        this.dom.classList.remove('hide');
     }
 
     public deactivate(): void {
-        this.dom.classList.remove("active");
+        this.dom.classList.remove('active');
     }
 
     public deactivateAll(): void {
@@ -124,8 +124,8 @@ export class Tab {
     public show(): void {
         this.deactivateAll();
         this.activate();
-        if (!this.dom.classList.contains("stack")) {
-            this.dom.classList.add("stack");
+        if (!this.dom.classList.contains('stack')) {
+            this.dom.classList.add('stack');
         }
     }
 
@@ -138,8 +138,8 @@ export class Tab {
         if (this.child != null) {
             this.child.hide();
         }
-        this.dom.classList.remove("active");
-        this.dom.classList.remove("stack");
+        this.dom.classList.remove('active');
+        this.dom.classList.remove('stack');
     }
 
     /**
@@ -150,7 +150,7 @@ export class Tab {
 
     public getInfoValue(infoItems: Array<Info>, key: string): any {
         for (const info of infoItems) {
-            if (info.id == key) {
+            if (info.id === key) {
                 return info.value;
             }
         }

@@ -1,0 +1,6 @@
+{
+    "tslint.exclude": null,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.tslint": true
+    }
+}

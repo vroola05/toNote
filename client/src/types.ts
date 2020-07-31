@@ -1,33 +1,34 @@
-export interface Entity{
+export interface Entity {
 
 }
 
 
 export interface Info extends Entity {
     id: string;
-    value : any;
+    value: any;
 }
 
 
 export interface Message extends Entity {
     status: number;
-    message : string;
+    message: string;
     info: Array<Info> | undefined;
-    faults: { [key:string]:string } | undefined;
+    faults: { [key: string]: string } | undefined;
 }
 
 export class Note {
     id: number;
-    sectionId :number;
-    name:string;
-    note:any;
+    sectionId: number;
+    name: string;
+    note: any;
     creationDate: Date;
     modifyDate: Date | undefined;
-    hash:string | undefined;
+    hash: string | undefined;
 }
 
 export class User {
     userId: number | undefined;
+    name: string;
     username: string;
     password: string;
     active: boolean | undefined;
@@ -50,6 +51,10 @@ export class Chapter {
     modifyDate: string | undefined;
 }
 
+export class LoginState {
+    page: string | null;
+}
+
 export class MainState {
     notebook: Notebook | null;
     chapter: Chapter | null;
@@ -63,4 +68,4 @@ export enum TabEnum {
     Note = 3
 }
 
-export type Method = "POST" | "PUT" | "DELETE" | "GET";
+export type Method = 'POST' | 'PUT' | 'DELETE' | 'GET';

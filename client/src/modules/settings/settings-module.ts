@@ -1,38 +1,38 @@
 import Lang from '../../components/language/lang';
 
-import {State, IRouter} from "../../services/router/types";
+import {State, IRouter} from '../../services/router/types';
 import { User, Info, Message } from '../../types';
 import { Router } from '../../services/router/router-service';
 
 import { IWindow } from '../../components/controls/iwindow/iwindow';
 import ButtonContainedComponent from '../../components/controls/buttons/button-contained/button-contained-component';
 
-export default class LoginModule extends IWindow{
-    private settingsContainer:HTMLElement = document.createElement("div");
-    private settingsElement:HTMLElement = document.createElement("div");
-    private state: State;
+export default class LoginModule extends IWindow {
+    private settingsContainer: HTMLElement = document.createElement('div');
+    private settingsElement: HTMLElement = document.createElement('div');
+    private module: string;
 
-    constructor(){
-        super("settings",Lang.get("settings_title"));
+    constructor() {
+        super('settings', Lang.get('settings_title'));
         this.append(this.settingsContainer);
-        this.settingsContainer.className = "settingsContainer";
+        this.settingsContainer.className = 'settingsContainer';
         this.settingsContainer.appendChild(this.settingsElement);
 
-        this.settingsElement.className = "settingsElement";
+        this.settingsElement.className = 'settingsElement';
 
-        var title:HTMLElement = document.createElement("h1");
-        title.innerHTML = Lang.get("settings_title");
-        title.className = "title";
+        const title: HTMLElement = document.createElement('h1');
+        title.innerHTML = Lang.get('settings_title');
+        title.className = 'title';
         this.settingsElement.appendChild(title);
         
 
-        const btnCancel = new ButtonContainedComponent(Lang.get("settings_cancel"), () => {
-            Router.set({key : "main", value: this.state.value}, Lang.get("state_title_notebooks"),"main");
+        const btnCancel = new ButtonContainedComponent(Lang.get('settings_cancel'), () => {
+            Router.set('main', Lang.get('state_title_notebooks'), 'main');
         });
         this.settingsElement.appendChild(btnCancel.dom);
         
-        const btnSave = new ButtonContainedComponent(Lang.get("settings_save"), () => {
-            Router.set({key : "main", value: this.state.value}, Lang.get("state_title_notebooks"),"main");
+        const btnSave = new ButtonContainedComponent(Lang.get('settings_save'), () => {
+            Router.set('main', Lang.get('state_title_notebooks'), 'main');
         });
         this.settingsElement.appendChild(btnSave.dom);
 
@@ -48,8 +48,8 @@ export default class LoginModule extends IWindow{
     }
 */
 
-    public load( state : State ) : boolean {
-        this.state = state;
+    public load( module: string, route: Array<string> ): boolean {
+        this.module = module;
 
         this.show();
 

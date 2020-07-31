@@ -1,10 +1,10 @@
-import ButtonAbstract from "../button-abstract";
+import ButtonAbstract from '../button-abstract';
 
 export default class ButtonContainedComponent extends ButtonAbstract {
     
-    constructor( name: string, click: any = undefined ){
+    constructor( name: string, click: any | undefined ) {
         super(name, click);
-        this.dom.classList.add("btnContained");
+        this.dom.classList.add('btnContained');
     }
 
 }

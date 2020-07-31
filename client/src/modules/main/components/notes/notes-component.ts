@@ -14,17 +14,17 @@ import PopupConfirmComponent from '../../../../components/popups/popup-confirm/p
 import PopupMoveComponent from '../../../../components/popups/popup-move/popup-move-component';
 
 export default class NotesComponent extends TabMenu {
-    private notebookId : number;
-    private chapterId : number;
-    //private noteService: NoteService;
+    private notebookId: number;
+    private chapterId: number;
+    // private noteService: NoteService;
     
-    constructor(){
-        let labels = new Map<string,string>([
-            ["name", Lang.get("notes_name")], 
-            ["add", Lang.get("notes_add")]
+    constructor() {
+        const labels = new Map<string, string>([
+            ['name', Lang.get('notes_name')], 
+            ['add', Lang.get('notes_add')]
         ]);
-        super(labels, "notes", TabMenu.COLOR_TYPE_MENU_COLOR);
-        NoteService.event.on("change", (note:Note) => {
+        super(labels, 'notes', TabMenu.COLOR_TYPE_MENU_COLOR);
+        NoteService.event.on('change', (note: Note) => {
             this.getSelectedMenuItem().setName(note.name);
             this.getSelectedMenuItem().setObject(note);
         });
@@ -34,41 +34,38 @@ export default class NotesComponent extends TabMenu {
         this.bindDeletePopup();
     }
 
-    public clear() : void {
+    public clear(): void {
         super.clear();
         this.notebookId = null;
         this.chapterId = null;
     }
 
-    public click(item:any, identifier:number, name:string, note:Note) : void {
-        let state = Router.getCurrentState();
-        let mainState: MainState = state.value;
-        mainState.note = note;
-        state.value = mainState;
-
-        Router.set(state, Lang.get("state_title_note"), "" + TabEnum.Note );
+    public click(item: any, identifier: number, name: string, note: Note): void {
+        const module = Router.getCurrentModule();
+        const params = Router.getUrlparameters();
+        Router.set(module, Lang.get('state_title_note'), module + '/' + params[1] + '/' + params[2] + '/' + note.id);
     }
 
-    public getItems(mainState: MainState) : Promise<Array<Note>> {
-        if(this.hasItems() && this.notebookId == mainState.notebook.id && this.chapterId == mainState.chapter.id){
+    public getItems(notebookId: number, chapterId: number, notesId: number): Promise<Array<Note>> {
+        if (this.hasItems() && this.notebookId === notebookId && this.chapterId === chapterId) {
             return new Promise((resolve, reject) => {
-                if(mainState && mainState.note && mainState.note.id){
-                    this.setMenuItemActive(mainState.note.id);
+                if (notesId) {
+                    this.setMenuItemActive(notesId);
                 }
                 resolve(this.getObjects());
             });
         }
 
         this.clear();
-        this.notebookId = mainState.notebook.id;
-        this.chapterId = mainState.chapter.id;
-        return NoteService.getNotes(mainState.notebook.id, mainState.chapter.id).then((notes:Array<Note>) => {
-            if(notes !== null ){
-                for(let i in notes){
-                    this.addItem(notes[i].id, notes[i].name, notes[i], undefined);
+        this.notebookId = notebookId;
+        this.chapterId = chapterId;
+        return NoteService.getNotes(notebookId, chapterId).then((notes: Array<Note>) => {
+            if (notes !== null ) {
+                for (const note of notes) {
+                    this.addItem(note.id, note.name, note, undefined);
                 }
-                if(mainState && mainState.note && mainState.note.id){
-                    this.setMenuItemActive(mainState.note.id);
+                if (notesId) {
+                    this.setMenuItemActive(notesId);
                 }
             }
             return notes;
@@ -78,37 +75,36 @@ export default class NotesComponent extends TabMenu {
         });
     }
 
-    private bindRenamePopup() : void {
-        const menuItem = new MenuItemComponent(svgRename, Lang.get("ctx_rename"));
+    private bindRenamePopup(): void {
+        const menuItem = new MenuItemComponent(svgRename, Lang.get('ctx_rename'));
         this.dropdownMenu.addItem(menuItem);
 
-        menuItem.click = (e:any) => {
-            const renamePopup = new PopupInputComponent(Lang.get("popup_rename_title"), Lang.get("notes_name"), this.dropdownMenu.object.name);
+        menuItem.click = (e: any) => {
+            const renamePopup = new PopupInputComponent(Lang.get('popup_rename_title'), Lang.get('notes_name'), this.dropdownMenu.object.name);
 
             renamePopup.object = this.dropdownMenu.object;
             renamePopup.click = (e, object, value) => {
-                if(value===""){
-                    renamePopup.setError("<span>" + Lang.get("popup_rename_empty") + "</span>");
+                if (value === '') {
+                    renamePopup.setError('<span>' + Lang.get('popup_rename_empty') + '</span>');
                     return;
                 }
                 object.object.name = value;
 
-                NoteService.putNote(this.notebookId, object.object.sectionId, object.object.id, object.object).then((message:Message) => {
-                    if(message.status === 200){
+                NoteService.putNote(this.notebookId, object.object.sectionId, object.object.id, object.object).then((message: Message) => {
+                    if (message.status === 200) {
                         object.setName(value);
                         object.object.name = value;
                         renamePopup.hide();
                     } else {
-                        if(message.info){
-                            let error = "";
-                            for(let i=0; i<message.info.length; i++){
-                                error += "<span>" + message.info[i].value + "</span>";
-                                
+                        if (message.info) {
+                            let error = '';
+                            for (const info of message.info) {
+                                error += '<span>' + info.value + '</span>';
                             }
                             renamePopup.setError(error);
                         }
                     }
-                }).catch((e)=>{
+                }).catch((e) => {
 
                 });
             };
@@ -116,26 +112,25 @@ export default class NotesComponent extends TabMenu {
         };
     }
 
-    private bindMovePopup() : void {
-        this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get("ctx_move"), (e:any) => {
-            const movePopup = new PopupMoveComponent(Lang.get("popup_move_title"), Lang.get("note_name") + " - " + this.dropdownMenu.object.name);
+    private bindMovePopup(): void {
+        this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get('ctx_move'), (e: any) => {
+            const movePopup = new PopupMoveComponent(Lang.get('popup_move_title'), Lang.get('note_name') + ' - ' + this.dropdownMenu.object.name);
             movePopup.object = this.dropdownMenu.object;
 
-            NoteService.getMoveNotesList(this.notebookId, this.chapterId, this.dropdownMenu.object.identifier).then((chapters:Array<Chapter>) => {
-                for(let chapter of chapters){
+            NoteService.getMoveNotesList(this.notebookId, this.chapterId, this.dropdownMenu.object.identifier).then((chapters: Array<Chapter>) => {
+                for (const chapter of chapters) {
                     movePopup.add(chapter.name, chapter);
                 }
                 movePopup.click = (e, object, value) => {
                     NoteService.moveNote(this.notebookId, object.object.sectionId, object.object.id, value.id).then((message: Message) => {
-                        if(message.status === 200){
+                        if (message.status === 200) {
                             this.removeItem(object);
                             movePopup.hide();
                         } else {
-                            if(message.info){
-                                let error = "";
-                                for(let i=0; i<message.info.length; i++){
-                                    error += "<span>" + message.info[i].value + "</span>";
-                                    
+                            if (message.info) {
+                                let error = '';
+                                for (const info of message.info) {
+                                    error += '<span>' + info.value + '</span>';
                                 }
                                 movePopup.setError(error);
                             }
@@ -149,34 +144,33 @@ export default class NotesComponent extends TabMenu {
         }));
     }
 
-    private bindDeletePopup() : void {
+    private bindDeletePopup(): void {
         
-        const menuItem = new MenuItemComponent(svgDelete, Lang.get("ctx_remove"));
+        const menuItem = new MenuItemComponent(svgDelete, Lang.get('ctx_remove'));
         this.dropdownMenu.addItem(menuItem);
         
-        menuItem.click = (e:any) => {
-            const deleteMsg = Lang.get("popup_delete_confirm_msg1") +this.dropdownMenu.object.name+ Lang.get("popup_delete_confirm_msg2");
-            const deletePopup = new PopupConfirmComponent(Lang.get("popup_delete_title"), deleteMsg);
+        menuItem.click = (e: any) => {
+            const deleteMsg = Lang.get('popup_delete_confirm_msg1') + this.dropdownMenu.object.name + Lang.get('popup_delete_confirm_msg2');
+            const deletePopup = new PopupConfirmComponent(Lang.get('popup_delete_title'), deleteMsg);
             deletePopup.object = this.dropdownMenu.object;
 
             deletePopup.click = (e, object) => {
-                NoteService.deleteNote(this.notebookId, object.object.sectionId, object.object.id).then((message:Message) => {
-                    if(message.status === 200){
+                NoteService.deleteNote(this.notebookId, object.object.sectionId, object.object.id).then((message: Message) => {
+                    if (message.status === 200) {
                         this.removeItem(object);
                         deletePopup.hide();
                     } else {
-                        if(message.info){
-                            let error = "";
-                            for(let i=0; i<message.info.length; i++){
-                                error += "<span>" + message.info[i].value + "</span>";
-                                
+                        if (message.info) {
+                            let error = '';
+                            for (const info of message.info) {
+                                error += '<span>' + info.value + '</span>';
                             }
                             deletePopup.setError(error);
                         }
                     }
                     
                     
-                }).catch((e)=>{
+                }).catch((e) => {
     
                 });
             };
@@ -184,40 +178,39 @@ export default class NotesComponent extends TabMenu {
         };
     }
 
-    public clickNewItem(e: Event) : void {
-        const newPopup = new PopupInputComponent(Lang.get("popup_new_title"), Lang.get("chapters_name"), '');
+    public clickNewItem(e: Event): void {
+        const newPopup = new PopupInputComponent(Lang.get('popup_new_title'), Lang.get('chapters_name'), '');
         newPopup.click = (e, object, value) => {
-            if(value===''){
-                newPopup.setError("<span>"+Lang.get("popup_new_msg_empty")+"</span>");
+            if (value === '') {
+                newPopup.setError('<span>' + Lang.get('popup_new_msg_empty') + '</span>');
                 return;
             }
             const note = new Note();
             note.name = value;
             note.sectionId = this.chapterId;
 
-            NoteService.postNote(this.notebookId, this.chapterId, note).then((message:Message) => {
-                if(message.status === 200){
-                    for(let i=0; i<message.info.length; i++){
-                        if(message.info[i].id === "id"){
-                            note.id = Number(message.info[i].value);
+            NoteService.postNote(this.notebookId, this.chapterId, note).then((message: Message) => {
+                if (message.status === 200) {
+                    for (const info of message.info) {
+                        if (info.id === 'id') {
+                            note.id = Number(info.value);
                             this.addItem(note.id, note.name, note, undefined);
                         }
                     }
-                    
+
                     newPopup.hide();
                 } else {
-                    if(message.info){
-                        let error = "";
-                        for(let i=0; i<message.info.length; i++){
-                            error += "<span>" + message.info[i].value + "</span>";
-                            
+                    if (message.info) {
+                        let error = '';
+                        for (const info of message.info) {
+                            error += '<span>' + info.value + '</span>';
                         }
                         newPopup.setError(error);
                     }
                 }
                 
                 
-            }).catch((e)=>{
+            }).catch((e) => {
 
             });
         };

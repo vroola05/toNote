@@ -1,4 +1,4 @@
-import { Constants } from "../../services/config/constants";
+import { Constants } from '../../services/config/constants';
 
 export  class Timer {
     
@@ -17,25 +17,25 @@ export  class Timer {
     
     constructor(time: number) {
         this.time = time;
-        this.intervals = time<=0?1:(time / this.fps);
+        this.intervals = time <= 0 ? 1 : (time / this.fps);
     }
 
     public start() {
         this.stop();
         this.counter = 0;
         this.timer = setInterval(() => {
-            if(this.interval) {
-                this.interval(Math.floor(100/this.time*this.counter));
+            if (this.interval) {
+                this.interval(Math.floor(100 / this.time * this.counter));
             }
 
-            if(this.counter >= this.intervals*this.fps) {
-                if(this.finished) {
+            if (this.counter >= this.intervals * this.fps) {
+                if (this.finished) {
                     this.finished();   
                 }
                 this.stop();
             }
 
-            this.counter+=this.intervals;
+            this.counter += this.intervals;
         }, this.intervals);
     }
 

@@ -9,13 +9,13 @@ export default class ButtonDropdownComponent extends ButtonComponent {
     public isOpened: boolean = false;
     public dropdownMenu: DropdownMenuComponent = new DropdownMenuComponent();
     
-    constructor( icon : any, description: string|undefined = undefined, click: any = undefined ){
+    constructor( icon: any, description: string|undefined = undefined, click: any = undefined ) {
         super(icon, description, click);
 
         this.dropdownMenu.event.on('close', () => {
                 this.isOpened = false;
                 this.dropdownMenu.hide();
-                Resize.remove("dropdown");
+                Resize.remove('dropdown');
             }
          );
     }
@@ -25,17 +25,17 @@ export default class ButtonDropdownComponent extends ButtonComponent {
         this.dropdownMenu.setPosition(boundingBox.left, boundingBox.top + boundingBox.height);
     }
 
-    public onClick(event:MouseEvent, buttonComponent:ButtonComponent){
-        this.isOpened=!this.isOpened;
-        if(this.isOpened){
+    public onClick(event: MouseEvent, buttonComponent: ButtonComponent) {
+        this.isOpened = !this.isOpened;
+        if (this.isOpened) {
             this.dropdownMenu.show();
             this.setPosition();
-            Resize.set("dropdown", () => {
+            Resize.set('dropdown', () => {
                 this.setPosition();
             });
             
 
-        }else{
+        } else {
             this.dropdownMenu.hide();
         }
     }

@@ -10,49 +10,49 @@ export default class PopupMoveComponent extends PopupComponent {
     private ok: ButtonContainedComponent;
 
     constructor(title: string, value: string) {
-        super(title + value, "popupMove");
+        super(title + value, 'popupMove');
 
-        this.event.on("ok", (e:any)=>{
-            if(!this.ok.disabled){
+        this.event.on('ok', (e: any) => {
+            if (!this.ok.disabled) {
                 this.click(e, this.object, this.listComponent.getValue());
             }
         });
 
-        const popupMoveContainer = document.createElement("div");
-        popupMoveContainer.className = "popupMoveContainer";
+        const popupMoveContainer = document.createElement('div');
+        popupMoveContainer.className = 'popupMoveContainer';
         this.append(popupMoveContainer);
 
         this.listComponent = new ListComponent();
         popupMoveContainer.appendChild(this.listComponent.dom);
-        this.listComponent.event.on("onSelected", (object) => {
+        this.listComponent.event.on('onSelected', (object) => {
             if (object) {
                 this.ok.disabled = false;
             } else {
                 this.ok.disabled = true;
             }
         });
-        const popupErrorContainer = document.createElement("div");
-        popupErrorContainer.className = "popupErrorContainer";
+        const popupErrorContainer = document.createElement('div');
+        popupErrorContainer.className = 'popupErrorContainer';
 
-        this.popupError = document.createElement("div");
-        this.popupError.className = "popupError";
+        this.popupError = document.createElement('div');
+        this.popupError.className = 'popupError';
 
         popupErrorContainer.appendChild(this.popupError);
         this.append(popupErrorContainer);
 
-        const popupInputBtnContainer = document.createElement("div");
-        popupInputBtnContainer.className = "popupInputBtnContainer";
-        const cancel = new ButtonOutlinedComponent(Lang.get("popup_btn_cancel"), ()=>{
+        const popupInputBtnContainer = document.createElement('div');
+        popupInputBtnContainer.className = 'popupInputBtnContainer';
+        const cancel = new ButtonOutlinedComponent(Lang.get('popup_btn_cancel'), () => {
             this.hide();
         });
-        cancel.classList.add("btnCancel");
+        cancel.classList.add('btnCancel');
         popupInputBtnContainer.appendChild(cancel.dom);
 
-        this.ok = new ButtonContainedComponent(Lang.get("popup_btn_ok"), (e:any)=>{
+        this.ok = new ButtonContainedComponent(Lang.get('popup_btn_ok'), (e: any) => {
             this.click(e, this.object, this.listComponent.getValue());
         });
         this.ok.disabled = true;
-        this.ok.classList.add("btnOk");
+        this.ok.classList.add('btnOk');
         popupInputBtnContainer.appendChild(this.ok.dom);
         this.append(popupInputBtnContainer);
     }
@@ -61,13 +61,13 @@ export default class PopupMoveComponent extends PopupComponent {
         super.show();
     }
 
-    public add(value:string, object:any) {
+    public add(value: string, object: any) {
         this.listComponent.add(value, object);
     }
 
     public click(e: any, object: any, value: any): void {
         
-        alert("Not yet implemented!");
+        alert('Not yet implemented!');
     }
     public setError(message: string): void {
         this.popupError.innerHTML = message;
