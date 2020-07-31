@@ -41,14 +41,9 @@ export default class ChaptersComponent extends TabMenu {
     }
 
     public click(item: any, identifier: number, name: string, chapter: Chapter): void {
-        const state = Router.getCurrentState();
-
-        const mainState: MainState = state.value;
-        mainState.chapter = chapter;
-        mainState.note = null;
-        state.value = mainState;
-        
-        Router.set(state, Lang.get('state_title_notes'),  'main/' + mainState.notebook.id + '/' + mainState.chapter.id );
+        const module = Router.getCurrentModule();
+        const params = Router.getUrlparameters();
+        Router.set(module, Lang.get('state_title_notes'),  module + '/' + params[1] + '/' + chapter.id );
     }
 
     public clear(): void {
@@ -56,11 +51,11 @@ export default class ChaptersComponent extends TabMenu {
         this.notebookId = null;
     }
 
-    public getItems(mainState: MainState): Promise<Array<Chapter>> {
-        if (this.hasItems() && this.notebookId === mainState.notebook.id ) {
+    public getItems(notebookId: number, chapterId: number): Promise<Array<Chapter>> {
+        if (this.hasItems() && this.notebookId === notebookId ) {
             return new Promise((resolve, reject) => {
-                if (mainState && mainState.chapter && mainState.chapter.id) {
-                    this.setMenuItemActive(mainState.chapter.id);
+                if (chapterId) {
+                    this.setMenuItemActive(chapterId);
                 }
 
                 resolve(this.getObjects());
@@ -68,16 +63,16 @@ export default class ChaptersComponent extends TabMenu {
         }
 
         this.clear();
-        this.notebookId = mainState.notebook.id;
+        this.notebookId = notebookId;
 
-        return ChapterService.getChapters(mainState.notebook.id).then((chapters: Array<Chapter>) => {
+        return ChapterService.getChapters(notebookId).then((chapters: Array<Chapter>) => {
             if (chapters !== null ) {
                 for (const chapter of chapters) {
                     this.addItem(chapter.id, chapter.name, chapter, chapter.color);
                 }
 
-                if (mainState && mainState.chapter && mainState.chapter.id) {
-                    this.setMenuItemActive(mainState.chapter.id);
+                if (chapterId) {
+                    this.setMenuItemActive(chapterId);
                 }
             }
             return chapters;

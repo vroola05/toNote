@@ -41,34 +41,31 @@ export default class NotesComponent extends TabMenu {
     }
 
     public click(item: any, identifier: number, name: string, note: Note): void {
-        const state = Router.getCurrentState();
-        const mainState: MainState = state.value;
-        mainState.note = note;
-        state.value = mainState;
-
-        Router.set(state, Lang.get('state_title_note'), 'main/' + mainState.notebook.id + '/' + mainState.chapter.id + '/' + mainState.note.id);
+        const module = Router.getCurrentModule();
+        const params = Router.getUrlparameters();
+        Router.set(module, Lang.get('state_title_note'), module + '/' + params[1] + '/' + params[2] + '/' + note.id);
     }
 
-    public getItems(mainState: MainState): Promise<Array<Note>> {
-        if (this.hasItems() && this.notebookId == mainState.notebook.id && this.chapterId == mainState.chapter.id) {
+    public getItems(notebookId: number, chapterId: number, notesId: number): Promise<Array<Note>> {
+        if (this.hasItems() && this.notebookId === notebookId && this.chapterId === chapterId) {
             return new Promise((resolve, reject) => {
-                if (mainState && mainState.note && mainState.note.id) {
-                    this.setMenuItemActive(mainState.note.id);
+                if (notesId) {
+                    this.setMenuItemActive(notesId);
                 }
                 resolve(this.getObjects());
             });
         }
 
         this.clear();
-        this.notebookId = mainState.notebook.id;
-        this.chapterId = mainState.chapter.id;
-        return NoteService.getNotes(mainState.notebook.id, mainState.chapter.id).then((notes: Array<Note>) => {
+        this.notebookId = notebookId;
+        this.chapterId = chapterId;
+        return NoteService.getNotes(notebookId, chapterId).then((notes: Array<Note>) => {
             if (notes !== null ) {
                 for (const note of notes) {
                     this.addItem(note.id, note.name, note, undefined);
                 }
-                if (mainState && mainState.note && mainState.note.id) {
-                    this.setMenuItemActive(mainState.note.id);
+                if (notesId) {
+                    this.setMenuItemActive(notesId);
                 }
             }
             return notes;

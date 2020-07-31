@@ -83,9 +83,7 @@ export default class LoginComponent {
                 message.info.forEach( (info: Info) => {
                     if (info.id === 'apikey' && info.value !== undefined && info.value !== '') {
                         AuthenticationService.setApikey(info.value);
-
-                        Router.set({ key : 'main', value : null}, Lang.get('state_title_notebooks'), 'main');
-                        // this.hide();
+                        Router.set('main', Lang.get('state_title_notebooks'), 'main');
                     }
                 });
             }

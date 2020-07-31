@@ -22,9 +22,9 @@ export default class LoginModule extends IWindow {
         this.append(this.loginComponent.dom);
     }
 
-    public load(state: State, route: Array<string>): boolean {
-        if (this.isStateLoaded(state)) {
-        }
+    public load(module: string, route: Array<string>): boolean {
+        /* if (this.isStateLoaded(state)) {
+        } */
 
 
         this.show();

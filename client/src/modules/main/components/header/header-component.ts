@@ -82,12 +82,12 @@ export default class HeaderComponent {
     })) as ButtonDropdownComponent;
 
     btnMenu.addItem(new MenuItemComponent(svgSettings, Lang.get('header_menu_settings'), (e: any) => {
-      Router.set({ key: 'settings', value: null }, Lang.get('state_title_settings'), 'settings');
+      Router.set('settings', Lang.get('state_title_settings'), 'settings');
     }));
 
     btnMenu.addItem(new MenuItemComponent(svgLogout, Lang.get('header_menu_logout'), (e: any) => {
       new LoginService().logout().then(() => {
-        Router.set({ key: 'login', value: null }, Lang.get('state_title_login'), 'login');
+        Router.set('login', Lang.get('state_title_login'), 'login');
       }).catch(() => { });
     }));
   }

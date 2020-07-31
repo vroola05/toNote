@@ -40,7 +40,7 @@ export class IWindow implements IRouter {
         this.main.appendChild(element);
     }
 
-    public load( state: State, route: Array<string> ): boolean { console.error('NOT YET IMPLEMENTED'); return false; }
+    public load( module: string, route: Array<string> ): boolean { console.error('NOT YET IMPLEMENTED'); return false; }
 
     public setTitle(title: string) {
 

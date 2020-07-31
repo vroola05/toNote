@@ -4,5 +4,5 @@ export class State {
 }
 
 export interface IRouter {
-    load(state: State, route: Array<string>): boolean;
+    load(module: string, route: Array<string>): boolean;
 }

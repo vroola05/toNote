@@ -2,7 +2,7 @@ import { State, IRouter } from './types';
 
 export class Router {
     private static stateMap: Map<string, IRouter>;
-    protected static state: State;
+    protected static module: string;
     protected static urlParameters: Array<string>;
 
     constructor() {
@@ -52,29 +52,33 @@ export class Router {
      * @param title 
      * @param url 
      */
-    public static set(state: State, title: string, url: string): void {
+    public static set(module: string, title: string, url: string): void {
+        this.module = module;
         if (title) {
             document.title = title;
         }
 
-        window.history.pushState(state, title, '#' + ( !url ? '' : url ));
+        window.history.pushState(module, title, '#' + ( !url ? '' : url ));
 
-        Router.load(state);
+        Router.load(module);
     }
 
     /**
      * Loads a specific state
      * @param state 
      */
-    private static load(state: State): void {
+    private static load(module: string): void {
         Router.readUrl();
-        if (Router.stateMap.has(state.key)) {
-            Router.state = state;
-            Router.stateMap.get(state.key).load(state, this.urlParameters);
+        if (Router.stateMap.has(module)) {
+            Router.stateMap.get(module).load(module, Router.getUrlparameters());
         }
     }
 
-    public static getCurrentState(): State {
-        return Router.state;
+    public static getCurrentModule(): string {
+        return Router.module;
+    }
+
+    public static getUrlparameters(): Array<string> {
+        return this.urlParameters;
     }
 }

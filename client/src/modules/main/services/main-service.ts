@@ -11,7 +11,7 @@ export default class MainService {
   constructor() {
   }
 
-  public static setCurrentMainState(mainState: MainState): number {
+  /* public static setCurrentMainState(mainState: MainState): number {
     if (mainState.notebook != null && mainState.notebook.id != null) {
       if (mainState.chapter != null && mainState.chapter.id != null) {
         if (mainState.note != null && mainState.note.id != null) {
@@ -29,7 +29,7 @@ export default class MainService {
     MainService.mainStateChanged(mainState);
 
     return MainService.currentMainState;
-  }
+  }*/
 
   public static mainStateChanged(mainState: MainState): void {
     MainService.event.emit('mainStateChanged', mainState);
@@ -39,44 +39,43 @@ export default class MainService {
   }
 
   public static getCurrentMainState(): number {
-    return MainService.currentMainState;
+    const params = Router.getUrlparameters();
+    return (params.length === 4 ? TabEnum.Note : params.length === 3 ? TabEnum.Notes : params.length === 2 ? TabEnum.Chapters : TabEnum.Notebooks);
   }
 
 
+
   public static back(): void {
-    const state = Router.getCurrentState();
-    const mainState = state.value as MainState;
-    const currentState = MainService.getCurrentMainState();
+    const module = Router.getCurrentModule();
+    const params = Router.getUrlparameters();
 
-    let title = '';
-    let url = '';
-
-    const newState = new MainState();
-
-    if (currentState === TabEnum.Note) {
-      newState.notebook = mainState.notebook;
-      newState.chapter = mainState.chapter;
-      title = Lang.get('state_title_notes');
-      url = 'main/' + mainState.notebook.id + '/' + mainState.chapter.id + '/' + mainState.note.id;
-    } else if (currentState === TabEnum.Notes) {
-      newState.notebook = mainState.notebook;
-      title = Lang.get('state_title_chapters');
-      url = 'main/' + mainState.notebook.id + '/' + mainState.chapter.id;
-    } else if (currentState === TabEnum.Chapters) {
-      title = Lang.get('state_title_notebooks');
-      url = 'main/' + mainState.notebook.id;
-    } else {
-      return;
+    if (params && params.length > 1) {
+      params.pop();
     }
 
-    state.value = newState;
-    Router.set(state, title, url);
+    const currentState = MainService.getCurrentMainState();
+    
+    let title = '';
+    const url = params.join('/');
+
+    if (currentState === TabEnum.Note) {
+      title = Lang.get('state_title_notes');
+    } else if (currentState === TabEnum.Notes) {
+      title = Lang.get('state_title_chapters');
+    } else if (currentState === TabEnum.Chapters) {
+      title = Lang.get('state_title_notebooks');
+    } else {
+      title = Lang.get('state_title_notebooks');
+    }
+
+    Router.set(module, title, url);
     MainService.deviceLayoutChanged();
   }
 
   public static onDeviceLayoutChange(event: any): void {
     MainService.event.on('deviceLayoutChange', event);
   }
+
   public static deviceLayoutChanged(): void {
     MainService.event.emit('deviceLayoutChange');
   }

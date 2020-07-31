@@ -10,7 +10,7 @@ import ButtonContainedComponent from '../../components/controls/buttons/button-c
 export default class LoginModule extends IWindow {
     private settingsContainer: HTMLElement = document.createElement('div');
     private settingsElement: HTMLElement = document.createElement('div');
-    private state: State;
+    private module: string;
 
     constructor() {
         super('settings', Lang.get('settings_title'));
@@ -27,12 +27,12 @@ export default class LoginModule extends IWindow {
         
 
         const btnCancel = new ButtonContainedComponent(Lang.get('settings_cancel'), () => {
-            Router.set({key : 'main', value: this.state.value}, Lang.get('state_title_notebooks'), 'main');
+            Router.set('main', Lang.get('state_title_notebooks'), 'main');
         });
         this.settingsElement.appendChild(btnCancel.dom);
         
         const btnSave = new ButtonContainedComponent(Lang.get('settings_save'), () => {
-            Router.set({key : 'main', value: this.state.value}, Lang.get('state_title_notebooks'), 'main');
+            Router.set('main', Lang.get('state_title_notebooks'), 'main');
         });
         this.settingsElement.appendChild(btnSave.dom);
 
@@ -48,8 +48,8 @@ export default class LoginModule extends IWindow {
     }
 */
 
-    public load( state: State, route: Array<string> ): boolean {
-        this.state = state;
+    public load( module: string, route: Array<string> ): boolean {
+        this.module = module;
 
         this.show();
 

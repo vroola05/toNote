@@ -76,13 +76,13 @@ export default class NoteComponent extends Tab {
         return this.object != null;
     }
 
-    public getItem( mainState: MainState ): Promise<any> {
+    public getItem( notebookId: number, chapterId: number, notesId: number ): Promise<any> {
         this.clear();
-        this.notebookId = mainState.notebook.id;
-        this.chapterId = mainState.chapter.id;
-        this.noteId = mainState.note.id;
-        return NoteService.getNote(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((note: Note) => {
-            NoteService.getNoteContent(mainState.notebook.id, mainState.chapter.id, mainState.note.id).then((content: any) => {
+        this.notebookId = notebookId;
+        this.chapterId = chapterId;
+        this.noteId = notesId;
+        return NoteService.getNote(notebookId, chapterId, notesId).then((note: Note) => {
+            NoteService.getNoteContent(notebookId, chapterId, notesId).then((content: any) => {
                 this.noteContentComponent.setNote(note);
                 if (content) {
                     this.object = JSON.parse(content);

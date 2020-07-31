@@ -27,11 +27,9 @@ class Startup {
 
       const loginService: LoginService = new LoginService();
       loginService.check().then(() => {
-        let state = window.history.state;
-        if (state === null) {
-          state = { key: 'main', value: null };
-        }
-        Router.set(state, Lang.get('state_title_notebooks'), Router.getPath());
+        const path = Router.getPath();
+
+        Router.set('main', Lang.get('state_title_notebooks'), path);
       }).catch(() => { });
     });
 

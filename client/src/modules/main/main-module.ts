@@ -1,6 +1,6 @@
 import { State, IRouter } from '../../services/router/types';
 import { IWindow } from '../../components/controls/iwindow/iwindow';
-import { MainState, TabEnum } from '../../types';
+import { MainState, TabEnum, Notebook } from '../../types';
 
 import HeaderComponent from './components/header/header-component';
 import ButtonComponent from '../../components/controls/buttons/button-icon/button-icon-component';
@@ -25,7 +25,7 @@ export default class MainModule extends IWindow {
 
     protected headerComponent: HeaderComponent = new HeaderComponent(this);
 
-    public state: State;
+    public module: string;
 
     constructor() {
         super('main', 'Notities');
@@ -55,32 +55,54 @@ export default class MainModule extends IWindow {
         };
     }
 
-    public load( state: State, route: Array<string> ): boolean {
-        console.log('route', route);
-        if (state.value == null) {
-            state.value = new MainState();
+    public load( module: string, route: Array<string> ): boolean {
+        if (!route) {
+            route = [];
+        } else {
+            // route.shift();
         }
 
-        this.state = state;
+        this.module = module;
         HeaderService.setTitleMain('');
         HeaderService.setTitleSub('');
 
-        const newState: MainState = state.value;
-        const currentState = MainService.setCurrentMainState(state.value);
+        const currentState = (route.length === 4 ? TabEnum.Note : route.length === 3 ? TabEnum.Notes : route.length === 2 ? TabEnum.Chapters : TabEnum.Notebooks);
 
-        this.loadNotebooks(currentState, newState);
+        switch (currentState) {
+            case TabEnum.Note:
+                this.loadNotebooks(Number(route[1]), Number(route[2]), Number(route[3]));
+                break;
+            case TabEnum.Notes:
+                this.loadNotebooks(Number(route[1]), Number(route[2]));
+                break;
+            case TabEnum.Chapters:
+                this.loadNotebooks(Number(route[1]));
+                break;
+            case TabEnum.Notebooks:
+                this.loadNotebooks();
+                break;
+        }
+
         this.show();
         return true;
     }
 
-    private loadNotebooks(state: number, newState: MainState) {
-        this.notebooksComponent.getItems(newState).then(() => {
+    private loadNotebooks(notebookId?: number, chapterId?: number, notesId?: number) {
+        this.notebooksComponent.getItems(notebookId).then((notebooks: Array<Notebook>) => {
             this.notebooksComponent.show();
-            if (state === TabEnum.Chapters || state === TabEnum.Notes || state === TabEnum.Note) {
-                HeaderService.setTitleMain(newState.notebook.name);
-                this.chaptersComponent.getItems(newState).then(() => {
+            if (notebookId) {
+                notebooks.filter((n) => n.id === notebookId).forEach(n => {
+                    HeaderService.setTitleMain(n.name);
+                });
+
+                this.chaptersComponent.getItems(notebookId, chapterId).then((chapters) => {
+                    chapters.filter((c) => c.id === chapterId).forEach(c => {
+                        HeaderService.setTitleSub(c.name);
+                        this.notesComponent.setMenuColor(c.color);
+                    });
+
                     this.chaptersComponent.show();
-                    this.loadChapters(state, newState);
+                    this.loadChapters(notebookId, chapterId, notesId);
                 }).catch(() => {}); 
             } else {
                 this.notebooksComponent.setDeviceLayout();
@@ -89,13 +111,11 @@ export default class MainModule extends IWindow {
         }).catch(() => {});
     }
 
-    private loadChapters(state: number, newState: MainState) {
-        if (state === TabEnum.Notes || state === TabEnum.Note) {
-            HeaderService.setTitleSub(newState.chapter.name);
-            this.notesComponent.getItems(newState).then(() => {
-                this.notesComponent.setMenuColor(newState.chapter.color);
+    private loadChapters(notebookId?: number, chapterId?: number, notesId?: number) {
+        if (chapterId) {
+            this.notesComponent.getItems(notebookId, chapterId, notesId).then(() => {
                 this.notesComponent.show();
-                this.loadNote(state, newState);
+                this.loadNote(notebookId, chapterId, notesId);
             }).catch(() => {});
         } else {
             this.notebooksComponent.setDeviceLayout();
@@ -103,9 +123,9 @@ export default class MainModule extends IWindow {
         }
     }
 
-    private loadNote(state: number, newState: MainState) {
-        if (state === TabEnum.Note) {
-            this.noteComponent.getItem(newState).then(() => {
+    private loadNote(notebookId?: number, chapterId?: number, notesId?: number): void {
+        if (notesId) {
+            this.noteComponent.getItem(notebookId, chapterId, notesId).then(() => {
                 this.noteComponent.show();
                 this.notebooksComponent.setDeviceLayout();
             }).catch(() => {}); 

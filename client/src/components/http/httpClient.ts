@@ -49,16 +49,16 @@ export default class HttpClient {
             headers.append('Content-Type', 'application/json');   
         }
 
-        return fetch(this.apiUrl + endpoint, requestOptions).then(function(response) {
-            if (response.status === 401 && (!Router.getCurrentState() || Router.getCurrentState().key !== 'login') ) {
-                Router.set({ key : 'login', value : null}, Lang.get('state_title_login'), 'login');
+        return fetch(this.apiUrl + endpoint, requestOptions).then((response) => {
+            if (response.status === 401 && (!Router.getCurrentModule() || Router.getCurrentModule() !== 'login') ) {
+                Router.set('login', Lang.get('state_title_login'), 'login');
             } else {
                 return response.json().catch((error) => {
                     throw error;
                 }) as Promise<T>;
             } 
         })
-        .catch(function(error) {
+        .catch((error) => {
             throw error;
         });
     }

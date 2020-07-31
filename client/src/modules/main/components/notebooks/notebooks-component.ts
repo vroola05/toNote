@@ -28,19 +28,15 @@ export default class NotebooksComponent extends TabMenu {
     }
 
     public click(item: any, identifier: number, name: string, notebook: Notebook): void {
-        const state = Router.getCurrentState();
-        const mainState = new MainState();
-        mainState.notebook = notebook;
-        state.value = mainState;
-        Router.set(state, Lang.get('state_title_chapters'),  'main/' + mainState.notebook.id );
+        const module = Router.getCurrentModule();
+        Router.set(module, Lang.get('state_title_chapters'),  module + '/' + notebook.id );
     }
 
-    public getItems(mainState: MainState= null): Promise<any> {
-        
+    public getItems(id: number = null): Promise<any> {
         if (this.hasItems()) {
             return new Promise((resolve, reject) => {
-                if (mainState && mainState.notebook && mainState.notebook.id) {
-                    this.setMenuItemActive(mainState.notebook.id);
+                if (id) {
+                    this.setMenuItemActive(id);
                 }
                 resolve(this.getObjects());
                 
@@ -52,8 +48,8 @@ export default class NotebooksComponent extends TabMenu {
                 for (const notebook of notebooks) {
                     this.addItem(notebook.id, notebook.name, notebook, undefined);
                 }
-                if (mainState && mainState.notebook && mainState.notebook.id) {
-                    this.setMenuItemActive(mainState.notebook.id);
+                if (id) {
+                    this.setMenuItemActive(id);
                 }
             }
             return notebooks;
