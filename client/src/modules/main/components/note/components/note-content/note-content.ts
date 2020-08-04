@@ -84,16 +84,25 @@ export default class NoteContentComponent {
             this.toolbar.calculateToolbarPages();
         });
 
+        this.setLocked(HeaderService.getBtnLocked());
         HeaderService.onBtnLockedChange((locked: boolean) => {
-            if (locked) {
-                this.editor.enable();
-            } else {
-                this.editor.disable();
-            }
+            this.setLocked(locked);
         });
 
         this.onNoteUpdate();
         this.onNoteTextUpdate();
+    }
+
+    private setLocked(locked: boolean) {
+        if (locked) {
+            this.toolbar.hide();
+            this.titlebarComponent.disable();
+            this.editor.disable();
+        } else {
+            this.editor.enable();
+            this.titlebarComponent.enable();
+            this.toolbar.show();
+        }
     }
 
     private onNoteTextUpdate(): void {

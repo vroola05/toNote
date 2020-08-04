@@ -58,8 +58,6 @@ export default class MainModule extends IWindow {
     public load( module: string, route: Array<string> ): boolean {
         if (!route) {
             route = [];
-        } else {
-            // route.shift();
         }
 
         this.module = module;
@@ -82,7 +80,7 @@ export default class MainModule extends IWindow {
                 this.loadNotebooks();
                 break;
         }
-
+        MainService.setCurrentMainState(currentState);
         this.show();
         return true;
     }

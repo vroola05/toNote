@@ -7,7 +7,6 @@ export default class TitlebarComponent {
 
     constructor() {
         this.dom.className = 'titlebar';
-        this.dom.contentEditable = 'true';
         this.dom.addEventListener('input', () => {
             this.event.emit('change', this.value);
         });
@@ -21,5 +20,13 @@ export default class TitlebarComponent {
 
     public get value(): string {
          return this.dom.innerText.replace(/\n/g, ' ');
+    }
+
+    public enable(): void {
+        this.dom.contentEditable = 'true';
+    }
+
+    public disable(): void {
+        this.dom.contentEditable = 'false';
     }
 }

@@ -51,11 +51,12 @@ export default class ToolbarComponent {
   }
 
   public show() {
-
+    this.dom.classList.remove('hidden');
+    this.calculateToolbarPages();
   }
 
   public hide() {
-
+    this.dom.classList.add('hidden');
   }
 
   public calculateToolbarPages() {

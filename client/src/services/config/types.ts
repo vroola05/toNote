@@ -6,3 +6,7 @@ export interface ApplicationConfig {
         delay: number
     };
 }
+
+export interface SessionState {
+    locked: boolean;
+}

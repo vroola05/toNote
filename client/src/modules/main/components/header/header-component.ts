@@ -67,8 +67,8 @@ export default class HeaderComponent {
       open: { icon: svgUnlocked, description: Lang.get('header_icon_unlocked') },
       closed: { icon: svgLocked, description: Lang.get('header_icon_locked') }
     }, (event: any, item: ButtonToggleComponent) => {
-      HeaderService.setBtnLocked(item.isOpened);
-    }));
+      HeaderService.setBtnLocked(!item.isOpened);
+    }, !HeaderService.getBtnLocked()));
   }
 
   private createMenuRight(): void {
@@ -99,14 +99,14 @@ export default class HeaderComponent {
   }
 
   public setOnStateChange(): void {
-    MainService.onMainStateChange((mainState: MainState) => {
-      if (MainService.getCurrentMainState() === TabEnum.Notebooks) {
+    MainService.onMainStateChange((currentMainState: number) => {
+      if (currentMainState === TabEnum.Notebooks) {
         this.btnBack.hide();
       } else {
         this.btnBack.show();
       }
 
-      if (MainService.getCurrentMainState() !== TabEnum.Note) {
+      if (currentMainState !== TabEnum.Note) {
         this.btnLock.hide();
       } else {
         this.btnLock.show();

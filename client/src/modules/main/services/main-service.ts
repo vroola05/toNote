@@ -11,29 +11,17 @@ export default class MainService {
   constructor() {
   }
 
-  /* public static setCurrentMainState(mainState: MainState): number {
-    if (mainState.notebook != null && mainState.notebook.id != null) {
-      if (mainState.chapter != null && mainState.chapter.id != null) {
-        if (mainState.note != null && mainState.note.id != null) {
-          MainService.currentMainState = TabEnum.Note;
-        } else {
-          MainService.currentMainState = TabEnum.Notes;
-        }
-      } else {
-        MainService.currentMainState = TabEnum.Chapters;
-      }
-    } else {
-      MainService.currentMainState = TabEnum.Notebooks;
-    }
-
-    MainService.mainStateChanged(mainState);
+  public static setCurrentMainState(currentState: number): number {
+    MainService.currentMainState = currentState;
+    MainService.mainStateChanged();
 
     return MainService.currentMainState;
-  }*/
-
-  public static mainStateChanged(mainState: MainState): void {
-    MainService.event.emit('mainStateChanged', mainState);
   }
+
+  public static mainStateChanged(): void {
+    MainService.event.emit('mainStateChanged', MainService.currentMainState);
+  }
+
   public static onMainStateChange(event: any): void {
     MainService.event.on('mainStateChanged', event);
   }
@@ -42,8 +30,6 @@ export default class MainService {
     const params = Router.getUrlparameters();
     return (params.length === 4 ? TabEnum.Note : params.length === 3 ? TabEnum.Notes : params.length === 2 ? TabEnum.Chapters : TabEnum.Notebooks);
   }
-
-
 
   public static back(): void {
     const module = Router.getCurrentModule();

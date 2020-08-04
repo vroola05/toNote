@@ -75,7 +75,9 @@
             flex-direction: row;
 
             background: inherit;
-
+            &.hidden {
+                display: none;
+            }
             &.ql-toolbar.ql-snow {
                 border: none;
 
@@ -114,7 +116,6 @@
                 font-size: $font-size-big;
                 font-weight: $font-weight-bold;
                 border-bottom: $color-border solid 1px;
-                cursor: pointer;
             }
 
             .loaderContainer {

@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import StateService from '../../../services/state-service';
 
 export default class HeaderService  {
 
@@ -22,8 +23,15 @@ export default class HeaderService  {
   }
 
   public static setBtnLocked(locked: boolean): void {
+    StateService.setLocked(locked);
     HeaderService.event.emit('btnLockedChange', locked);
   }
+
+  public static getBtnLocked(): boolean {
+    return StateService.getLocked();
+    
+  }
+
   public static onBtnLockedChange(event: any) {
     HeaderService.event.on('btnLockedChange', event);
   }
