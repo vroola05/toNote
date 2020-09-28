@@ -30,15 +30,17 @@ $default-shadow-vague: #2e2e2e 0px 0px 16px 0px;
 /****************************
     Sizes margins and paddings
 ****************************/
-
-$default-margin: 8px;
-$default-padding: 8px;
+$default-spacing: 8px;
+$default-margin: $default-spacing;
+$default-padding: $default-spacing;
 
 $header-height: 60px;
 
 $default-menu-width: 200px;
 $default-menu-icon-size: 30px;
 $mobile-menu-icon-size: 40px;
+
+$default-checkbox-size: $default-menu-icon-size - $default-spacing - 2px;
 
 $border-radius-small: 4px;
 $border-radius-big: $border-radius-small*4;

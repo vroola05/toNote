@@ -1,4 +1,4 @@
-import { User, Message } from '../../types';
+import { User, Message, Sort } from '../../types';
 import HttpClient from '../../components/http/httpClient';
 
 export class LoginService extends HttpClient {
@@ -16,5 +16,13 @@ export class LoginService extends HttpClient {
 
     public check(): Promise<Message> {
         return LoginService.get('login');
+    }
+
+    public user(): Promise<User> {
+        return LoginService.get('user');
+    }
+
+    public sort(id: string, sort: Sort): Promise<Message> {
+        return LoginService.put('user/sort/' + id, sort);
     }
 }

@@ -9,8 +9,8 @@ export default class ButtonDropdownComponent extends ButtonComponent {
     public isOpened: boolean = false;
     public dropdownMenu: DropdownMenuComponent = new DropdownMenuComponent();
     
-    constructor( icon: any, description: string|undefined = undefined, click: any = undefined ) {
-        super(icon, description, click);
+    constructor( icon: any, description?: string, click?: any, classes: string = null ) {
+        super(icon, description, click, classes);
 
         this.dropdownMenu.event.on('close', () => {
                 this.isOpened = false;
@@ -33,8 +33,6 @@ export default class ButtonDropdownComponent extends ButtonComponent {
             Resize.set('dropdown', () => {
                 this.setPosition();
             });
-            
-
         } else {
             this.dropdownMenu.hide();
         }

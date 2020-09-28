@@ -4,7 +4,7 @@ import svgDelete from '../../../../assets/images/delete.svg';
 
 import Lang from '../../../../components/language/lang';
 
-import { Notebook, MainState, Message, TabEnum } from '../../../../types';
+import { Notebook, MainState, Message, TabEnum, Sort, SortEnum } from '../../../../types';
 
 import { Router } from '../../../../services/router/router-service';
 import { NotebookService } from '../../../../services/http/notebook-service';
@@ -14,6 +14,7 @@ import MenuItemComponent from '../../../../components/controls/menu-item/menu-it
 import PopupInputComponent from '../../../../components/popups/popup-input/popup-input-component';
 import PopupConfirmComponent from '../../../../components/popups/popup-confirm/popup-confirm-component';
 import HeaderService from '../../services/header-service';
+import { LoginService } from '../../../../services/http/login-service';
 
 export default class NotebooksComponent extends TabMenu {
     constructor() {
@@ -21,7 +22,12 @@ export default class NotebooksComponent extends TabMenu {
             ['name', Lang.get('notebooks_name')], 
             ['add', Lang.get('notebooks_add')]
         ]);
-        super(labels, 'notebook');
+        super('notebooks', labels, 'notebook');
+
+        this.addSortItem(Lang.get('order_name'), 'name', SortEnum.ASC);
+        this.addSortItem(Lang.get('order_created'), 'creationDate', SortEnum.ASC);
+        this.addSortItem(Lang.get('order_modified'), 'modifyDate', SortEnum.ASC);
+        this.addSortItem(Lang.get('order_custom'), 'sort', SortEnum.ASC);
 
         this.bindRenamePopup();
         this.bindDeletePopup();
@@ -177,5 +183,10 @@ export default class NotebooksComponent extends TabMenu {
         };
         newPopup.show();
     
+    }
+
+    public onSort(sort: Sort) {
+        console.log(sort);
+        new LoginService().sort(sort.name, sort);
     }
 }

@@ -52,6 +52,12 @@ try{
 			"/logout" => array( 
 				"GET" => array("Resource\LoginResource", "logout", Http::CONTENT_TYPE_JSON)
 			),
+			"/user" => array( 
+				"GET" => array("Resource\LoginResource", "user", Http::CONTENT_TYPE_JSON)
+			),
+			"/user/sort/{string}" => array( 
+				"PUT" => array("Resource\LoginResource", "sort", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
+			),
 			"/notebooks" => array( 
 				"GET" => array("Resource\NotebookResource", "getNotebooks", Http::CONTENT_TYPE_JSON),
 				"POST" => array("Resource\NotebookResource", "postNotebook", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
@@ -68,7 +74,6 @@ try{
 				"GET" => array("Resource\ChapterResource", "getChapters", Http::CONTENT_TYPE_JSON),
 				"POST" => array("Resource\ChapterResource", "postChapter", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
 			),
-			
 			"/notebooks/{number}/chapters/{number}" =>  array( 
 				"GET" => array("Resource\ChapterResource", "getChapter", Http::CONTENT_TYPE_JSON),
 				"PUT" => array("Resource\ChapterResource", "putChapter", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON),

@@ -11,6 +11,7 @@ class Notebook extends ModelBase {
     public $name;
     public $creationDate;
     public $modifyDate;
+    public $sort;
     public $hash;
     public $chapters;
     
@@ -22,6 +23,7 @@ class Notebook extends ModelBase {
         $mapping->addColumn("name", "string", null, 255);
         $mapping->addColumn("creationDate", "datetime", "datetime");
         $mapping->addColumn("modifyDate", "datetime", "datetime");
+        $mapping->addColumn("sort", "integer");
         $mapping->addColumn("hash", "string", null, 255);
 
         $mapping->addPrimaryKey("id", "id");
@@ -69,6 +71,14 @@ class Notebook extends ModelBase {
 
     function getModifyDate() : string {
         return $this->modifyDate;
+    }
+
+    function setSort( int $sort ) {
+        $this->sort = $sort;
+    }
+
+    function getSort() : int {
+        return $this->sort;
     }
 
     function setHash( string $hash )  {

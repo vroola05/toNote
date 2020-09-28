@@ -4,12 +4,10 @@ export default class ButtonIconComponent  {
 
     constructor( icon: any, description: string|null = null, click: any = null, classes: string = null ) {
         this.dom.className = 'btnIcon' + (classes === null ? '' : ' ' + classes);
-        
 
         this.iconContainer = document.createElement('img');
         this.iconContainer.className = 'icon';
 
-        
         this.set(icon, description);
 
         this.dom.appendChild(this.iconContainer);
@@ -26,8 +24,7 @@ export default class ButtonIconComponent  {
         };
     }
 
-    
-    public set(icon: any, description: string|null = undefined): void {
+    public set(icon: any, description?: string): void {
         this.iconContainer.src = icon;
         if (description !== null) {
             this.iconContainer.alt = description;

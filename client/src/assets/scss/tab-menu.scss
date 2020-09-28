@@ -50,10 +50,26 @@
     height: 100%;
     background-color: inherit;
 
-    .menuName {
-      font-size: $font-size-big;
-      padding: $default-padding;
+    .itemHeaderContainer {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+
+      .menuName {
+        flex: auto;
+        padding: $default-padding;
+        font-size: $font-size-big;
+      }
+      .btnSort {
+        .icon {
+          width: 100%!important;
+          height: 100%!important;
+          padding: 0!important;
+        }
+        
+      }
     }
+    
 
     .itemList {
       flex: auto;
@@ -66,7 +82,7 @@
         align-items: center;
         background-color: inherit;
         padding: $default-padding/2 $default-padding $default-padding/2 $default-padding;
-
+        position: relative;
         cursor: pointer;
         &.active {
           font-weight: $font-weight-bold;
@@ -88,6 +104,13 @@
           }
         }
         .name {
+        }
+        .ruler {
+          position: absolute;
+          width: calc(100% - #{$default-padding*2});
+          height: 4px;
+          //background: red;
+
         }
         &:hover {
           color: darken($color-secondary, 50%);

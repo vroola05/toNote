@@ -12,6 +12,7 @@ class Note extends ModelBase {
     public $name;
     public $creationDate;
     public $modifyDate;
+    public $sort;
     public $hash;
 
     function __construct($json = null) {
@@ -23,6 +24,7 @@ class Note extends ModelBase {
         $mapping->addColumn("name", "string", null, 255);
         $mapping->addColumn("creationDate", "datetime", "date");
         $mapping->addColumn("modifyDate", "datetime", "date");
+        $mapping->addColumn("sort", "integer");
         $mapping->addColumn("hash", "string", null, 255);
 
         $mapping->addPrimaryKey("id", "id");
@@ -88,6 +90,13 @@ class Note extends ModelBase {
         return $this->modifyDate;
     }
 
+    function setSort( int $sort ) {
+        $this->sort = $sort;
+    }
+
+    function getSort() : int {
+        return $this->sort;
+    }
 }
 
 ?>

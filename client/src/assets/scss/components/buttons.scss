@@ -120,6 +120,10 @@
       }
   }
   
+  &.active {
+    background: lighten($color-primary, 10%);
+  }
+
   &:hover {
       background: lighten($color-primary, 10%);
   }

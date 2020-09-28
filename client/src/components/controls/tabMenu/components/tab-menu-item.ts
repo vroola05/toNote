@@ -17,7 +17,7 @@ export class TabMenuItem {
         this.dom.classList.add('item');
         
         if ( color !== null) {
-            let itemColor = document.createElement('span');
+            const itemColor = document.createElement('span');
             itemColor.classList.add('color');
             itemColor.appendChild(this.getIcon(color));
             this.dom.appendChild(itemColor);
@@ -26,9 +26,38 @@ export class TabMenuItem {
         this.domName.classList.add('name');
         this.setName(name);
 
-        this.dom.onclick = (e) => {
+        this.dom.onclick = (e: DragEvent) => {
             this.click(this, this.identifier, this.name, this.object);
         };
+
+        this.dom.draggable = true;
+
+        const ruler = document.createElement('span');
+        ruler.className = 'ruler';
+        this.dom.appendChild(ruler);
+        this.dom.ondragenter = (e) => {
+            console.log(this.dom, e);
+        };
+        this.dom.ondragleave = (e) => {
+
+        };
+
+        this.dom.ondragover = (e) => {
+            e.preventDefault();
+        };
+        this.dom.ondragstart = (e) => {
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', JSON.stringify(this.object));
+            console.log('a', e);
+        };
+        this.dom.ondragend = (e) => {
+            e.preventDefault();
+        };
+        this.dom.ondrop = (e) => {
+            e.dataTransfer.dropEffect = 'move';
+            console.log('d', this.object, JSON.parse(e.dataTransfer.getData('text')));
+        };
+        
         this.dom.oncontextmenu = (e) => {
             this.oncontextmenu(e, this, this.identifier, this.name, this.object);
             e.preventDefault();
@@ -39,13 +68,13 @@ export class TabMenuItem {
     public getIcon( color: string ) {
         const ns = 'http://www.w3.org/2000/svg';
         const colorIcon: SVGElement = document.createElementNS(ns, 'svg');
-        colorIcon.setAttribute('viewBox','0 0 21 21');
+        colorIcon.setAttribute('viewBox', '0 0 21 21');
         const circle = document.createElementNS(ns, 'circle');
         circle.classList.add('colorRect');
         circle.style.fill = color;
-        circle.setAttribute('cx','10.5px');
-        circle.setAttribute('cy','10.5px');
-        circle.setAttribute('r','10px');
+        circle.setAttribute('cx', '10.5px');
+        circle.setAttribute('cy', '10.5px');
+        circle.setAttribute('r', '10px');
         colorIcon.appendChild(circle);
         return colorIcon;
     }
@@ -63,7 +92,7 @@ export class TabMenuItem {
 
     public setName(name: string) {
         this.name = name;
-        if (name === undefined || name == '') {
+        if (name === undefined || name === '') {
             this.domName.classList.add('noTitle');
         } else {
             this.domName.innerHTML = name;

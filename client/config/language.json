@@ -75,8 +75,13 @@
         "popup_delete_title": "Verwijderen",
         "popup_delete_confirm_msg1": "Weet u zeker dat u ",
         "popup_delete_confirm_msg2": " wilt verwijderen?",
-        "popup_move_title": "Verplaats - "
-        
+        "popup_move_title": "Verplaats - ",
+
+        "order_btn_alt": "Sorteren",
+        "order_name": "Naam",
+        "order_created": "Datum gemaakt",
+        "order_modified": "Datum gewijzigd",
+        "order_custom": "Aangepast"
     },
     "en": {
         "login_username": "Username",
@@ -153,6 +158,12 @@
         "popup_new_msg_empty": "Give the notebook a name!",
         "popup_delete_title": "Delete",
         "popup_delete_confirm_msg1": "Are you sure you want to delete ",
-        "popup_delete_confirm_msg2": "?"
+        "popup_delete_confirm_msg2": "?",
+
+        "order_btn_alt": "Order",
+        "order_name": "Name",
+        "order_created": "Creationdate",
+        "order_modified": "Modifydate",
+        "order_custom": "Custom"
     }
 }

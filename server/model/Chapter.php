@@ -13,6 +13,7 @@ class Chapter extends ModelBase {
     public $color ;
     public $creationDate;
     public $modifyDate;
+    public $sort;
     public $hash;
     public $notes;
 
@@ -26,6 +27,7 @@ class Chapter extends ModelBase {
         $mapping->addColumn("color", "string", null, 16);
         $mapping->addColumn("creationDate", "string", "date");
         $mapping->addColumn("modifyDate", "string", "date");
+        $mapping->addColumn("sort", "integer");
         $mapping->addColumn("hash", "string", null, 255);
 
         $mapping->addPrimaryKey("id", "id");
@@ -91,6 +93,14 @@ class Chapter extends ModelBase {
         return $this->modifyDate;
     }
 
+    function setSort( int $sort ) {
+        $this->sort = $sort;
+    }
+
+    function getSort() : int {
+        return $this->sort;
+    }
+    
     function setHash( string $hash )  {
         $this->hash = $hash;
     }

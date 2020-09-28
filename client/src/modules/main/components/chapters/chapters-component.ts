@@ -6,7 +6,7 @@ import svgColors from '../../../../assets/images/colors.svg';
 
 import Lang from '../../../../components/language/lang';
 
-import { Chapter, MainState, Message, Notebook, TabEnum } from '../../../../types';
+import { Chapter, MainState, Message, Notebook, TabEnum, Sort, SortEnum } from '../../../../types';
 
 import { Router } from '../../../../services/router/router-service';
 import { ChapterService } from '../../../../services/http/chapter-service';
@@ -19,6 +19,7 @@ import PopupInputComponent from '../../../../components/popups/popup-input/popup
 import PopupConfirmComponent from '../../../../components/popups/popup-confirm/popup-confirm-component';
 import PopupMoveComponent from '../../../../components/popups/popup-move/popup-move-component';
 import HeaderService from '../../services/header-service';
+import { LoginService } from '../../../../services/http/login-service';
 
 export default class ChaptersComponent extends TabMenu {
     private notebookId: number;
@@ -29,7 +30,13 @@ export default class ChaptersComponent extends TabMenu {
             ['add', Lang.get('chapters_add')]
         ]);
 
-        super(labels, 'chapter', TabMenu.COLOR_TYPE_ITEM_COLOR);
+        super('chapters', labels, 'chapter', TabMenu.COLOR_TYPE_ITEM_COLOR);
+
+        this.addSortItem(Lang.get('order_name'), 'name', SortEnum.ASC);
+        this.addSortItem(Lang.get('order_created'), 'creationDate', SortEnum.ASC);
+        this.addSortItem(Lang.get('order_modified'), 'modifyDate', SortEnum.ASC);
+        this.addSortItem(Lang.get('order_custom'), 'sort', SortEnum.ASC);
+        
 
         this.bindRenamePopup();
         this.bindMovePopup();
@@ -222,5 +229,9 @@ export default class ChaptersComponent extends TabMenu {
             });
         };
         newPopup.show();
+    }
+
+    public onSort(sort: Sort) {
+        new LoginService().sort(sort.name, sort);
     }
 }

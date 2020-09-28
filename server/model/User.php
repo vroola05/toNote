@@ -15,8 +15,7 @@ class User extends ModelBase {
     public $phone;
     public $address;
     public $groups;
-    public $stateType;
-    public $stateId;
+    public $sort;
 
     function __construct($json = null) {
         //Build the database structure
@@ -100,18 +99,9 @@ class User extends ModelBase {
     function setGroups($groups) {
         $this->groups = $groups;
     }
-
-    function setStateType($stateType) {
-        $this->stateType = $stateType;
-    }
-    function getStateType() {
-        return $this->stateType;
-    }
-    function setStateId($stateId) {
-        $this->stateId = $stateId;
-    }
-    function getStateId() {
-        return $this->stateId;
+    
+    function setSort(array $sort) {
+        $this->sort = $sort;
     }
 }
 ?>

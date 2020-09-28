@@ -16,6 +16,7 @@ export class NoteService extends HttpClient {
     public static getNote(noteboookId: number, chapterId: number, noteId: number): Promise<Note> {
         return NoteService.get('notebooks/' + noteboookId + '/chapters/' + chapterId + '/notes/' + noteId);
     }
+
     public static getNoteContent(noteboookId: number, chapterId: number, noteId: number): Promise<any> {
         return NoteService.get('notebooks/' + noteboookId + '/chapters/' + chapterId + '/notes/' + noteId + '/content');
     }

@@ -31,14 +31,15 @@ class ModelBase {
         $validator = new Validator();
         $this->messages = array();
 
-        foreach ($this->mapping->primaryKeys as $fieldName) {
-            if (!$this->$fieldName == null && !ctype_digit((string) $this->$fieldName)) {
+        /*foreach ($this->mapping->primaryKeys as $fieldName) {
+            if ($this->$fieldName == null ) {
+            //if (!$this->$fieldName == null && !ctype_digit((string) $this->$fieldName)) {
                 $fault = new Fault();
                 $fault->setId($fieldName);
                 $fault->setFaultcode(Lang::get("db_valid_int"));
-                $this->messages[] = $fault;
+                //$this->messages[] = $fault;
             }
-        }
+        }*/
         foreach ($this->mapping->columns as $columnName => $column) {
             $value = $this->{$columnName};
             
@@ -177,8 +178,14 @@ class ModelBase {
         }
 
         $query = "insert into " . $this->mapping->tablename . " (" . $keys . ") values (" . $values . ")";
+
         if ($connection->dbPreparedStatement($query, $params)) {
-            $output = $connection->getLastInsertId();
+            if (count($this->mapping->primaryKeys) === 1) {
+                $output = $connection->getLastInsertId();
+            } else {
+                $output = true;
+            }
+
         } else {
             $this->error = $connection->getError();
             $output = false;

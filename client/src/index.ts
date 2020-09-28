@@ -10,6 +10,8 @@ import MainModule from './modules/main/main-module';
 import SettingsModule from './modules/settings/settings-module';
 
 import { LoginService } from './services/http/login-service';
+import { Message } from 'types';
+import { AuthenticationService } from './services/authentication/authentication-service';
 
 
 
@@ -26,11 +28,12 @@ class Startup {
       Router.register('settings', new SettingsModule());
 
       const loginService: LoginService = new LoginService();
-      loginService.check().then(() => {
-        const path = Router.getPath();
-
-        Router.set('main', Lang.get('state_title_notebooks'), path);
-      }).catch(() => { });
+      loginService.check().then((message: Message) => {
+        if (message.status < 300) {
+          Router.goToMain();
+        }
+      }).catch(() => {
+      });
     });
 
     return 0;

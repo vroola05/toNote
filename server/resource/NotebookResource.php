@@ -13,6 +13,7 @@ use \core\Formatter;
 use \dao\Dao;
 
 use \model\Notebook;
+use \model\Sort;
 
 class NotebookResource {
     function __construct(){
@@ -27,17 +28,20 @@ class NotebookResource {
         $result=array();
         $connection = Database::getInstance();
         $connection->dbConnect();
-        if($connection->dbPreparedStatement("select n.id, n.userId, n.name, n.creationDate, n.modifyDate, n.hash from notebooks n order by n.name asc" , null)){
+        
+        $sort = Dao::getSortByUserIdAndName($connection, Security::getUserId(), "notebooks", "name");
+
+        if($connection->dbPreparedStatement("select n.id, n.userId, n.name, n.creationDate, n.modifyDate, n.sort, n.hash from notebooks n order by ". $sort->identifier. " " .$sort->sort, null)){
             $records = $connection->getFetchData();
             foreach ($records as $record) {
-                $notebook = $this->getNotebookRecord((int)$record["id"], (int)$record["userId"], $record["name"], $record["creationDate"], $record["modifyDate"]);
+                $notebook = $this->getNotebookRecord((int)$record["id"], (int)$record["userId"], $record["name"], $record["creationDate"], $record["modifyDate"], $record["sort"]);
                 array_push($result, $notebook);
             }
         }
         return $result;
     }
 
-    private function getNotebookRecord(int $id, $userId, $name, $creationDate, $modifyDate) {
+    private function getNotebookRecord(int $id, $userId, $name, $creationDate, $modifyDate, $sort) {
         $notebook = new Notebook();
         $notebook->setId($id);
         $notebook->setUserId($userId);
@@ -48,7 +52,7 @@ class NotebookResource {
         if($modifyDate!=null && $modifyDate!="") {
             $notebook->setModifyDate((new \DateTime($modifyDate))->format(\DateTime::W3C));
         }
-
+        $notebook->setSort($sort);
         return $notebook;
     }
 

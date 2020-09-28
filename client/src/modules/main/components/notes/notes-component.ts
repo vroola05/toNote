@@ -3,7 +3,7 @@ import svgMove from '../../../../assets/images/move.svg';
 import svgDelete from '../../../../assets/images/delete.svg';
 
 import Lang from '../../../../components/language/lang';
-import { Note, MainState, Message, Chapter, TabEnum } from '../../../../types';
+import { Note, MainState, Message, Chapter, TabEnum, Sort, SortEnum } from '../../../../types';
 import { Router } from '../../../../services/router/router-service';
 import { NoteService } from '../../../../services/http/note-service';
 import { TabMenu } from '../../../../components/controls/tabMenu/tab-menu';
@@ -12,10 +12,12 @@ import MenuItemComponent from '../../../../components/controls/menu-item/menu-it
 import PopupInputComponent from '../../../../components/popups/popup-input/popup-input-component';
 import PopupConfirmComponent from '../../../../components/popups/popup-confirm/popup-confirm-component';
 import PopupMoveComponent from '../../../../components/popups/popup-move/popup-move-component';
+import { LoginService } from '../../../../services/http/login-service';
 
 export default class NotesComponent extends TabMenu {
     private notebookId: number;
     private chapterId: number;
+    private notesId: number;
     // private noteService: NoteService;
     
     constructor() {
@@ -23,7 +25,13 @@ export default class NotesComponent extends TabMenu {
             ['name', Lang.get('notes_name')], 
             ['add', Lang.get('notes_add')]
         ]);
-        super(labels, 'notes', TabMenu.COLOR_TYPE_MENU_COLOR);
+        super('notes', labels, 'notes', TabMenu.COLOR_TYPE_MENU_COLOR);
+
+        this.addSortItem(Lang.get('order_name'), 'name', SortEnum.ASC);
+        this.addSortItem(Lang.get('order_created'), 'creationDate', SortEnum.ASC);
+        this.addSortItem(Lang.get('order_modified'), 'modifyDate', SortEnum.ASC);
+        this.addSortItem(Lang.get('order_custom'), 'sort', SortEnum.ASC);
+
         NoteService.event.on('change', (note: Note) => {
             this.getSelectedMenuItem().setName(note.name);
             this.getSelectedMenuItem().setObject(note);
@@ -38,6 +46,7 @@ export default class NotesComponent extends TabMenu {
         super.clear();
         this.notebookId = null;
         this.chapterId = null;
+        this.notesId = null;
     }
 
     public click(item: any, identifier: number, name: string, note: Note): void {
@@ -59,7 +68,10 @@ export default class NotesComponent extends TabMenu {
         this.clear();
         this.notebookId = notebookId;
         this.chapterId = chapterId;
+        this.notesId = notesId;
+
         return NoteService.getNotes(notebookId, chapterId).then((notes: Array<Note>) => {
+            
             if (notes !== null ) {
                 for (const note of notes) {
                     this.addItem(note.id, note.name, note, undefined);
@@ -215,5 +227,15 @@ export default class NotesComponent extends TabMenu {
             });
         };
         newPopup.show();
+    }
+
+    public onSort(sort: Sort) {
+        new LoginService().sort(sort.name, sort).then(v => {
+            const notebookId = this.notebookId;
+            const chapterId = this.chapterId;
+            const notesId = this.notesId;
+            this.clear();
+            this.getItems(notebookId, chapterId, notesId);
+        });
     }
 }
