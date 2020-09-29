@@ -1,28 +1,33 @@
-import Lang from 'components/language/lang';
-import { Constants } from '../../../../services/config/constants';
+import { Drag } from '../../../../services/drag/drag-service';
+import { EventEmitter } from 'events';
+import { Observable } from '../../../../components/util/subscribe';
 
 export class TabMenuItem {
+    public onDragged: Observable<{from: number, to: number}> = new Observable<{from: number, to: number}>(null);
     public dom: HTMLElement = document.createElement('div');
     private domName: HTMLElement = document.createElement('span');
+    protected parentName: string;
     protected identifier: number;
     protected name: string;
     protected color: string|undefined;
     protected object: any;
+    private dragenterCount = 0; 
 
-	constructor(identifier: number, name: string, object: any, color: string | null = null) {
+	constructor(parentName: string, identifier: number, name: string, object: any, color: string | null = null) {
+        this.parentName = parentName;
         this.identifier = identifier;
         this.object = object;
         this.color = color;
 
         this.dom.classList.add('item');
-        
+
         if ( color !== null) {
             const itemColor = document.createElement('span');
             itemColor.classList.add('color');
             itemColor.appendChild(this.getIcon(color));
             this.dom.appendChild(itemColor);
         }
-        
+
         this.domName.classList.add('name');
         this.setName(name);
 
@@ -30,39 +35,60 @@ export class TabMenuItem {
             this.click(this, this.identifier, this.name, this.object);
         };
 
-        this.dom.draggable = true;
-
-        const ruler = document.createElement('span');
-        ruler.className = 'ruler';
-        this.dom.appendChild(ruler);
-        this.dom.ondragenter = (e) => {
-            console.log(this.dom, e);
-        };
-        this.dom.ondragleave = (e) => {
-
-        };
-
-        this.dom.ondragover = (e) => {
-            e.preventDefault();
-        };
-        this.dom.ondragstart = (e) => {
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/plain', JSON.stringify(this.object));
-            console.log('a', e);
-        };
-        this.dom.ondragend = (e) => {
-            e.preventDefault();
-        };
-        this.dom.ondrop = (e) => {
-            e.dataTransfer.dropEffect = 'move';
-            console.log('d', this.object, JSON.parse(e.dataTransfer.getData('text')));
-        };
-        
         this.dom.oncontextmenu = (e) => {
             this.oncontextmenu(e, this, this.identifier, this.name, this.object);
             e.preventDefault();
         };
+
+        this.bindDragevents();
+
         this.dom.appendChild(this.domName);
+    }
+
+    public bindDragevents() {
+        this.dom.draggable = true;
+
+        this.dom.ondragenter = (e) => {
+            if (this.parentName !== Drag.identifier) {
+                return;
+            }
+
+            if ( this.dragenterCount === 0) {
+                this.dom.classList.add('dragHover');
+            }
+            this.dragenterCount++;
+        };
+        this.dom.ondragleave = (e) => {
+            if (this.parentName !== Drag.identifier) {
+                return;
+            }
+            
+            this.dragenterCount--;
+            if ( this.dragenterCount === 0) {
+                this.dom.classList.remove('dragHover');
+            }
+        };
+        this.dom.ondragstart = (e) => {
+            Drag.identifier = this.parentName;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', this.identifier.toString());
+        };
+        this.dom.ondrop = (e) => {
+            if (this.parentName !== Drag.identifier) {
+                return;
+            }
+            this.dragenterCount = 0;
+            this.dom.classList.remove('dragHover');
+            
+            e.dataTransfer.dropEffect = 'move';
+            this.onDragged.next({from: Number(e.dataTransfer.getData('text')), to: this.identifier});
+        };
+        this.dom.ondragover = (e) => {
+            e.preventDefault();
+        };
+        this.dom.ondragend = (e) => {
+            e.preventDefault();
+        };
     }
 
     public getIcon( color: string ) {

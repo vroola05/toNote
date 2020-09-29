@@ -105,14 +105,8 @@
         }
         .name {
         }
-        .ruler {
-          position: absolute;
-          width: calc(100% - #{$default-padding*2});
-          height: 4px;
-          //background: red;
 
-        }
-        &:hover {
+        &:hover, &.dragHover {
           color: darken($color-secondary, 50%);
           filter: brightness(95%);
         }

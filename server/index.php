@@ -85,6 +85,9 @@ try{
 			"/notebooks/{number}/chapters/{number}/move/{number}" =>  array( 
 				"GET" => array("Resource\ChapterResource", "moveChapter", Http::CONTENT_TYPE_JSON)
 			),
+			"/notebooks/{number}/chapters/{number}/sort/note/{number}/{number}" =>  array( 
+				"GET" => array("Resource\NotesResource", "noteSort", Http::CONTENT_TYPE_JSON)
+			),
 			"/notebooks/{number}/chapters/{number}/notes" => array( 
 				"GET" => array("Resource\NotesResource", "getNotes", Http::CONTENT_TYPE_JSON),
 				"POST" => array("Resource\NotesResource", "postNote", Http::CONTENT_TYPE_JSON, Http::CONTENT_TYPE_JSON)
@@ -104,6 +107,7 @@ try{
 			"/notebooks/{number}/chapters/{number}/notes/{number}/move/{number}" =>  array( 
 				"GET" => array("Resource\NotesResource", "moveNote", Http::CONTENT_TYPE_JSON)
 			),
+			
 		));
 		Router::route();
 	}

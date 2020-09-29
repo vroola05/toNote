@@ -14,6 +14,8 @@ export class TabMenu extends Tab {
   public static COLOR_TYPE_NONE = 1;
   public static COLOR_TYPE_ITEM_COLOR = 2;
   public static COLOR_TYPE_MENU_COLOR = 3;
+
+  public identifier: string;
   public sort: Sort;
 
   private colorType: number;
@@ -25,8 +27,9 @@ export class TabMenu extends Tab {
   private btnSort: ButtonSortmenuComponent;
   public dropdownMenu: DropdownMenuComponent = new DropdownMenuComponent();
 
-  constructor(id: string, labels: Map<string, string>, classes: string | null, colorType: number = TabMenu.COLOR_TYPE_NONE) {
+  constructor(identifier: string, labels: Map<string, string>, classes: string | null, colorType: number = TabMenu.COLOR_TYPE_NONE) {
     super();
+    this.identifier = identifier;
     this.dom.className = this.dom.className + ' tabMenu' + (classes != null && classes !== '' ? ' ' + classes : '');
     this.labels = labels;
     this.colorType = colorType;
@@ -56,7 +59,7 @@ export class TabMenu extends Tab {
     domName.innerHTML = this.labels.get('name');
     domItemHeaderContainer.appendChild(domName);
 
-    this.btnSort = new ButtonSortmenuComponent(id);
+    this.btnSort = new ButtonSortmenuComponent(identifier);
     this.btnSort.event.on('change', (sort: any) => {
       this.onSort(sort);
     });
@@ -83,8 +86,7 @@ export class TabMenu extends Tab {
 
     this.dropdownMenu.event.on('close', () => {
       this.dropdownMenu.hide();
-    }
-    );
+    });
   }
 
   /**
@@ -129,7 +131,7 @@ export class TabMenu extends Tab {
       color = (!color || color === '' ? this.getColor(identifier * 6 % Constants.colorsMenu.length) : color);
       object.color = color;
     }
-    const tabMenuItem = new TabMenuItem(identifier, name, object, color);
+    const tabMenuItem = new TabMenuItem(this.identifier, identifier, name, object, color);
     tabMenuItem.click = (item: TabMenuItem, identifier1: number, name1: string, object1: any) => {
       this.click(item, identifier1, name1, object1);
       this.setMenuItemActive(identifier);
@@ -140,6 +142,10 @@ export class TabMenu extends Tab {
       this.dropdownMenu.show();
       this.dropdownMenu.setPosition(e.pageX, e.pageY);
     };
+
+    tabMenuItem.onDragged.subscribe((o) => {
+      this.itemDragged(o);
+    });
 
     this.tabMenuItems.push(tabMenuItem);
     this.domItemList.appendChild(tabMenuItem.dom);
@@ -200,6 +206,26 @@ export class TabMenu extends Tab {
     });
   }
 
+  public moveTabMenuItem(o: {from: number, to: number}): void {
+
+    const from = this.tabMenuItems.find(a => a.getId() === o.from);
+    const to = this.tabMenuItems.find(a => a.getId() === o.to);
+    
+    const children = [...this.domItemList.children];
+    const indexFrom = children.indexOf(from.dom);
+    const indexTo = children.indexOf(to.dom);
+
+    if (indexFrom > indexTo) {
+      this.domItemList.insertBefore(from.dom, to.dom);
+    } else {
+      this.domItemList.insertBefore(from.dom, to.dom.nextSibling);
+    }
+
+    // this.tabMenuItems.push(tabMenuItem);
+    // this.domItemList.appendChild(tabMenuItem.dom);
+    
+  }
+
   public click(item: TabMenuItem, identifier: number, name: string, object: any) {
     alert('Method not yet implemented!');
   }
@@ -209,6 +235,10 @@ export class TabMenu extends Tab {
   }
 
   public onSort(item: Sort) {
+    alert('Method not yet implemented!');
+  }
+
+  public itemDragged(o: {from: number, to: number}) {
     alert('Method not yet implemented!');
   }
 }

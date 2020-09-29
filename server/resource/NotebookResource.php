@@ -67,6 +67,11 @@ class NotebookResource {
     }
 
     public function postNotebook($parameters, $notebook) : Message {
+        $connection = Database::getInstance();
+        $connection->dbConnect();
+
+        $sort = Dao::getNotebookCount($connection, Security::getUserId());
+
         $input = new Notebook();
         $input->setUserId(Security::getUserId());
         
@@ -75,10 +80,9 @@ class NotebookResource {
         $now = (new \DateTime())->format("Y-m-d H:i:s");
         $input->setCreationDate($now);
         $input->setModifyDate($now);
+        $input->setSort($sort);
         $input->setHash("");
 
-        $connection = Database::getInstance();
-        $connection->dbConnect();
         $newId = $input->post($connection);
         if($newId !== false){
             $message = new \Core\Message(200, Lang::get("notebook_post_saved"));

@@ -91,11 +91,11 @@ export default class NotesComponent extends TabMenu {
         const menuItem = new MenuItemComponent(svgRename, Lang.get('ctx_rename'));
         this.dropdownMenu.addItem(menuItem);
 
-        menuItem.click = (e: any) => {
+        menuItem.click = (element1: any) => {
             const renamePopup = new PopupInputComponent(Lang.get('popup_rename_title'), Lang.get('notes_name'), this.dropdownMenu.object.name);
 
             renamePopup.object = this.dropdownMenu.object;
-            renamePopup.click = (e, object, value) => {
+            renamePopup.click = (element2, object, value) => {
                 if (value === '') {
                     renamePopup.setError('<span>' + Lang.get('popup_rename_empty') + '</span>');
                     return;
@@ -125,7 +125,7 @@ export default class NotesComponent extends TabMenu {
     }
 
     private bindMovePopup(): void {
-        this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get('ctx_move'), (e: any) => {
+        this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get('ctx_move'), (element1: any) => {
             const movePopup = new PopupMoveComponent(Lang.get('popup_move_title'), Lang.get('note_name') + ' - ' + this.dropdownMenu.object.name);
             movePopup.object = this.dropdownMenu.object;
 
@@ -133,7 +133,7 @@ export default class NotesComponent extends TabMenu {
                 for (const chapter of chapters) {
                     movePopup.add(chapter.name, chapter);
                 }
-                movePopup.click = (e, object, value) => {
+                movePopup.click = (element2, object, value) => {
                     NoteService.moveNote(this.notebookId, object.object.sectionId, object.object.id, value.id).then((message: Message) => {
                         if (message.status === 200) {
                             this.removeItem(object);
@@ -161,12 +161,12 @@ export default class NotesComponent extends TabMenu {
         const menuItem = new MenuItemComponent(svgDelete, Lang.get('ctx_remove'));
         this.dropdownMenu.addItem(menuItem);
         
-        menuItem.click = (e: any) => {
+        menuItem.click = (element1: any) => {
             const deleteMsg = Lang.get('popup_delete_confirm_msg1') + this.dropdownMenu.object.name + Lang.get('popup_delete_confirm_msg2');
             const deletePopup = new PopupConfirmComponent(Lang.get('popup_delete_title'), deleteMsg);
             deletePopup.object = this.dropdownMenu.object;
 
-            deletePopup.click = (e, object) => {
+            deletePopup.click = (element2, object) => {
                 NoteService.deleteNote(this.notebookId, object.object.sectionId, object.object.id).then((message: Message) => {
                     if (message.status === 200) {
                         this.removeItem(object);
@@ -190,9 +190,9 @@ export default class NotesComponent extends TabMenu {
         };
     }
 
-    public clickNewItem(e: Event): void {
+    public clickNewItem(event: Event): void {
         const newPopup = new PopupInputComponent(Lang.get('popup_new_title'), Lang.get('chapters_name'), '');
-        newPopup.click = (e, object, value) => {
+        newPopup.click = (element1, object, value) => {
             if (value === '') {
                 newPopup.setError('<span>' + Lang.get('popup_new_msg_empty') + '</span>');
                 return;
@@ -220,8 +220,6 @@ export default class NotesComponent extends TabMenu {
                         newPopup.setError(error);
                     }
                 }
-                
-                
             }).catch((e) => {
 
             });
@@ -238,4 +236,13 @@ export default class NotesComponent extends TabMenu {
             this.getItems(notebookId, chapterId, notesId);
         });
     }
+
+    public itemDragged(o: {from: number, to: number}) {
+        NoteService.noteSort(this.notebookId, this.chapterId, o.from, o.to).then((message: Message) => {
+            if (message.status === 200) {
+                this.moveTabMenuItem(o);
+            }
+        });
+        
+      }
 }

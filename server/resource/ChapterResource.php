@@ -107,6 +107,11 @@ class ChapterResource {
     public function postChapter($parameters, $chapter) {
         $input = new Chapter();
         if( $parameters!=null && count($parameters) == 1 ){
+            $connection = Database::getInstance();
+            $connection->dbConnect();
+// SELECT count(*), max(sort) FROM `notes` where sectionId = 32 ORDER BY `sort` DESC
+            $sort = Dao::getChapterCountByNotebookId($connection, $parameters[0], Security::getUserId());
+
             $input->setUserId(Security::getUserId());
             
             $input->setNotebookId($parameters[0]);
@@ -117,11 +122,10 @@ class ChapterResource {
             
             $input->setCreationDate($now);
             $input->setModifyDate($now);
+            $input->setSort($sort);
             
             $input->setHash("");
-            
-            $connection = Database::getInstance();
-            $connection->dbConnect();
+
             $newId = $input->post($connection);
             if($newId !== false){
                 $message = new \Core\Message(200, Lang::get("notebook_post_saved"));

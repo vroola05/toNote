@@ -23,6 +23,7 @@ import { LoginService } from '../../../../services/http/login-service';
 
 export default class ChaptersComponent extends TabMenu {
     private notebookId: number;
+    private chapterId: number;
 
     constructor() {
         const labels = new Map<string, string>([
@@ -56,6 +57,7 @@ export default class ChaptersComponent extends TabMenu {
     public clear(): void {
         super.clear();
         this.notebookId = null;
+        this.chapterId = null;
     }
 
     public getItems(notebookId: number, chapterId: number): Promise<Array<Chapter>> {
@@ -93,11 +95,11 @@ export default class ChaptersComponent extends TabMenu {
         const menuItem = new MenuItemComponent(svgRename, Lang.get('ctx_rename'));
         this.dropdownMenu.addItem(menuItem);
 
-        menuItem.click = (e: any) => {
+        menuItem.click = (element1: any) => {
             const renamePopup = new PopupInputComponent(Lang.get('popup_rename_title'), Lang.get('notebooks_name'), this.dropdownMenu.object.name);
 
             renamePopup.object = this.dropdownMenu.object;
-            renamePopup.click = (e, object, value) => {
+            renamePopup.click = (element2, object, value) => {
                 if (value === '') {
                     renamePopup.setError('<span>' + Lang.get('popup_rename_empty') + '</span>');
                     return;
@@ -132,7 +134,7 @@ export default class ChaptersComponent extends TabMenu {
     }
 
     private bindMovePopup(): void {
-        this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get('ctx_move'), (e: any) => {
+        this.dropdownMenu.addItem(new MenuItemComponent(svgMove, Lang.get('ctx_move'), (element1: any) => {
             const movePopup = new PopupMoveComponent(Lang.get('popup_move_title'), Lang.get('chapters_name') + ' - ' + this.dropdownMenu.object.name);
             movePopup.object = this.dropdownMenu.object;
 
@@ -141,7 +143,7 @@ export default class ChaptersComponent extends TabMenu {
                 for (const notebook of notebooks) {
                     movePopup.add(notebook.name, notebook);
                 }
-                movePopup.click = (e, object, value) => {
+                movePopup.click = (element2, object, value) => {
 
                     ChapterService.moveChapter(object.object.notebookId, object.object.id, value.id).then((message: Message) => {
                         if (message.status === 200) {
@@ -169,12 +171,12 @@ export default class ChaptersComponent extends TabMenu {
         const menuItem = new MenuItemComponent(svgDelete, Lang.get('ctx_remove'));
         this.dropdownMenu.addItem(menuItem);
 
-        menuItem.click = (e: any) => {
+        menuItem.click = (element1: any) => {
             const deleteMsg = Lang.get('popup_delete_confirm_msg1') + this.dropdownMenu.object.name + Lang.get('popup_delete_confirm_msg2');
             const deletePopup = new PopupConfirmComponent(Lang.get('popup_delete_title'), deleteMsg);
             deletePopup.object = this.dropdownMenu.object;
 
-            deletePopup.click = (e, object) => {
+            deletePopup.click = (element2, object) => {
                 ChapterService.deleteChapter(object.object.notebookId, object.object.id).then((message: Message) => {
                     if (message.status === 200) {
                         this.removeItem(object);
@@ -195,9 +197,9 @@ export default class ChaptersComponent extends TabMenu {
         };
     }
 
-    public clickNewItem(e: Event): void {
+    public clickNewItem(event: Event): void {
         const newPopup = new PopupInputComponent(Lang.get('popup_new_title'), Lang.get('chapters_name'), '');
-        newPopup.click = (e, object, value) => {
+        newPopup.click = (element1, object, value) => {
             if (value === '') {
                 newPopup.setError('<span>' + Lang.get('popup_new_msg_empty') + '</span>');
                 return;
@@ -232,6 +234,11 @@ export default class ChaptersComponent extends TabMenu {
     }
 
     public onSort(sort: Sort) {
-        new LoginService().sort(sort.name, sort);
+        new LoginService().sort(sort.name, sort).then(v => {
+            const notebookId = this.notebookId;
+            const chapterId = this.chapterId;
+            this.clear();
+            this.getItems(notebookId, chapterId);
+        });
     }
 }

@@ -17,6 +17,8 @@ import HeaderService from '../../services/header-service';
 import { LoginService } from '../../../../services/http/login-service';
 
 export default class NotebooksComponent extends TabMenu {
+    private notebookId: number;
+
     constructor() {
         const labels = new Map<string, string>([
             ['name', Lang.get('notebooks_name')], 
@@ -31,6 +33,11 @@ export default class NotebooksComponent extends TabMenu {
 
         this.bindRenamePopup();
         this.bindDeletePopup();
+    }
+
+    public clear(): void {
+        super.clear();
+        this.notebookId = null;
     }
 
     public click(item: any, identifier: number, name: string, notebook: Notebook): void {
@@ -70,12 +77,12 @@ export default class NotebooksComponent extends TabMenu {
         const menuItem = new MenuItemComponent(svgRename, Lang.get('ctx_rename'));
         this.dropdownMenu.addItem(menuItem);
 
-        menuItem.click = (e: any) => {
+        menuItem.click = (element1: any) => {
             
             const renamePopup = new PopupInputComponent(Lang.get('popup_rename_title'), Lang.get('notebooks_name'), this.dropdownMenu.object.name);
 
             renamePopup.object = this.dropdownMenu.object;
-            renamePopup.click = (e, object, value) => {
+            renamePopup.click = (element2, object, value) => {
                 if (value === '') {
                     renamePopup.setError('<span>' + Lang.get('popup_rename_empty') + '</span>');
                     return;
@@ -104,7 +111,6 @@ export default class NotebooksComponent extends TabMenu {
                     
                     
                 }).catch((e) => {
-
                 });
             };
             renamePopup.show();
@@ -115,12 +121,12 @@ export default class NotebooksComponent extends TabMenu {
         const menuItem = new MenuItemComponent(svgDelete, Lang.get('ctx_remove'));
         this.dropdownMenu.addItem(menuItem);
         
-        menuItem.click = (e: any) => {
+        menuItem.click = (element1: any) => {
             const deleteMsg = Lang.get('popup_delete_confirm_msg1') + this.dropdownMenu.object.name + Lang.get('popup_delete_confirm_msg2');
             const deletePopup = new PopupConfirmComponent(Lang.get('popup_delete_title'), deleteMsg);
             deletePopup.object = this.dropdownMenu.object;
 
-            deletePopup.click = (e, object) => {
+            deletePopup.click = (element2, object) => {
                 NotebookService.deleteNotebook(object.identifier).then((message: Message) => {
                     if (message.status === 200) {
                         this.removeItem(object);                        
@@ -144,11 +150,11 @@ export default class NotebooksComponent extends TabMenu {
         };
     }
 
-    public clickNewItem(e: Event): void {
+    public clickNewItem(event: Event): void {
         
         const newPopup = new PopupInputComponent(Lang.get('popup_new_title'), Lang.get('notebooks_name'), '');
         
-        newPopup.click = (e, object, value) => {
+        newPopup.click = (element1, object, value) => {
             if (value === '') {
                 newPopup.setError('<span>' + Lang.get('popup_new_msg_empty') + '</span>');
                 return;
@@ -186,7 +192,10 @@ export default class NotebooksComponent extends TabMenu {
     }
 
     public onSort(sort: Sort) {
-        console.log(sort);
-        new LoginService().sort(sort.name, sort);
+        new LoginService().sort(sort.name, sort).then(v => {
+            const notebookId = this.notebookId;
+            this.clear();
+            this.getItems(notebookId);
+        });
     }
 }

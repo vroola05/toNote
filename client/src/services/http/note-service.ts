@@ -29,6 +29,10 @@ export class NoteService extends HttpClient {
         return NoteService.get('notebooks/' + noteboookId + '/chapters/' + chapterId + '/notes/' + noteId + '/move/' + newChapterId);
     }
  
+    public static noteSort(noteboookId: number, chapterId: number, fromId: number, toId: number): Promise<Message> {
+        return NoteService.get('notebooks/' + noteboookId + '/chapters/' + chapterId + '/sort/note/' + fromId + '/' + toId);
+    }
+
     public static postNote(notebookId: number, chapterId: number, note: Note): Promise<Message> {
         return NoteService.post('notebooks/' + notebookId + '/chapters/' + chapterId + '/notes', note);
     }

@@ -71,6 +71,30 @@ class NotesResource {
         }
     }
 
+    
+    public function noteSort(array $parameters): Message{
+        
+        if( $parameters!=null && count($parameters) == 4 ){
+            $connection = Database::getInstance();
+            $connection->dbConnect();
+
+            Dao::resetNoteSortByChapterId($connection, $parameters[1], Security::getUserId());
+
+            $noteFrom = $connection->getSingleItem(new Note(), "select id, sort from notes where userId = ? and sectionId = ? and id = ?", 
+            array(Security::getUserId(), $parameters[1], $parameters[2]));
+
+            $noteTo = $connection->getSingleItem(new Note(), "select id, sort from notes where userId = ? and sectionId = ? and id = ?", 
+            array(Security::getUserId(), $parameters[1], $parameters[3]));
+
+            if ($noteFrom!=null && $noteTo!=null) {
+                Dao::updateNoteSort($connection, $parameters[1], $noteFrom->getId(), Security::getUserId(), $noteFrom->getSort(), $noteTo->getSort());
+            }
+
+            $message = new \Core\Message(200, Lang::get("note_put_saved"));
+            return $message;
+        }
+    }
+
     public function moveNote( array $parameters ) : Message{
         if( $parameters!=null && count($parameters) == 4 ){
 
@@ -139,6 +163,11 @@ class NotesResource {
         $input = new Note();
         
         if( $parameters!=null && count($parameters) == 2 ) {
+            $connection = Database::getInstance();
+            $connection->dbConnect();
+
+            $sort = Dao::getNoteCountByChapterId($connection, $parameters[1], Security::getUserId());
+
             $input->setUserId(Security::getUserId());
             
             $input->setSectionId($parameters[1]);
@@ -148,11 +177,10 @@ class NotesResource {
             
             $input->setCreationDate($now);
             $input->setModifyDate($now);
-            
+            $input->setSort($sort);
             $input->setHash("");
+            //select count(*) as sort from notes n where n.sectionId = 20
             
-            $connection = Database::getInstance();
-            $connection->dbConnect();
             $newId = $input->post($connection);
             if($newId !== false){
               
