@@ -66,6 +66,28 @@ class NotebookResource {
         }
     }
 
+    public function notebookSort(array $parameters): Message{
+        if( $parameters!=null && count($parameters) == 2 ){
+            $connection = Database::getInstance();
+            $connection->dbConnect();
+
+            Dao::resetNotebooksSortBy($connection, Security::getUserId());
+
+            $notebookFrom = $connection->getSingleItem(new Notebook(), "select id, sort from notebooks where userId = ? and id = ?", 
+            array(Security::getUserId(), $parameters[0]));
+
+            $notebookTo = $connection->getSingleItem(new Notebook(), "select id, sort from notebooks where userId = ? and id = ?", 
+            array(Security::getUserId(), $parameters[1]));
+
+            if ($notebookFrom!=null && $notebookTo!=null) {
+                Dao::updateNotebookSort($connection, $notebookFrom->getId(), Security::getUserId(), $notebookFrom->getSort(), $notebookTo->getSort());
+            }
+
+            $message = new \Core\Message(200, Lang::get("note_put_saved"));
+            return $message;
+        }
+    }
+
     public function postNotebook($parameters, $notebook) : Message {
         $connection = Database::getInstance();
         $connection->dbConnect();

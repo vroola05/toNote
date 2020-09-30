@@ -18,6 +18,10 @@ export class ChapterService extends HttpClient {
         return ChapterService.get('notebooks/' + notebookId + '/chapters/' + chapterId + '/move/' + notebookIdNew);
     }
 
+    public static chapterSort(notebookId: number, fromId: number, toId: number): Promise<Message> {
+        return ChapterService.get('notebooks/' + notebookId + '/chapters/sort/' + fromId + '/' + toId);
+    }
+
     public static putChapter(notebookId: number, chapterId: number, chapter: Chapter): Promise<Message> {
         return ChapterService.put('notebooks/' + notebookId + '/chapters/' + chapterId, chapter);
     }

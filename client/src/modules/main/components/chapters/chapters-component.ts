@@ -27,7 +27,7 @@ export default class ChaptersComponent extends TabMenu {
 
     constructor() {
         const labels = new Map<string, string>([
-            ['name', Lang.get('chapters_name')], 
+            ['name', Lang.get('chapters_name')],
             ['add', Lang.get('chapters_add')]
         ]);
 
@@ -37,7 +37,7 @@ export default class ChaptersComponent extends TabMenu {
         this.addSortItem(Lang.get('order_created'), 'creationDate', SortEnum.ASC);
         this.addSortItem(Lang.get('order_modified'), 'modifyDate', SortEnum.ASC);
         this.addSortItem(Lang.get('order_custom'), 'sort', SortEnum.ASC);
-        
+
 
         this.bindRenamePopup();
         this.bindMovePopup();
@@ -51,7 +51,7 @@ export default class ChaptersComponent extends TabMenu {
     public click(item: any, identifier: number, name: string, chapter: Chapter): void {
         const module = Router.getCurrentModule();
         const params = Router.getUrlparameters();
-        Router.set(module, Lang.get('state_title_notes'),  module + '/' + params[1] + '/' + chapter.id );
+        Router.set(module, Lang.get('state_title_notes'), module + '/' + params[1] + '/' + chapter.id);
     }
 
     public clear(): void {
@@ -61,7 +61,7 @@ export default class ChaptersComponent extends TabMenu {
     }
 
     public getItems(notebookId: number, chapterId: number): Promise<Array<Chapter>> {
-        if (this.hasItems() && this.notebookId === notebookId ) {
+        if (this.hasItems() && this.notebookId === notebookId) {
             return new Promise((resolve, reject) => {
                 if (chapterId) {
                     this.setMenuItemActive(chapterId);
@@ -75,7 +75,7 @@ export default class ChaptersComponent extends TabMenu {
         this.notebookId = notebookId;
 
         return ChapterService.getChapters(notebookId).then((chapters: Array<Chapter>) => {
-            if (chapters !== null ) {
+            if (chapters !== null) {
                 for (const chapter of chapters) {
                     this.addItem(chapter.id, chapter.name, chapter, chapter.color);
                 }
@@ -86,8 +86,8 @@ export default class ChaptersComponent extends TabMenu {
             }
             return chapters;
         }).catch((error: Error) => {
-            console.error(error.stack);   
-            throw error; 
+            console.error(error.stack);
+            throw error;
         });
     }
 
@@ -110,7 +110,7 @@ export default class ChaptersComponent extends TabMenu {
                     if (message.status === 200) {
                         object.setName(value);
                         object.object.name = value;
-                        if (this.getSelectedMenuItem() && this.getSelectedMenuItem().getId() === object.object.id ) {
+                        if (this.getSelectedMenuItem() && this.getSelectedMenuItem().getId() === object.object.id) {
                             HeaderService.setTitleSub(value);
                         }
 
@@ -120,7 +120,7 @@ export default class ChaptersComponent extends TabMenu {
                             let error = '';
                             for (const info of message.info) {
                                 error += '<span>' + info.value + '</span>';
-                                
+
                             }
                             renamePopup.setError(error);
                         }
@@ -163,10 +163,10 @@ export default class ChaptersComponent extends TabMenu {
                 movePopup.show();
 
             });
-            
+
         }));
     }
-    
+
     private bindDeletePopup(): void {
         const menuItem = new MenuItemComponent(svgDelete, Lang.get('ctx_remove'));
         this.dropdownMenu.addItem(menuItem);
@@ -240,5 +240,14 @@ export default class ChaptersComponent extends TabMenu {
             this.clear();
             this.getItems(notebookId, chapterId);
         });
+    }
+
+    public itemDragged(o: { from: number, to: number }) {
+        ChapterService.chapterSort(this.notebookId, o.from, o.to).then((message: Message) => {
+            if (message.status === 200) {
+                this.moveTabMenuItem(o);
+            }
+        });
+
     }
 }

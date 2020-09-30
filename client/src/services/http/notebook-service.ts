@@ -10,6 +10,10 @@ export class NotebookService extends HttpClient {
         return NotebookService.get('notebooks');
     }
 
+    public static notebookSort(fromId: number, toId: number): Promise<Message> {
+        return NotebookService.get('notebooks/sort/' + fromId + '/' + toId);
+    }
+
     public static putNotebook(id: number, notebook: Notebook): Promise<Message> {
         return NotebookService.put('notebooks/' + id, notebook);
     }

@@ -8,6 +8,55 @@ use \model\Note;
 use \model\Sort;
 
 class Dao {
+
+    public static function updateNotebookSort( Database $connection, int $id, int $userId, int $from, int $to) : bool {
+        if ( $from > $to ) {
+            if($connection->dbPreparedStatement("update notebooks n set n.sort = n.sort + 1 where n.userId = ? and n.sort >= ? and n.sort < ?", array($userId, $to, $from))){
+                if($connection->dbPreparedStatement("update notebooks n set n.sort = ? where n.userId = ? and n.id = ?", array($to, $userId, $id))){
+                    return true;
+                }
+            }
+        } else if ( $from < $to ) {
+            if($connection->dbPreparedStatement("update notebooks n set n.sort = n.sort - 1 where n.userId = ? and n.sort > ? and n.sort <= ?", array($userId, $from, $to ))){
+                if($connection->dbPreparedStatement("update notebooks n set n.sort = ? where n.userId = ? and n.id = ?", array($to, $userId, $id))){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static function resetNotebooksSortBy( Database $connection, int $userId ) : bool {
+        if($connection->dbPreparedStatement("SET @row_number = 0; update notebooks n inner join (SELECT (@row_number:=@row_number + 1) AS new_sort, n1.id FROM notebooks n1 where n1.userId = ? order by n1.sort asc) n2 on n2.id = n.id set n.sort = n2.new_sort where n.userId = ?" , array($userId, $userId))){
+            return true;
+        }
+        return false;
+    }
+
+    public static function updateChapterSort( Database $connection, int $notebookId, int $id, int $userId, int $from, int $to) : bool {
+        if ( $from > $to ) {
+            if($connection->dbPreparedStatement("update chapters n set n.sort = n.sort + 1 where n.userId = ? and n.notebookId = ? and n.sort >= ? and n.sort < ?", array($userId, $notebookId, $to, $from))){
+                if($connection->dbPreparedStatement("update chapters n set n.sort = ? where n.userId = ? and n.notebookId = ? and n.id = ?", array($to, $userId, $notebookId,  $id))){
+                    return true;
+                }
+            }
+        } else if ( $from < $to ) {
+            if($connection->dbPreparedStatement("update chapters n set n.sort = n.sort - 1 where n.userId = ? and n.notebookId = ? and n.sort > ? and n.sort <= ?", array($userId, $notebookId, $from, $to ))){
+                if($connection->dbPreparedStatement("update chapters n set n.sort = ? where n.userId = ? and n.notebookId = ? and n.id = ?", array($to, $userId, $notebookId,  $id))){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static function resetChapterSortByNotebookId( Database $connection, int $notebookId, int $userId ) : bool {
+        if($connection->dbPreparedStatement("SET @row_number = 0; update chapters n inner join (SELECT (@row_number:=@row_number + 1) AS new_sort, n1.id FROM chapters n1 where n1.notebookId = ? and n1.userId = ? order by n1.sort asc) n2 on n2.id = n.id set n.sort = n2.new_sort where n.userId = ?" , array($notebookId, $userId, $userId))){
+            return true;
+        }
+        return false;
+    }
+
     public static function updateNoteSort( Database $connection, int $chapterId, int $id, int $userId, int $from, int $to) : bool {
         if ( $from > $to ) {
             if($connection->dbPreparedStatement("update notes n set n.sort = n.sort + 1 where n.userId = ? and n.sectionId = ? and n.sort >= ? and n.sort < ?", array($userId, $chapterId, $to, $from))){
@@ -31,6 +80,7 @@ class Dao {
         }
         return false;
     }
+
     public static function getNoteCountByChapterId( Database $connection, int $chapterId, int $userId ) : string {
         $sort = $connection->getSingleItem(new Note(), "select count(*) as sort from notes where userId = ? and sectionId = ?", array($userId, $chapterId));
         if ($sort) {

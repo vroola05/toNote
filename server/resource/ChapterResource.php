@@ -54,6 +54,29 @@ class ChapterResource {
         }
     }
 
+    public function chapterSort(array $parameters): Message{
+        
+        if( $parameters!=null && count($parameters) == 3 ){
+            $connection = Database::getInstance();
+            $connection->dbConnect();
+
+            Dao::resetChapterSortByNotebookId($connection, $parameters[0], Security::getUserId());
+
+            $noteFrom = $connection->getSingleItem(new Chapter(), "select id, sort from chapters where userId = ? and notebookId = ? and id = ?", 
+            array(Security::getUserId(), $parameters[0], $parameters[1]));
+
+            $noteTo = $connection->getSingleItem(new Chapter(), "select id, sort from chapters where userId = ? and notebookId = ? and id = ?", 
+            array(Security::getUserId(), $parameters[0], $parameters[2]));
+
+            if ($noteFrom!=null && $noteTo!=null) {
+                Dao::updateChapterSort($connection, $parameters[0], $noteFrom->getId(), Security::getUserId(), $noteFrom->getSort(), $noteTo->getSort());
+            }
+
+            $message = new \Core\Message(200, Lang::get("note_put_saved"));
+            return $message;
+        }
+    }
+
     public function moveChapter( array $parameters ) : Message{
         if( $parameters!=null && count($parameters) == 3 ){
 

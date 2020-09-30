@@ -198,4 +198,13 @@ export default class NotebooksComponent extends TabMenu {
             this.getItems(notebookId);
         });
     }
+
+    public itemDragged(o: {from: number, to: number}) {
+        NotebookService.notebookSort(o.from, o.to).then((message: Message) => {
+            if (message.status === 200) {
+                this.moveTabMenuItem(o);
+            }
+        });
+        
+      }
 }
