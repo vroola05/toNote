@@ -5,7 +5,7 @@ import Lang from '../../../language/lang';
 import SortmenuComponent from './sortmenu-component';
 import {EventEmitter} from 'events';
 import SortmenuItemComponent from './sortmenu-item-component';
-import { AuthenticationService } from '../../../../services/authentication/authentication-service';
+import { Profile } from '../../../../services/profile/profile-service';
 import { Sort, SortEnum } from '../../../../types';
 
 export default class ButtonSortmenuComponent extends ButtonIconComponent {
@@ -19,17 +19,16 @@ export default class ButtonSortmenuComponent extends ButtonIconComponent {
         }, 'small btnSort');
         this.id = id;
 
-        AuthenticationService.getUserAsObservable().subscribe((user) => {
-            if (user && user.sort) {
-                const sort = user.sort.find(s => s.name === id);
+        Profile.getSortAsObservable().subscribe((sorting) => {
+                const sort = sorting.find(s => s.name === id);
                 if (sort) {
                     this.sortmenuComponent.selectItem(sort);
                 }
-            }
         });
         
         this.sortmenuComponent.event.on('change', (sort: Sort) => {
             sort.name = this.id;
+            Profile.updateSort(sort);
             this.event.emit('change', sort);
         });
 

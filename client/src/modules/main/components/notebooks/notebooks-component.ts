@@ -46,20 +46,13 @@ export default class NotebooksComponent extends TabMenu {
     }
 
     public getItems(id: number = null): Promise<any> {
-        if (this.hasItems()) {
-            return new Promise((resolve, reject) => {
-                if (id) {
-                    this.setMenuItemActive(id);
-                }
-                resolve(this.getObjects());
-                
-            });
-        }
         return NotebookService.getNotebooks().then((notebooks: Array<Notebook>) => {
             this.clear();
             if (notebooks !== null ) {
+                const draggable = this.isDraggable();
                 for (const notebook of notebooks) {
-                    this.addItem(notebook.id, notebook.name, notebook, undefined);
+                    this.addItem(notebook.id, notebook.name, notebook, undefined)
+                        .setDrag(draggable);
                 }
                 if (id) {
                     this.setMenuItemActive(id);
@@ -73,12 +66,10 @@ export default class NotebooksComponent extends TabMenu {
     }
 
     private bindRenamePopup(): void {
-        
         const menuItem = new MenuItemComponent(svgRename, Lang.get('ctx_rename'));
         this.dropdownMenu.addItem(menuItem);
 
         menuItem.click = (element1: any) => {
-            
             const renamePopup = new PopupInputComponent(Lang.get('popup_rename_title'), Lang.get('notebooks_name'), this.dropdownMenu.object.name);
 
             renamePopup.object = this.dropdownMenu.object;

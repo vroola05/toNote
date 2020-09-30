@@ -9,6 +9,7 @@ import MenuItemComponent from '../menu-item/menu-item-component';
 import ButtonFloatComponent from '../buttons/button-float/button-float-component';
 import ButtonSortmenuComponent from './components/button-sortmenu-component';
 import { Sort, SortEnum } from '../../../types';
+import { Profile } from '../../../services/profile/profile-service';
 
 export class TabMenu extends Tab {
   public static COLOR_TYPE_NONE = 1;
@@ -19,10 +20,10 @@ export class TabMenu extends Tab {
   public sort: Sort;
 
   private colorType: number;
-  private domItemList: HTMLElement;
+  protected domItemList: HTMLElement;
   private itemContainer: HTMLElement;
   private labels: Map<string, string>;
-  private tabMenuItems: Array<TabMenuItem> = new Array<TabMenuItem>();
+  protected tabMenuItems: Array<TabMenuItem> = new Array<TabMenuItem>();
   private selectedTabMenuItem: TabMenuItem = null;
   private btnSort: ButtonSortmenuComponent;
   public dropdownMenu: DropdownMenuComponent = new DropdownMenuComponent();
@@ -94,7 +95,7 @@ export class TabMenu extends Tab {
    */
   public clear(): void {
     this.domItemList.innerHTML = '';
-    this.tabMenuItems = new Array<TabMenuItem>();
+    this.tabMenuItems = [];
     this.clearSelectedMenuItem();
   }
 
@@ -121,7 +122,7 @@ export class TabMenu extends Tab {
    * @param identifier 
    * @param color 
    */
-  public addItem(identifier: number, name: string, object: any, color: null | string): void {
+  public addItem(identifier: number, name: string, object: any, color: null | string): TabMenuItem {
     if (this.dom.classList.contains('hidden')) {
       this.dom.classList.remove('hidden');
     }
@@ -149,6 +150,7 @@ export class TabMenu extends Tab {
 
     this.tabMenuItems.push(tabMenuItem);
     this.domItemList.appendChild(tabMenuItem.dom);
+    return tabMenuItem;
   }
 
   public addSortItem(title: string, identifier: string, sort: SortEnum): void {
@@ -226,6 +228,15 @@ export class TabMenu extends Tab {
     
   }
 
+  
+  public isDraggable(): boolean {
+    const sort = Profile.getSort().find(s => s.name === this.identifier);
+    if (sort && sort.identifier === 'sort') {
+        return true;
+    }
+    return false;
+  }
+  
   public click(item: TabMenuItem, identifier: number, name: string, object: any) {
     alert('Method not yet implemented!');
   }

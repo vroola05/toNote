@@ -1,7 +1,7 @@
 require('quill/dist/quill.snow.css');
 import Quill from 'quill';
 import DateFormat from '../../../../../../components/date-format/date-format';
-import ConfigService from '../../../../../../services/config/configService';
+import Config from '../../../../../../services/config/configService';
 import TitlebarComponent from './components/titlebar/titlebar-component';
 import DatebarComponent from './components/datebar/datebar-component';
 import ToolbarComponent from './components/toolbar/toolbar-component';
@@ -16,7 +16,7 @@ import LoaderComponent from './components/loader/loader-component';
 export default class NoteContentComponent {
     public dom: HTMLDivElement;
 
-    private titlebarComponent = new TitlebarComponent;
+    private titlebarComponent = new TitlebarComponent();
     private dateCreated: DatebarComponent;
     private dateModified: DatebarComponent;
     private loaderComponent: LoaderComponent;
@@ -106,7 +106,7 @@ export default class NoteContentComponent {
     }
 
     private onNoteTextUpdate(): void {
-        const timer = new Timer(ConfigService.get().content.delay);
+        const timer = new Timer(Config.get().content.delay);
         this.editor.on('text-change', (delta, oldDelta, source: string) => {
             if (source === 'user') {
                 NoteComponentService.noteTextChanged(this.getContent());
@@ -124,7 +124,7 @@ export default class NoteContentComponent {
     }
 
     private onNoteUpdate(): void {
-        const timer = new Timer(ConfigService.get().content.delay);
+        const timer = new Timer(Config.get().content.delay);
         this.titlebarComponent.event.on('change', (text: string) => {
             if (this.note) {
                 this.note.name = text;

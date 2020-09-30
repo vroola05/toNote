@@ -1,6 +1,5 @@
 import { Note, Message } from '../../../../types';
 import { EventEmitter } from 'events';
-import ConfigService from '../../../../services/config/configService';
 
 export class NoteComponentService {
     public static event = new EventEmitter();

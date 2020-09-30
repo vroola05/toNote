@@ -1,6 +1,6 @@
 import { Drag } from '../../../../services/drag/drag-service';
-import { EventEmitter } from 'events';
 import { Observable } from '../../../../components/util/subscribe';
+import { Profile } from '../../../../services/profile/profile-service';
 
 export class TabMenuItem {
     public onDragged: Observable<{from: number, to: number}> = new Observable<{from: number, to: number}>(null);
@@ -11,14 +11,14 @@ export class TabMenuItem {
     protected name: string;
     protected color: string|undefined;
     protected object: any;
-    private dragenterCount = 0; 
+    private dragenterCount = 0;
+    public drag = false;
 
 	constructor(parentName: string, identifier: number, name: string, object: any, color: string | null = null) {
         this.parentName = parentName;
         this.identifier = identifier;
         this.object = object;
         this.color = color;
-
         this.dom.classList.add('item');
 
         if ( color !== null) {
@@ -46,7 +46,7 @@ export class TabMenuItem {
     }
 
     public bindDragevents() {
-        this.dom.draggable = true;
+        this.dom.draggable = this.drag;
 
         this.dom.ondragenter = (e) => {
             if (this.parentName !== Drag.identifier) {
@@ -89,6 +89,11 @@ export class TabMenuItem {
         this.dom.ondragend = (e) => {
             e.preventDefault();
         };
+    }
+
+    public setDrag(drag: boolean) {
+        this.drag = drag;
+        this.dom.draggable = this.drag;
     }
 
     public getIcon( color: string ) {

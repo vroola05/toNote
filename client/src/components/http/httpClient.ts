@@ -1,7 +1,6 @@
-import { Entity, Method } from '../../types';
-// import combineUrl from './combineUrl'
-import ConfigService from '../../services/config/configService';
-import { AuthenticationService } from '../../services/authentication/authentication-service';
+import { Method } from '../../types';
+import Config from '../../services/config/configService';
+import { Profile } from '../../services/profile/profile-service';
 import { Router } from '../../services/router/router-service';
 import Lang from '../language/lang';
 
@@ -9,7 +8,7 @@ export default class HttpClient {
     private static apiUrl: string;
 
     constructor() {
-        HttpClient.apiUrl = ConfigService.get().api.url;
+        HttpClient.apiUrl = Config.get().api.url;
     }
 
     public static get<T, D>(endpoint: string, body: D = null): Promise<T> {
@@ -39,7 +38,7 @@ export default class HttpClient {
         
         requestOptions.headers = headers;
 
-        const apikey = AuthenticationService.getApikey();
+        const apikey = Profile.getApikey();
         if (apikey !== null) {
             headers.append('apikey', apikey);
         }

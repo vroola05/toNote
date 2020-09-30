@@ -1,7 +1,7 @@
 import { State, IRouter } from './types';
 import { LoginService } from '../../services/http/login-service';
 import Lang from '../../components/language/lang';
-import { AuthenticationService } from '../../services/authentication/authentication-service';
+import { Profile } from '../profile/profile-service';
 
 export class Router {
     private static stateMap: Map<string, IRouter>;
@@ -26,9 +26,7 @@ export class Router {
 
     public static goToMain(): void {
         new LoginService().user().then((user) => {
-            
-            AuthenticationService.setUser(user);
-  
+            Profile.setUser(user);
             Router.set('main', Lang.get('state_title_notebooks'), Router.getPath());
           }).catch(() => { });
     }

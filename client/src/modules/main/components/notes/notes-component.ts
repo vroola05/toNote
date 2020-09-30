@@ -13,6 +13,7 @@ import PopupInputComponent from '../../../../components/popups/popup-input/popup
 import PopupConfirmComponent from '../../../../components/popups/popup-confirm/popup-confirm-component';
 import PopupMoveComponent from '../../../../components/popups/popup-move/popup-move-component';
 import { LoginService } from '../../../../services/http/login-service';
+import { Profile } from '../../../../services/profile/profile-service';
 
 export default class NotesComponent extends TabMenu {
     private notebookId: number;
@@ -56,25 +57,16 @@ export default class NotesComponent extends TabMenu {
     }
 
     public getItems(notebookId: number, chapterId: number, notesId: number): Promise<Array<Note>> {
-        if (this.hasItems() && this.notebookId === notebookId && this.chapterId === chapterId) {
-            return new Promise((resolve, reject) => {
-                if (notesId) {
-                    this.setMenuItemActive(notesId);
-                }
-                resolve(this.getObjects());
-            });
-        }
-
-        this.clear();
-        this.notebookId = notebookId;
-        this.chapterId = chapterId;
-        this.notesId = notesId;
-
         return NoteService.getNotes(notebookId, chapterId).then((notes: Array<Note>) => {
-            
+            this.clear();
+            this.notebookId = notebookId;
+            this.chapterId = chapterId;
+            this.notesId = notesId;
             if (notes !== null ) {
+                const draggable = this.isDraggable();
                 for (const note of notes) {
-                    this.addItem(note.id, note.name, note, undefined);
+                    this.addItem(note.id, note.name, note, undefined)
+                        .setDrag(draggable);
                 }
                 if (notesId) {
                     this.setMenuItemActive(notesId);
@@ -87,6 +79,7 @@ export default class NotesComponent extends TabMenu {
         });
     }
 
+    
     private bindRenamePopup(): void {
         const menuItem = new MenuItemComponent(svgRename, Lang.get('ctx_rename'));
         this.dropdownMenu.addItem(menuItem);

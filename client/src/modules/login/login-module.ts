@@ -4,7 +4,7 @@ import { State, IRouter } from '../../services/router/types';
 import { User, Info, Message, LoginState } from '../../types';
 import { Router } from '../../services/router/router-service';
 import { LoginService } from '../../services/http/login-service';
-import { AuthenticationService } from '../../services/authentication/authentication-service';
+import { Profile } from '../../services/profile/profile-service';
 import { IWindow } from '../../components/controls/iwindow/iwindow';
 import InputComponent from '../../components/controls/input/input-component';
 import LoginComponent from './login/login-component';

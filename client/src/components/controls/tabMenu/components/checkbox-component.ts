@@ -14,6 +14,14 @@ export default class CheckboxComponent {
     this.checkbox.checked = this._checked;
   }
 
+  public set readonly(readonly: boolean) {
+    this.checkbox.readOnly = readonly;
+  }
+
+  public set disabled(disabled: boolean) {
+    this.checkbox.disabled = disabled;
+  }
+
   constructor() {
     this.dom.className = 'checkboxContainer';
     this.checkbox.type = 'checkbox';

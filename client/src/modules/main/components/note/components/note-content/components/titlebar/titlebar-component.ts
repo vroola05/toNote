@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import ConfigService from '../../../../../../../../services/config/configService';
+import Config from '../../../../../../../../services/config/configService';
 
 export default class TitlebarComponent {
     public dom: HTMLDivElement = document.createElement('div');

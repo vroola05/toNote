@@ -61,23 +61,14 @@ export default class ChaptersComponent extends TabMenu {
     }
 
     public getItems(notebookId: number, chapterId: number): Promise<Array<Chapter>> {
-        if (this.hasItems() && this.notebookId === notebookId) {
-            return new Promise((resolve, reject) => {
-                if (chapterId) {
-                    this.setMenuItemActive(chapterId);
-                }
-
-                resolve(this.getObjects());
-            });
-        }
-
-        this.clear();
-        this.notebookId = notebookId;
-
         return ChapterService.getChapters(notebookId).then((chapters: Array<Chapter>) => {
+            this.clear();
+            this.notebookId = notebookId;
             if (chapters !== null) {
+                const draggable = this.isDraggable();
                 for (const chapter of chapters) {
-                    this.addItem(chapter.id, chapter.name, chapter, chapter.color);
+                    this.addItem(chapter.id, chapter.name, chapter, chapter.color)
+                        .setDrag(draggable);
                 }
 
                 if (chapterId) {

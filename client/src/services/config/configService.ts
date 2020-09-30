@@ -2,13 +2,13 @@ import { ApplicationConfig } from './types';
 import Lang from '../../components/language/lang';
 
 
-export default class ConfigService {
+export default class Config {
     private static config: ApplicationConfig = null;
 
     constructor(callback: Function | undefined = undefined ) {
-        ConfigService.readConfig().then((value: ApplicationConfig) => {
-            ConfigService.config = value;
-            ConfigService.readLanguage().then((lang: any) => {
+        Config.readConfig().then((value: ApplicationConfig) => {
+            Config.config = value;
+            Config.readLanguage().then((lang: any) => {
                 Lang.setMap(lang);
                 if (callback !== undefined) {
                     callback();
@@ -56,9 +56,9 @@ export default class ConfigService {
     }
 
     public static get(): ApplicationConfig {
-        if (ConfigService.config == null) {
+        if (Config.config == null) {
             throw new Error('Config has not been read');
         }
-        return ConfigService.config;
+        return Config.config;
     }
 }

@@ -34,6 +34,8 @@ export default class SortmenuItemComponent {
         this.sort = sort;
 
         this.dom.className = 'menuItem sort';
+
+        this.checkbox.disabled = true;
         this.dom.append(this.checkbox.dom);
 
         const nameContainer = document.createElement('span');

@@ -1,5 +1,5 @@
 import './styles.scss';
-import ConfigService from './services/config/configService';
+import Config from './services/config/configService';
 import Lang from './components/language/lang';
 
 import { Router } from './services/router/router-service';
@@ -11,7 +11,7 @@ import SettingsModule from './modules/settings/settings-module';
 
 import { LoginService } from './services/http/login-service';
 import { Message } from 'types';
-import { AuthenticationService } from './services/authentication/authentication-service';
+import { Profile } from './services/profile/profile-service';
 
 
 
@@ -21,7 +21,7 @@ class Startup {
     ////////////////////////////////////////
     // 
     ////////////////////////////////////////
-    const conf = new ConfigService(() => {
+    const conf = new Config(() => {
       Router.readUrl();
       Router.register('login', new LoginModule());
       Router.register('main', new MainModule());

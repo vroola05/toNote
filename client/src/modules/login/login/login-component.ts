@@ -5,7 +5,7 @@ import Lang from '../../../components/language/lang';
 import { User, Info, Message } from '../../../types';
 import { Router } from '../../../services/router/router-service';
 import { LoginService } from '../../../services/http/login-service';
-import { AuthenticationService } from '../../../services/authentication/authentication-service';
+import { Profile } from '../../../services/profile/profile-service';
 
 import InputComponent from '../../../components/controls/input/input-component';
 
@@ -71,7 +71,7 @@ export default class LoginComponent {
             return;
         }
 
-        AuthenticationService.clear();
+        Profile.clear();
 
         const loginService: LoginService = new LoginService();
         loginService.login(user).then((message: Message) => {
@@ -82,7 +82,7 @@ export default class LoginComponent {
             } else {
                 message.info.forEach( (info: Info) => {
                     if (info.id === 'apikey' && info.value !== undefined && info.value !== '') {
-                        AuthenticationService.setApikey(info.value);
+                        Profile.setApikey(info.value);
                         Router.goToMain();
                     }
                 });
