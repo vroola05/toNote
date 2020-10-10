@@ -81,34 +81,81 @@
         flex-direction: row;
         align-items: center;
         background-color: inherit;
-        padding: $default-padding/2 $default-padding $default-padding/2 $default-padding;
         position: relative;
-        cursor: pointer;
         &.active {
           font-weight: $font-weight-bold;
           filter: brightness(90%);
         }
-        .color {
-          min-width: $default-menu-icon-size/2;
-          min-height: $default-menu-icon-size/2;
-          width: $default-menu-icon-size/2;
-          height: $default-menu-icon-size/2;
-          padding-right: $default-padding;
-          svg {
-            vertical-align: middle;
-            .colorRect {
-              stroke: $default-font-color;
-              width: $default-menu-icon-size/2;
-              height: $default-menu-icon-size/2;
+        .itemContainer {
+          cursor: pointer;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          flex: auto;
+          padding: $default-padding/2 $default-padding $default-padding/2 $default-padding;
+
+          .color {
+            flex: none;
+            min-width: $default-menu-icon-size/2;
+            min-height: $default-menu-icon-size/2;
+            width: $default-menu-icon-size/2;
+            height: $default-menu-icon-size/2;
+            padding-right: $default-padding;
+            svg {
+              vertical-align: middle;
+              .colorRect {
+                stroke: $default-font-color;
+                width: $default-menu-icon-size/2;
+                height: $default-menu-icon-size/2;
+              }
             }
           }
-        }
-        .name {
+          .name {
+            flex: auto;
+          }
         }
 
-        &:hover, &.dragHover {
+        .draggableUnlockBtn {
+          flex: none;
+          display: none;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+
+          width: $default-menu-icon-size/2;
+          margin-right: $default-padding/4;
+          padding-left: $default-padding/4;
+          padding-right: $default-padding/4;
+          background: #aaaaaa44;
+          border-radius: 2px;
+
+          opacity: .2;
+
+          .bars {
+            width: 100%;
+            height: 2px;
+            border-top: #88888866 solid 2px;
+            border-bottom: #88888866 solid 2px;
+            
+          }
+          &:hover {
+            opacity: 1;
+            .bars {
+              border-color: $color-white;
+            }
+          }
+          &.show {
+            display: flex;
+          }
+        }
+
+        &:hover, &.droppable {
           color: darken($color-secondary, 50%);
           filter: brightness(95%);
+
+          .draggableUnlockBtn {
+            opacity: .8;
+          }
         }
       }
     }
@@ -150,7 +197,26 @@
       .itemList {
         max-height: 100%;
         .item {
-          padding: $mobile-padding $mobile-padding * 2;
+          
+          .itemContainer { 
+            flex: auto;
+            padding: $mobile-padding $mobile-padding * 2;
+          }
+          .draggableUnlockBtn {
+            flex: none;
+            width: $mobile-menu-icon-size;
+            margin-right: 0px;
+            padding-left: $mobile-padding/4;
+            padding-right: $mobile-padding;
+
+
+            .bars {
+              height: 3px;
+              border-top: #88888866 solid 3px;
+              border-bottom: #88888866 solid 3px;
+              
+            }
+          }
         }
       }
       .addBtnDesktop {

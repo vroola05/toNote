@@ -68,7 +68,7 @@ export default class ChaptersComponent extends TabMenu {
                 const draggable = this.isDraggable();
                 for (const chapter of chapters) {
                     this.addItem(chapter.id, chapter.name, chapter, chapter.color)
-                        .setDrag(draggable);
+                        .setDraggable(draggable);
                 }
 
                 if (chapterId) {

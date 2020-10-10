@@ -6,6 +6,7 @@ export class TabMenuItem {
     public onDragged: Observable<{from: number, to: number}> = new Observable<{from: number, to: number}>(null);
     public dom: HTMLElement = document.createElement('div');
     private domName: HTMLElement = document.createElement('span');
+    private draggableUnlockBtn: HTMLElement;
     protected parentName: string;
     protected identifier: number;
     protected name: string;
@@ -21,51 +22,77 @@ export class TabMenuItem {
         this.color = color;
         this.dom.classList.add('item');
 
-        if ( color !== null) {
-            const itemColor = document.createElement('span');
-            itemColor.classList.add('color');
-            itemColor.appendChild(this.getIcon(color));
-            this.dom.appendChild(itemColor);
-        }
+        const itemContainer = document.createElement('span');
+        itemContainer.classList.add('itemContainer');
+        this.dom.appendChild(itemContainer);
 
-        this.domName.classList.add('name');
-        this.setName(name);
-
-        this.dom.onclick = (e: DragEvent) => {
+        itemContainer.onclick = (e) => {
             this.click(this, this.identifier, this.name, this.object);
         };
 
-        this.dom.oncontextmenu = (e) => {
+        itemContainer.oncontextmenu = (e) => {
             this.oncontextmenu(e, this, this.identifier, this.name, this.object);
             e.preventDefault();
         };
 
-        this.bindDragevents();
+        if ( color !== null) {
+            const itemColor = document.createElement('span');
+            itemColor.classList.add('color');
+            itemColor.appendChild(this.getIcon(color));
+            itemContainer.appendChild(itemColor);
+        }
 
-        this.dom.appendChild(this.domName);
+        this.domName.classList.add('name');
+        this.setName(name);
+        itemContainer.appendChild(this.domName);
+
+        this.draggableUnlockBtn = this.createDraggableUnlockBtn();
+        this.dom.appendChild(this.draggableUnlockBtn);
+
+
+        this.bindDragEvents();
     }
 
-    public bindDragevents() {
+    private createDraggableUnlockBtn() {
+        const draggableUnlockBtn = document.createElement('span');
+        draggableUnlockBtn.className = 'draggableUnlockBtn';
+        this.dom.draggable = this.drag;
+        draggableUnlockBtn.onmousedown = () => {
+            this.dom.draggable = this.drag;
+        };
+        draggableUnlockBtn.onmouseup = () => {
+            this.dom.draggable = false;
+        };
+
+        const bars = document.createElement('span');
+        bars.className = 'bars';
+        draggableUnlockBtn.appendChild(bars);
+        return draggableUnlockBtn;
+    }
+
+    public bindDragEvents() {
         this.dom.draggable = this.drag;
 
         this.dom.ondragenter = (e) => {
+            this.dom.style.backgroundColor = 'red';
             if (this.parentName !== Drag.identifier) {
                 return;
             }
 
             if ( this.dragenterCount === 0) {
-                this.dom.classList.add('dragHover');
+                this.dom.classList.add('droppable');
             }
             this.dragenterCount++;
         };
         this.dom.ondragleave = (e) => {
+            this.dom.style.backgroundColor = '';
             if (this.parentName !== Drag.identifier) {
                 return;
             }
             
             this.dragenterCount--;
             if ( this.dragenterCount === 0) {
-                this.dom.classList.remove('dragHover');
+                this.dom.classList.remove('droppable');
             }
         };
         this.dom.ondragstart = (e) => {
@@ -74,11 +101,12 @@ export class TabMenuItem {
             e.dataTransfer.setData('text/plain', this.identifier.toString());
         };
         this.dom.ondrop = (e) => {
+            this.dom.style.backgroundColor = '';
             if (this.parentName !== Drag.identifier) {
                 return;
             }
             this.dragenterCount = 0;
-            this.dom.classList.remove('dragHover');
+            this.dom.classList.remove('droppable');
             
             e.dataTransfer.dropEffect = 'move';
             this.onDragged.next({from: Number(e.dataTransfer.getData('text')), to: this.identifier});
@@ -91,9 +119,15 @@ export class TabMenuItem {
         };
     }
 
-    public setDrag(drag: boolean) {
-        this.drag = drag;
-        this.dom.draggable = this.drag;
+    public setDraggable(drag: boolean) {
+        if (drag) {
+            this.drag = true;
+            this.draggableUnlockBtn.classList.add('show');
+        } else {
+            this.draggableUnlockBtn.classList.remove('show');
+            this.drag = true;
+        }
+        
     }
 
     public getIcon( color: string ) {

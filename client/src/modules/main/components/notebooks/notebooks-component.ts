@@ -52,7 +52,7 @@ export default class NotebooksComponent extends TabMenu {
                 const draggable = this.isDraggable();
                 for (const notebook of notebooks) {
                     this.addItem(notebook.id, notebook.name, notebook, undefined)
-                        .setDrag(draggable);
+                        .setDraggable(draggable);
                 }
                 if (id) {
                     this.setMenuItemActive(id);

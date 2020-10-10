@@ -66,7 +66,7 @@ export default class NotesComponent extends TabMenu {
                 const draggable = this.isDraggable();
                 for (const note of notes) {
                     this.addItem(note.id, note.name, note, undefined)
-                        .setDrag(draggable);
+                        .setDraggable(draggable);
                 }
                 if (notesId) {
                     this.setMenuItemActive(notesId);
