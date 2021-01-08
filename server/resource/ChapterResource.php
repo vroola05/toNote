@@ -111,8 +111,9 @@ class ChapterResource {
             
             $datetime->format(\DateTime::W3C);
             $now = $datetime->format("Y-m-d H:i:s");
-            
             $input->setModifyDate($now);
+
+            $input->setSort($chapter->sort);
             $input->setHash('');
             
             $connection = Database::getInstance();
@@ -132,7 +133,7 @@ class ChapterResource {
         if( $parameters!=null && count($parameters) == 1 ){
             $connection = Database::getInstance();
             $connection->dbConnect();
-// SELECT count(*), max(sort) FROM `notes` where sectionId = 32 ORDER BY `sort` DESC
+
             $sort = Dao::getChapterCountByNotebookId($connection, $parameters[0], Security::getUserId());
 
             $input->setUserId(Security::getUserId());

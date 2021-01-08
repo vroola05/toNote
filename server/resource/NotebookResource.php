@@ -123,6 +123,7 @@ class NotebookResource {
         $input->setCreationDate(Formatter::w3cToSqlDate($notebook->creationDate));
         $now = (new \DateTime())->format("Y-m-d H:i:s");
         $input->setModifyDate($now);
+        $input->setSort($notebook->sort);
         $input->setHash('');
         
         $connection = Database::getInstance();

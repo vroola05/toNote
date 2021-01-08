@@ -191,7 +191,7 @@ class Dao {
         $result=array();
 
         $sort = Dao::getSortByUserIdAndName($connection, $userId, "chapters", "name");
-        if($connection->dbPreparedStatement("select c.id, c.notebookId, c.userId, c.name, c.color, c.creationDate, c.modifyDate, c.hash from chapters c where c.notebookId = ? and c.userId = ? order by ". $sort->identifier. " " .$sort->sort, array($notebookId, $userId))){
+        if($connection->dbPreparedStatement("select c.id, c.notebookId, c.userId, c.name, c.color, c.creationDate, c.modifyDate, c.sort, c.hash from chapters c where c.notebookId = ? and c.userId = ? order by ". $sort->identifier. " " .$sort->sort, array($notebookId, $userId))){
             $records = $connection->getFetchData();
             foreach ($records as $record) {
                 $chapter = new Chapter();
@@ -206,6 +206,7 @@ class Dao {
                 if($record["modifyDate"]!=null && $record["modifyDate"]!="") {
                     $chapter->setModifyDate((new \DateTime($record["modifyDate"]))->format(\DateTime::W3C));
                 }
+                $chapter->setSort($record["sort"]);
                 array_push($result, $chapter);
             }
         }

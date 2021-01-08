@@ -32,7 +32,7 @@ class NotesResource {
             $connection = Database::getInstance();
             $connection->dbConnect();
 
-            $note = $connection->getSingleItem(new Note(), "select id, name, sectionId, modifyDate, creationDate, hash from notes where userId = ? and sectionId = ? and id = ?", 
+            $note = $connection->getSingleItem(new Note(), "select id, name, sectionId, modifyDate, creationDate, sort, hash from notes where userId = ? and sectionId = ? and id = ?", 
             array(Security::getUserId(), $parameters[1], $parameters[2]));
 
             if($note->getCreationDate()!=null && $note->getCreationDate()!="") {
@@ -138,12 +138,12 @@ class NotesResource {
             $input->setSectionId($note->sectionId);
             $input->setUserId(Security::getUserId());
             $input->setName($note->name);
+
             $input->setCreationDate(Formatter::w3cToSqlDate($note->creationDate));
-
             $datetime = new \DateTime();
-
             $now = $datetime->format("Y-m-d H:i:s");
             $input->setModifyDate($now);
+            $input->setSort($note->sort);
             $input->setHash('');
             
             $connection = Database::getInstance();
