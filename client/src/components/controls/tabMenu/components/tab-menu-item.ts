@@ -6,7 +6,7 @@ export class TabMenuItem {
     public onDragged: Observable<{from: number, to: number}> = new Observable<{from: number, to: number}>(null);
     public dom: HTMLElement = document.createElement('div');
     private domName: HTMLElement = document.createElement('span');
-    private draggableUnlockBtn: HTMLElement;
+    private domTabMenuItemDragBtn: HTMLElement;
     protected parentName: string;
     protected identifier: number;
     protected name: string;
@@ -20,10 +20,10 @@ export class TabMenuItem {
         this.identifier = identifier;
         this.object = object;
         this.color = color;
-        this.dom.classList.add('item');
+        this.dom.classList.add('tabMenuItem');
 
         const itemContainer = document.createElement('span');
-        itemContainer.classList.add('itemContainer');
+        itemContainer.classList.add('tabMenuItemContent');
         this.dom.appendChild(itemContainer);
 
         itemContainer.onclick = (e) => {
@@ -46,28 +46,33 @@ export class TabMenuItem {
         this.setName(name);
         itemContainer.appendChild(this.domName);
 
-        this.draggableUnlockBtn = this.createDraggableUnlockBtn();
-        this.dom.appendChild(this.draggableUnlockBtn);
+        this.domTabMenuItemDragBtn = this.createTabMenuItemDragBtn();
+        this.dom.appendChild(this.domTabMenuItemDragBtn);
 
 
         this.bindDragEvents();
     }
 
-    private createDraggableUnlockBtn() {
-        const draggableUnlockBtn = document.createElement('span');
-        draggableUnlockBtn.className = 'draggableUnlockBtn';
+    private createTabMenuItemDragBtn() {
+        const domTabMenuItemDragBtn = document.createElement('span');
+        domTabMenuItemDragBtn.className = 'tabMenuItemDragBtn';
         this.dom.draggable = this.drag;
-        draggableUnlockBtn.onmousedown = () => {
+        domTabMenuItemDragBtn.onmousedown = () => {
             this.dom.draggable = this.drag;
         };
-        draggableUnlockBtn.onmouseup = () => {
+        domTabMenuItemDragBtn.onmouseup = () => {
             this.dom.draggable = false;
         };
 
+        const domTabMenuItemDragBtnContainer = document.createElement('span');
+        domTabMenuItemDragBtnContainer.className = 'tabMenuItemDragBtnContainer';
+        domTabMenuItemDragBtn.appendChild(domTabMenuItemDragBtnContainer);
+
         const bars = document.createElement('span');
         bars.className = 'bars';
-        draggableUnlockBtn.appendChild(bars);
-        return draggableUnlockBtn;
+        domTabMenuItemDragBtnContainer.appendChild(bars);
+
+        return domTabMenuItemDragBtn;
     }
 
     public bindDragEvents() {
@@ -122,9 +127,9 @@ export class TabMenuItem {
     public setDraggable(drag: boolean) {
         if (drag) {
             this.drag = true;
-            this.draggableUnlockBtn.classList.add('show');
+            this.domTabMenuItemDragBtn.classList.add('show');
         } else {
-            this.draggableUnlockBtn.classList.remove('show');
+            this.domTabMenuItemDragBtn.classList.remove('show');
             this.drag = true;
         }
         

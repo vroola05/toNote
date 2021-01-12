@@ -20,8 +20,8 @@ export class TabMenu extends Tab {
   public sort: Sort;
 
   private colorType: number;
-  protected domItemList: HTMLElement;
-  private itemContainer: HTMLElement;
+  protected domTabMenuItems: HTMLElement;
+  private domTabMenuContainer: HTMLElement;
   private labels: Map<string, string>;
   protected tabMenuItems: Array<TabMenuItem> = new Array<TabMenuItem>();
   private selectedTabMenuItem: TabMenuItem = null;
@@ -40,50 +40,50 @@ export class TabMenu extends Tab {
     }
 
     this.dom.addEventListener('transitionstart', () => {
-      this.itemContainer.style.width = '180px';
+      this.domTabMenuContainer.style.width = '180px';
     });
 
     this.dom.addEventListener('transitionend', () => {
-      this.itemContainer.style.width = null;
+      this.domTabMenuContainer.style.width = null;
     });
 
-    this.itemContainer = document.createElement('div');
-    this.itemContainer.classList.add('itemContainer');
+    this.domTabMenuContainer = document.createElement('div');
+    this.domTabMenuContainer.classList.add('tabMenuContainer');
 
-    this.dom.appendChild(this.itemContainer);
+    this.dom.appendChild(this.domTabMenuContainer);
 
-    const domItemHeaderContainer = document.createElement('div');
-    domItemHeaderContainer.classList.add('itemHeaderContainer');
+    const domTabMenuHeader = document.createElement('div');
+    domTabMenuHeader.classList.add('tabMenuHeader');
 
-    const domName = document.createElement('div');
-    domName.classList.add('menuName');
-    domName.innerHTML = this.labels.get('name');
-    domItemHeaderContainer.appendChild(domName);
+    const domTabMenuHeaderName = document.createElement('div');
+    domTabMenuHeaderName.classList.add('tabMenuHeaderName');
+    domTabMenuHeaderName.innerHTML = this.labels.get('name');
+    domTabMenuHeader.appendChild(domTabMenuHeaderName);
 
     this.btnSort = new ButtonSortmenuComponent(identifier);
     this.btnSort.event.on('change', (sort: any) => {
       this.onSort(sort);
     });
-    domItemHeaderContainer.appendChild(this.btnSort.dom);
+    domTabMenuHeader.appendChild(this.btnSort.dom);
 
-    this.domItemList = document.createElement('div');
-    this.domItemList.classList.add('itemList');
+    this.domTabMenuItems = document.createElement('div');
+    this.domTabMenuItems.classList.add('tabMenuItems');
 
-    const addMenuItemMobile = new ButtonFloatComponent(svgAdd, (e: any) => {
+    const tabMenuAddMenuItemMobile = new ButtonFloatComponent(svgAdd, (e: any) => {
       this.clickNewItem(e);
     });
-    addMenuItemMobile.classList.add('addBtnMobile');
+    tabMenuAddMenuItemMobile.classList.add('tabMenuAddBtnMobile');
 
-    const addMenuItemDesktop = new MenuItemComponent(svgAdd, this.labels.get('add'));
-    addMenuItemDesktop.click = (menuItem, e) => {
+    const tabMenuAddBtnDesktop = new MenuItemComponent(svgAdd, this.labels.get('add'));
+    tabMenuAddBtnDesktop.click = (menuItem, e) => {
       this.clickNewItem(e);
     };
-    addMenuItemDesktop.classList.add('addBtnDesktop');
+    tabMenuAddBtnDesktop.classList.add('tabMenuAddBtnDesktop');
 
-    this.itemContainer.appendChild(domItemHeaderContainer);
-    this.itemContainer.appendChild(this.domItemList);
-    this.itemContainer.appendChild(addMenuItemDesktop.dom);
-    this.itemContainer.appendChild(addMenuItemMobile.dom);
+    this.domTabMenuContainer.appendChild(domTabMenuHeader);
+    this.domTabMenuContainer.appendChild(this.domTabMenuItems);
+    this.domTabMenuContainer.appendChild(tabMenuAddBtnDesktop.dom);
+    this.domTabMenuContainer.appendChild(tabMenuAddMenuItemMobile.dom);
 
     this.dropdownMenu.event.on('close', () => {
       this.dropdownMenu.hide();
@@ -94,7 +94,7 @@ export class TabMenu extends Tab {
    * 
    */
   public clear(): void {
-    this.domItemList.innerHTML = '';
+    this.domTabMenuItems.innerHTML = '';
     this.tabMenuItems = [];
     this.clearSelectedMenuItem();
   }
@@ -112,7 +112,7 @@ export class TabMenu extends Tab {
     if (tabMenuItem === this.selectedTabMenuItem) {
       this.clearSelectedMenuItem();
     }
-    this.domItemList.removeChild(tabMenuItem.dom);
+    this.domTabMenuItems.removeChild(tabMenuItem.dom);
     this.tabMenuItems.splice(this.tabMenuItems.indexOf(tabMenuItem), 1);
   }
 
@@ -149,7 +149,7 @@ export class TabMenu extends Tab {
     });
 
     this.tabMenuItems.push(tabMenuItem);
-    this.domItemList.appendChild(tabMenuItem.dom);
+    this.domTabMenuItems.appendChild(tabMenuItem.dom);
     return tabMenuItem;
   }
 
@@ -213,19 +213,15 @@ export class TabMenu extends Tab {
     const from = this.tabMenuItems.find(a => a.getId() === o.from);
     const to = this.tabMenuItems.find(a => a.getId() === o.to);
     
-    const children = [...this.domItemList.children];
+    const children = [...this.domTabMenuItems.children];
     const indexFrom = children.indexOf(from.dom);
     const indexTo = children.indexOf(to.dom);
 
     if (indexFrom > indexTo) {
-      this.domItemList.insertBefore(from.dom, to.dom);
+      this.domTabMenuItems.insertBefore(from.dom, to.dom);
     } else {
-      this.domItemList.insertBefore(from.dom, to.dom.nextSibling);
+      this.domTabMenuItems.insertBefore(from.dom, to.dom.nextSibling);
     }
-
-    // this.tabMenuItems.push(tabMenuItem);
-    // this.domItemList.appendChild(tabMenuItem.dom);
-    
   }
 
   

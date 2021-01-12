@@ -75,8 +75,13 @@ export default class HeaderComponent {
     this.btnRightContainer.className = 'btnRightContainer';
     this.dom.appendChild(this.btnRightContainer);
 
-    this.addAltMenuItem(new ButtonDropdownComponent(svgSearch, Lang.get('header_icon_search'), (item: any) => {
+    const btnSearch = this.addAltMenuItem(new ButtonDropdownComponent(svgSearch, Lang.get('header_icon_search'), (e: Event, item: any) => {
+    })) as ButtonDropdownComponent;
+
+    btnSearch.addItem(new MenuItemComponent(svgSettings, Lang.get('header_menu_settings'), (e: any) => {
+      
     }));
+
 
     const btnMenu = this.addAltMenuItem(new ButtonDropdownComponent(svgMenu, Lang.get('header_icon_menu'), (e: Event, item: any) => {
     })) as ButtonDropdownComponent;

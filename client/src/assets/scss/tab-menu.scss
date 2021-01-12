@@ -1,4 +1,4 @@
-.item {
+.tabMenuItem {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -13,7 +13,7 @@
     box-shadow: 0px 0px 6px 0px #484848;
 
   }
-  .itemInnerContainer {
+  .tabMenuItemContent {
     cursor: pointer;
     display: flex;
     flex-direction: row;
@@ -42,33 +42,36 @@
     }
   }
 
-  .draggableUnlockBtn {
+  .tabMenuItemDragBtn {
     flex: none;
     display: none;
     flex-direction: column;
-    align-items: center;
+    align-self: stretch;
     justify-content: center;
 
     width: $default-menu-icon-size/2;
-    margin-right: $default-padding/4;
-    padding-left: $default-padding/4;
-    padding-right: $default-padding/4;
-    background: #aaaaaa44;
-    border-radius: 2px;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    opacity: .2;
 
-    .bars {
+    .tabMenuItemDragBtnContainer {
       width: 100%;
-      height: 2px;
-      border-top: #88888866 solid 2px;
-      border-bottom: #88888866 solid 2px;
-      
+      display: flex;
+      flex-direction: column;
+
+      border-radius: 2px;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      opacity: .2;
+
+      .bars {
+        width: 100%;
+        height: 2px;
+        border-top: #88888866 solid 2px;
+        border-bottom: #88888866 solid 2px;
+        
+      }
     }
     &:hover {
       opacity: 1;
@@ -85,8 +88,10 @@
     color: darken($color-secondary, 50%);
     filter: brightness(95%);
 
-    .draggableUnlockBtn {
-      opacity: .8;
+    .tabMenuItemDragBtn {
+      .tabMenuItemDragBtnContainer {
+        opacity: .8;
+      }
     }
   }
 }
@@ -138,18 +143,18 @@
     }
   }
 
-  .itemContainer {
+  .tabMenuContainer {
     display: flex;
     flex-direction: column;
     height: 100%;
     background-color: inherit;
 
-    .itemHeaderContainer {
+    .tabMenuHeader {
       display: flex;
       flex-direction: row;
       width: 100%;
 
-      .menuName {
+      .tabMenuHeaderName {
         flex: auto;
         padding: $default-padding;
         font-size: $font-size-big;
@@ -163,14 +168,11 @@
         
       }
     }
-    
 
-    .itemList {
+    .tabMenuItems {
       flex: auto;
       overflow-y: auto;
       background-color: inherit;
-
-      
     }
 
     .options {
@@ -202,38 +204,39 @@
     min-width: 0px;
     height: 100%;
 
-    .itemContainer {
-      .menuName {
+    .tabMenuContainer {
+      .tabMenuHeaderName {
         font-size: $mobile-font-size-big;
         padding: $mobile-padding;
       }
-      .itemList {
+      .tabMenuItems {
         max-height: 100%;
 
-        .item {
-          
-          .itemInnerContainer { 
+        .tabMenuItem {
+          .tabMenuItemContent { 
             flex: auto;
             padding: $mobile-padding $mobile-padding * 2;
           }
-          .draggableUnlockBtn {
+          .tabMenuItemDragBtn {
             flex: none;
             width: $mobile-menu-icon-size;
-            margin-right: 0px;
-            padding-left: $mobile-padding/4;
-            padding-right: $mobile-padding;
-      
-      
-            .bars {
-              height: 3px;
-              border-top: #88888866 solid 3px;
-              border-bottom: #88888866 solid 3px;
-              
+
+            .tabMenuItemDragBtnContainer {
+              /*margin-right: 0px;
+              padding-left: $mobile-padding/4;
+              padding-right: $mobile-padding;*/
+
+              .bars {
+                height: 3px;
+                border-top: #88888866 solid 3px;
+                border-bottom: #88888866 solid 3px;
+                
+              }
             }
           }
         }
       }
-      .addBtnDesktop {
+      .tabMenuAddBtnDesktop {
         display: none;
       }
     }
@@ -249,8 +252,8 @@
 
 @media (min-width: $default-width-mobile+1) and (max-width: $default-width-tablet) {
   .tab.tabMenu {
-    .itemContainer {
-      .addBtnMobile {
+    .tabMenuContainer {
+      .tabMenuAddBtnMobile {
         display: none;
       }
     }
@@ -258,8 +261,8 @@
 }
 @media (min-width: $default-width-tablet+1) and (max-width: $default-width-desktop) {
   .tab.tabMenu {
-    .itemContainer {
-      .addBtnMobile {
+    .tabMenuContainer {
+      .tabMenuAddBtnMobile {
         display: none;
       }
     }
@@ -267,8 +270,8 @@
 }
 @media (min-width: $default-width-desktop+1) {
   .tab.tabMenu {
-    .itemContainer {
-      .addBtnMobile {
+    .tabMenuContainer {
+      .tabMenuAddBtnMobile {
         display: none;
       }
     }
